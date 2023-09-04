@@ -1,7 +1,7 @@
 server:
   port: 8899
   servlet:
-    context-path: /cheater
+    context-path: /archive-editor
 
 # mybatis-plus配置
 mybatis-plus:
@@ -17,6 +17,3 @@ mybatis-plus:
       field-strategy: NOT_NULL
       # 默认数据库表下划线命名
       table-underline: true
-  configuration-properties:
-    STATE_YES: 1
-    STATE_NO: 0

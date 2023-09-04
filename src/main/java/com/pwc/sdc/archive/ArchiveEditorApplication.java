@@ -1,11 +1,11 @@
-package com.pwc.sdc.cheater;
+package com.pwc.sdc.archive;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CheaterApplication {
+public class ArchiveEditorApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CheaterApplication.class, args);
+        SpringApplication.run(ArchiveEditorApplication.class, args);
     }
 }
