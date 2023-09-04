@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeUserTokenMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeUserToken">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="userId" column="USER_ID" jdbcType="VARCHAR"/>
+            <result property="gameId" column="GAME_ID" jdbcType="VARCHAR"/>
+            <result property="token" column="TOKEN" jdbcType="VARCHAR"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,USER_ID,GAME_ID,
+        TOKEN,GMT_CREATE,GMT_MODIFIED
+    </sql>
+</mapper>

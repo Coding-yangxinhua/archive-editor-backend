@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeGameMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeGame">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="name" column="NAME" jdbcType="VARCHAR"/>
+            <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+            <result property="jsScript" column="JS_SCRIPT" jdbcType="VARCHAR"/>
+            <result property="archiveStructure" column="ARCHIVE_STRUCTURE" jdbcType="VARCHAR"/>
+            <result property="header" column="HEADER" jdbcType="VARCHAR"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,DESCRIPTION,
+        JS_SCRIPT,ARCHIVE_STRUCTURE,HEADER,
+        GMT_CREATE,GMT_MODIFIED
+    </sql>
+</mapper>

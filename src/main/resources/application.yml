@@ -2,18 +2,55 @@ server:
   port: 8899
   servlet:
     context-path: /archive-editor
-
+spring:
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: zxcv123321AZ
+    url: jdbc:mysql://192.210.197.111:3306/opa?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&&rewriteBatchedStatements=true
 # mybatis-plus配置
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置
   mapper-locations: classpath*:/mapper/*Mapper.xml
+  configuration-properties:
+    STATE_NO: 0
+    STATE_YES: 1
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
     db-config:
       # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
-      id-type: AUTO
+      id-type: ASSIGN_ID
       #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
       field-strategy: NOT_NULL
       # 默认数据库表下划线命名
       table-underline: true
+
+knife4j:
+  enable: true
+  openapi:
+    title: Archive Editor 文档
+    description: 这个Archive Editor的文档
+    email: yangxinhua152@gmail.com
+    url: http://localhost:8899/
+    version: v4.0
+    license: Apache 2.0
+
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: ae-token
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: false
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
