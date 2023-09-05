@@ -9,5 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-04 15:41:58
 */
 public interface AeGameService extends IService<AeGame> {
+    String AE_GAME_SCRIPT = "AE_GAME_SCRIPT";
+    String getScriptById(Long gameId);
 
 }

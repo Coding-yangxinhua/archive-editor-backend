@@ -21,4 +21,7 @@
         JS_SCRIPT,ARCHIVE_STRUCTURE,HEADER,
         GMT_CREATE,GMT_MODIFIED
     </sql>
+    <select id="getScriptById" resultType="java.lang.String">
+        SELECT JS_SCRIPT FROM AE_GAME WHERE DELETED = ${STATE_NO} AND ID = #{gameId}
+    </select>
 </mapper>

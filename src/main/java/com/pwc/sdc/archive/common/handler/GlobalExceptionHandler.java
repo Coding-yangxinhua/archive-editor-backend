@@ -1,4 +1,4 @@
-package com.pwc.sdc.archive.common.service;
+package com.pwc.sdc.archive.common.handler;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.enums.ResultStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;

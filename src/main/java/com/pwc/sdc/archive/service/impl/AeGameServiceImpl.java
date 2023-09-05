@@ -1,9 +1,11 @@
 package com.pwc.sdc.archive.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.mapper.AeGameMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +17,11 @@ import org.springframework.stereotype.Service;
 public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     implements AeGameService{
 
+    @Override
+    @Cacheable(cacheNames = AE_GAME_SCRIPT, key = "#gameId")
+    public String getScriptById(Long gameId) {
+        return baseMapper.getScriptById(gameId);
+    }
 }
 
 

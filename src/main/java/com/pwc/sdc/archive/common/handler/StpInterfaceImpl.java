@@ -1,4 +1,4 @@
-package com.pwc.sdc.archive.common.service;
+package com.pwc.sdc.archive.common.handler;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.pwc.sdc.archive.domain.AePermission;

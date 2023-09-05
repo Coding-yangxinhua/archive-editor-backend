@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.mapper;
 
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Xinhua X Yang
@@ -10,6 +11,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.pwc.sdc.archive.domain.AeGame
 */
 public interface AeGameMapper extends BaseMapper<AeGame> {
+
+    String getScriptById(@Param("gameId") Long gameId);
 
 }
 
