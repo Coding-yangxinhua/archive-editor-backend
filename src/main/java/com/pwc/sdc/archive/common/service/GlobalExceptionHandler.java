@@ -1,5 +1,8 @@
-package com.pwc.sdc.archive.common;
+package com.pwc.sdc.archive.common.service;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
+import cn.dev33.satoken.exception.NotRoleException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.enums.ResultStatus;
@@ -49,9 +52,23 @@ public class GlobalExceptionHandler {
             bindingResult = ((BindException)e).getBindingResult();
         }
         Map<String,String> errorMap = new HashMap<>(16);
+        assert bindingResult != null;
         bindingResult.getFieldErrors().forEach((fieldError)->
                 errorMap.put(fieldError.getField(),fieldError.getDefaultMessage())
         );
-        return ResponseEntity.error(ResultStatus.CHECK_ERROR);
+        return ResponseEntity.error(ResultStatus.CHECK_ERROR, errorMap.toString());
+    }
+
+
+    /**
+     * 权限校验
+     * @param e
+     * @return
+     * @throws JsonProcessingException
+     */
+    @ExceptionHandler(value= {NotRoleException.class , NotPermissionException.class, NotLoginException.class})
+    public ResponseEntity<Map<String, String>> onAuthException(Exception e) throws JsonProcessingException {
+        log.error("无权访问: {}", e.getMessage());
+        return ResponseEntity.error(ResultStatus.AUTH_ERROR, e.getMessage());
     }
 }

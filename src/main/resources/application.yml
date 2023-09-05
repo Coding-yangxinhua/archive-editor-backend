@@ -3,6 +3,12 @@ server:
   servlet:
     context-path: /archive-editor
 spring:
+  redis:
+    host: 192.210.197.111
+    port: 6379
+    password: zxcv123321AZ
+  cache:
+    type: redis
   jackson:
     date-format: yyyy-MM-dd hh:mm:ss
     time-zone: GMT+8
@@ -10,7 +16,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: zxcv123321AZ
-    url: jdbc:mysql://192.210.197.111:3306/opa?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&&rewriteBatchedStatements=true
+    url: jdbc:mysql://192.210.197.111:3306/ae_prod?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&&rewriteBatchedStatements=true
 # mybatis-plus配置
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置

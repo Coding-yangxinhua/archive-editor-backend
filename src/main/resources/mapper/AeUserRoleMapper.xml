@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeUserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeUserRole">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="userId" column="USER_ID" jdbcType="BIGINT"/>
+            <result property="roleId" column="ROLE_ID" jdbcType="BIGINT"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,USER_ID,ROLE_ID,
+        GMT_CREATE,GMT_MODIFIED,DELETED
+    </sql>
+    <select id="listUserRolePermissions" resultType="com.pwc.sdc.archive.domain.AeRole">
+        SELECT ID, PERMISSION FROM AE_PERMISSION WHERE ID IN (
+            SELECT ID FROM
+            )
+    </select>
+    <select id="listUserRoles" resultType="com.pwc.sdc.archive.domain.dto.UserRoleDto">
+        SELECT ur.USER_ID, ur.ROLE_ID, r.ROLE
+        FROM AE_USER_ROLE ur
+        INNER JOIN AE_ROLE r ON r.ID = ur.ROLE_ID AND r.DELETED = ${STATE_NO}
+        WHERE ur.DELETED = ${STATE_NO}
+    </select>
+</mapper>

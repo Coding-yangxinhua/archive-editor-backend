@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeRolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeRolePermission">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="roleId" column="ROLE_ID" jdbcType="BIGINT"/>
+            <result property="permissionId" column="PERMISSION_ID" jdbcType="BIGINT"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,ROLE_ID,PERMISSION_ID,
+        GMT_CREATE,GMT_MODIFIED,DELETED
+    </sql>
+
+    <select id="listRolePermissions" resultType="com.pwc.sdc.archive.domain.dto.RolePermissionDto">
+        SELECT rp.ROLE_ID, rp.PERMISSION_ID, r.ROLE, p.PERMISSION
+        FROM AE_ROLE_PERMISSION rp
+        LEFT JOIN AE_ROLE r ON r.ID = rp.ROLE_ID AND r.DELETED = ${STATE_NO}
+        LEFT JOIN AE_PERMISSION p ON p.ID = rp.PERMISSION_ID AND p.DELETED = ${STATE_NO}
+        <where>
+            AND rp.DELETED = ${STATE_NO}
+            <choose>
+                <when test="roleIdList == null or roleIdList.size() == 0">
+                    AND 1 = 0
+                </when>
+                <otherwise>
+                    AND rp.ROLE_ID IN
+                    <foreach collection="roleIdList" item="roleId" open="(" close=")" separator=",">
+                        #{roleId}
+                    </foreach>
+                </otherwise>
+            </choose>
+        </where>
+
+    </select>
+</mapper>

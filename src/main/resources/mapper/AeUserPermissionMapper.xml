@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeUserPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeUserPermission">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="userId" column="USER_ID" jdbcType="BIGINT"/>
+            <result property="permissionId" column="PERMISSION_ID" jdbcType="BIGINT"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,USER_ID,PERMISSION_ID,
+        GMT_CREATE,GMT_MODIFIED,DELETED
+    </sql>
+    <select id="listUserPermissions" resultType="com.pwc.sdc.archive.domain.dto.UserPermissionDto">
+        SELECT up.USER_ID, up.PERMISSION_ID, u.USER_NAME, p.PERMISSION
+        FROM AE_USER_PERMISSION up
+        LEFT JOIN AE_USER u ON u.ID = up.USER_ID AND u.DELETED = ${STATE_NO}
+        LEFT JOIN AE_PERMISSION p ON p.ID = up.PERMISSION_ID AND p.DELETED = ${STATE_NO}
+        <where>
+            AND up.DELETED = ${STATE_NO}
+            <choose>
+                <when test="userIdList == null or userIdList.size() == 0">
+                    AND 1 = 0
+                </when>
+                <otherwise>
+                    AND up.USER_ID IN
+                    <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+                        #{userId}
+                    </foreach>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

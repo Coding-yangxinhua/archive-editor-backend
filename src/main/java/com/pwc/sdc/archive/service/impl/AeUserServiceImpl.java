@@ -24,13 +24,18 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     implements AeUserService{
 
     @Override
-    public boolean saveUser(AeUserDto aeUserDto) {
+    public ResponseEntity<String> saveUser(AeUserDto aeUserDto) {
         // 系统默认赋值
         aeUserDto.setId(null);
         aeUserDto.setGmtCreate(null);
         aeUserDto.setGmtModified(null);
-        // 密码md5加密 -- 没啥必要，暂时不做
-        return this.save(aeUserDto.createEntity());
+        // 查看账号是否存在
+        AeUser userDB = baseMapper.getUserByAccount(aeUserDto.getAccount());
+        if (userDB == null) {
+            this.save(aeUserDto.createEntity());
+            return ResponseEntity.ok();
+        }
+        return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_EXISTS);
     }
 
     @Override
@@ -42,8 +47,8 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
             return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_NOT_EXISTS);
         }
         // 密码错误
-        if (userDb.getPassword().equals(aeUserDto.getPassword())) {
-            return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_NOT_EXISTS);
+        if (!userDb.getPassword().equals(aeUserDto.getPassword())) {
+            return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.PASSWORD_ERROR);
         }
         // 登录
         StpUtil.login(userDb.getId());

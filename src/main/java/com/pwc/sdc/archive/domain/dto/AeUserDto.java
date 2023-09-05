@@ -11,6 +11,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -37,6 +38,10 @@ public class AeUserDto implements Serializable {
      */
     @NotEmpty(message = "昵称不能为空", groups = ValidConstant.User.Register.class)
     private String userName;
+
+    private List<String> roleList;
+
+    private List<String> permissionList;
 
     /**
      * 创建时间

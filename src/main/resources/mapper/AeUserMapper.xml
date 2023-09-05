@@ -22,6 +22,6 @@
     <select id="getUserByAccount" resultType="com.pwc.sdc.archive.domain.AeUser">
         SELECT <include refid="Base_Column_List" />
         FROM AE_USER
-        WHERE ID = #{account} AND DELETED = ${STATE_NO}
+        WHERE ACCOUNT = #{account} AND DELETED = ${STATE_NO}
     </select>
 </mapper>
