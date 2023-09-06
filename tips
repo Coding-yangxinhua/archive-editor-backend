@@ -1,0 +1,29 @@
+Base64Decode = function (e) {
+    var t,
+    a,
+    n,
+    o,
+    i,
+    r,
+    s = "",
+    l = 0;
+    for (e = e.replace(/[^A-Za-z0-9\+\/\=]/g, ""); l < e.length; )
+        t = _keyStr.indexOf(e.charAt(l++)) << 2 | (o = _keyStr.indexOf(e.charAt(l++))) >> 4, a = (15 & o) << 4 | (i = _keyStr.indexOf(e.charAt(l++))) >> 2, n = (3 & i) << 6 | (r = _keyStr.indexOf(e.charAt(l++))), s += String.fromCharCode(t), 64 !== i && (s += String.fromCharCode(a)), 64 !== r && (s += String.fromCharCode(n));
+    return _utf8_decode(s)
+}
+
+Base64Encode = function (e) {
+    var t,
+    a,
+    n,
+    o,
+    i,
+    r,
+    s,
+    l = "",
+    c = 0;
+    for (e = _utf8_encode(e); c < e.length; )
+        o = (t = e.charCodeAt(c++)) >> 2, i = (3 & t) << 4 | (a = e.charCodeAt(c++)) >> 4, r = (15 & a) << 2 | (n = e.charCodeAt(c++)) >> 6, s = 63 & n, isNaN(a) ? r = s = 64 : isNaN(n) && (s = 64), l = l + _keyStr.charAt(o) + _keyStr.charAt(i) + _keyStr.charAt(r) + _keyStr.charAt(s);
+    return l
+}
+
