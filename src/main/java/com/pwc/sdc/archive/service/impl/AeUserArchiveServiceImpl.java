@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AeUserArchiveServiceImpl extends ServiceImpl<AeUserArchiveMapper, AeUserArchive>
     implements AeUserArchiveService{
-
+    public AeUserArchive getLatestUserArchive(Long gameId, Long userId) {
+        return baseMapper.getLatestUserArchive(gameId, userId);
+    }
 }
 
 

@@ -19,20 +19,13 @@ public class JsEngineHandler {
     private Map<Long, ScriptEngine> engineMap;
 
     public JsEngineHandler() {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         engineMap = new HashMap<>(8);
-    }
-
-    @SneakyThrows
-    public String save(Long gameId, String value) {
-        ScriptEngine engine = this.getGameScriptEngine(gameId);
-        return (String) engine.eval("decode(" + value + ")");
     }
 
     @SneakyThrows
     public String encode(Long gameId, String value) {
         ScriptEngine engine = this.getGameScriptEngine(gameId);
-        return (String) engine.eval("decode(" + value + ")");
+        return (String) engine.eval("encode('" + value + "')");
     }
 
     @SneakyThrows

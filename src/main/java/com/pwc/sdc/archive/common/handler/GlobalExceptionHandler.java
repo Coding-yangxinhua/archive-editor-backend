@@ -30,12 +30,12 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> onException(Exception ex) {
+    public Exception onException(Exception ex) throws Exception {
         //打印日志
         log.error(ex.getMessage());
         //todo 日志入库等等操作
         //统一结果返回
-        return ResponseEntity.error();
+        throw ex;
     }
 
     /**

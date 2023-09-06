@@ -20,4 +20,10 @@
         ARCHIVE_DATA,VERSION,GMT_CREATE,
         GMT_MODIFIED
     </sql>
+    <select id="getLatestUserArchive" resultType="com.pwc.sdc.archive.domain.AeUserArchive">
+        SELECT <include refid="Base_Column_List" /> FROM AE_USER_ARCHIVE
+        WHERE DELETED = ${STATE_NO} AND GAME_ID = #{gameId} AND USER_ID = #{userId}
+        ORDER BY VERSION DESC
+        LIMIT 1
+    </select>
 </mapper>
