@@ -27,3 +27,8 @@ Base64Encode = function (e) {
     return l
 }
 
+{"userid":"1694007471373","qkChannel":"WeChat","qkUid":"70172036opROP5PT0v2MrGpgOBPWZk9_9JDU","qkuserName":"opROP5PT0v2MrGpgOBPWZk9_9JDU","currentVersion":"1.0.102","lang":"zh_CN","data":{},"channel":5,"gameResVersion":"1.0.102","tableVersion":"2023.8.28.21.24.33"}
+
+{"userid":"1694005380904","qkChannel":"mIos","qkUid":"67202033ep202309061699408257552101376","qkuserName":"marSDK","currentVersion":"1.0.271","lang":"zh_CN","data":{},"channel":9,"gameResVersion":"1.0.271","tableVersion":"2023.8.28.21.24.33"}
+
+{"userid":"1694005380904","qkChannel":"mIos","qkUid":"67202033ep202309061699431148771487744","qkuserName":"marSDK","currentVersion":"1.0.271","lang":"zh_CN","data":{},"channel":9,"gameResVersion":"1.0.271","tableVersion":"2023.8.28.21.24.33"}
