@@ -1,13 +1,1 @@
-     e.Base64Decode = function (e) {
-                        var t,
-                        a,
-                        n,
-                        o,
-                        i,
-                        r,
-                        s = "",
-                        l = 0;
-                        for (e = e.replace(/[^A-Za-z0-9\+\/\=]/g, ""); l < e.length; )
-                            t = this._keyStr.indexOf(e.charAt(l++)) << 2 | (o = this._keyStr.indexOf(e.charAt(l++))) >> 4, a = (15 & o) << 4 | (i = this._keyStr.indexOf(e.charAt(l++))) >> 2, n = (3 & i) << 6 | (r = this._keyStr.indexOf(e.charAt(l++))), s += String.fromCharCode(t), 64 !== i && (s += String.fromCharCode(a)), 64 !== r && (s += String.fromCharCode(n));
-                        return this._utf8_decode(s)
-                    }
+这是一个关于存档修改的后端程序
