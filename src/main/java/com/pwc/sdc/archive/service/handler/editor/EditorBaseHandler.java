@@ -1,4 +1,4 @@
-package com.pwc.sdc.archive.service.handler.special;
+package com.pwc.sdc.archive.service.handler.editor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -43,7 +43,7 @@ public class EditorBaseHandler {
         long itemCount;
         AeGameItem aeGameItems;
         // 获得背包对应json
-        String keyValue = ArchiveUtil.getKeyValue(this.archiveJson, key);
+        String keyValue = ArchiveUtil.getValueString(this.archiveJson, key);
         JSONObject packageJson = JSON.parseObject(keyValue);
         // 获得背包所有物品
         for (Map.Entry<String, Object> entry:
@@ -83,7 +83,7 @@ public class EditorBaseHandler {
         ArchivePartDto temp = new ArchivePartDto();
         temp.setKey(key);
         temp.setLabel(label);
-        temp.setCount(Long.valueOf(ArchiveUtil.getKeyValue(archiveJson, key)));
+        temp.setCount(Long.valueOf(ArchiveUtil.getValueString(archiveJson, key)));
         this.archiveEntity.getParts().add(temp);
     }
 

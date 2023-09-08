@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeGamePlatformMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeGamePlatform">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="gameId" column="GAME_ID" jdbcType="BIGINT"/>
+            <result property="platformId" column="PLATFORM_ID" jdbcType="BIGINT"/>
+            <result property="loginUrl" column="LOGIN_URL" jdbcType="VARCHAR"/>
+            <result property="loginJson" column="LOGIN_JSON" jdbcType="VARCHAR"/>
+            <result property="downloadArchiveUrl" column="DOWNLOAD_ARCHIVE_URL" jdbcType="VARCHAR"/>
+            <result property="downloadArchiveJson" column="DOWNLOAD_ARCHIVE_JSON" jdbcType="VARCHAR"/>
+            <result property="uploadArchiveUrl" column="UPLOAD_ARCHIVE_URL" jdbcType="VARCHAR"/>
+            <result property="uploadArchiveJson" column="UPLOAD_ARCHIVE_JSON" jdbcType="VARCHAR"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,GAME_ID,PLATFORM_ID,
+        LOGIN_URL,LOGIN_JSON,DOWNLOAD_ARCHIVE_URL,
+        DOWNLOAD_ARCHIVE_JSON,UPLOAD_ARCHIVE_URL,UPLOAD_ARCHIVE_JSON,
+        GMT_CREATE,GMT_MODIFIED,DELETED
+    </sql>
+    <select id="getGamePlatform" resultType="com.pwc.sdc.archive.domain.dto.GamePlatformDto">
+        select       gp.ID,gp.GAME_ID,gp.PLATFORM_ID,
+                     gp.LOGIN_URL,gp.LOGIN_JSON,gp.DOWNLOAD_ARCHIVE_URL,
+                     gp.DOWNLOAD_ARCHIVE_JSON,gp.UPLOAD_ARCHIVE_URL,gp.UPLOAD_ARCHIVE_JSON,
+                     gp.GMT_CREATE,gp.GMT_MODIFIED,gp.DELETED,
+                     g.NAME, p.PLATFORM
+        FROM AE_GAME_PLATFORM gp
+        INNER JOIN AE_PLATFORM p ON gp.PLATFORM_ID = p.ID AND p.DELETED = ${STATE_NO}
+        INNER JOIN AE_GAME g ON g.ID = gp.GAME_ID AND g.DELETED = ${STATE_NO}
+        WHERE gp.DELETED = ${STATE_NO}
+    </select>
+</mapper>

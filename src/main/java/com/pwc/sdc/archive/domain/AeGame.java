@@ -35,11 +35,6 @@ public class AeGame implements Serializable {
     private String jsScript;
 
     /**
-     * 存档结构信息
-     */
-    private String archiveStructure;
-
-    /**
      * Header信息
      */
     private String header;

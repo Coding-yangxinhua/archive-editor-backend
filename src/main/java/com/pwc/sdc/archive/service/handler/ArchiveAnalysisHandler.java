@@ -3,20 +3,17 @@ package com.pwc.sdc.archive.service.handler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.enums.EnableStatus;
-import com.pwc.sdc.archive.common.utils.ArchiveUtil;
 import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.pwc.sdc.archive.domain.AeUserArchive;
-import com.pwc.sdc.archive.domain.dto.ArchivePartDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.service.AeGameArchivePartService;
 import com.pwc.sdc.archive.service.AeGameItemService;
 import com.pwc.sdc.archive.service.AeUserArchiveService;
-import com.pwc.sdc.archive.service.handler.special.EditorBaseHandler;
+import com.pwc.sdc.archive.service.handler.editor.EditorBaseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
