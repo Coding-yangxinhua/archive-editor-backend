@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-04 15:41:59
 */
 public interface AeUserArchiveService extends IService<AeUserArchive> {
-    AeUserArchive getLatestUserArchive(Long gameId, Long userId);
+    AeUserArchive getLatestUserArchive(Long gameId, Long userId, Long platformId);
 }

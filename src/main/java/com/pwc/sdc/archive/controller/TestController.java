@@ -1,21 +1,14 @@
 package com.pwc.sdc.archive.controller;
 
-import com.pwc.sdc.archive.common.annotation.Auth;
-import com.pwc.sdc.archive.common.constants.ValidConstant;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.crypto.digest.DigestAlgorithm;
+import cn.hutool.crypto.digest.Digester;
+import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
-import com.pwc.sdc.archive.domain.AeGame;
-import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
-import com.pwc.sdc.archive.service.AeGameService;
-import com.pwc.sdc.archive.service.AeUserService;
 import com.pwc.sdc.archive.service.handler.ArchiveHttpHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 @RestController
 @RequestMapping("test")
@@ -27,23 +20,33 @@ public class TestController {
     @Autowired
     ArchiveHttpHandler httpHandler;
 
-    @GetMapping("/triggerJs")
-    public String triggerJs (@RequestParam("gameId") Long gameId, @RequestParam("param") String param) {
-       return engineHandler.decode(gameId, param);
-    }
-
-    @GetMapping("/triggerJsNormal")
-    public String triggerJsNormal (@RequestParam("gameId") Long gameId, @RequestParam("param") String param) {
-        String test = engineHandler.encode(gameId, param);
-        System.out.println(param + "加密后的结果是：" + test);
-        String test1 = engineHandler.decode(gameId, test);
-        System.out.println(test + "解密后的结果是" + test1);
-        return test1;
+    @PostMapping("/triggerJs")
+    public String triggerJs (@RequestParam("gameId") Long gameId, @RequestParam("type") Integer type, @RequestBody String param) {
+        if (type == 0) {
+            return engineHandler.decode(gameId, param);
+        } else if (type == 1) {
+            return engineHandler.encode(gameId, param);
+        }
+       return new Digester(DigestAlgorithm.MD5).digestHex(param).toUpperCase();
     }
 
     @PostMapping("/gameLogin")
-    public String wechatLogin (@RequestBody UserGamePlatformDto userGamePlatformDto) {
+    public String gameLogin (@RequestBody UserGamePlatformDto userGamePlatformDto) {
+        userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
         httpHandler.login(userGamePlatformDto);
         return "login";
+    }
+
+    @PostMapping("/downloadArchive")
+    public JSONObject gameArchive (@RequestBody UserGamePlatformDto userGamePlatformDto) {
+        userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
+        return JSONObject.parseObject(httpHandler.downloadArchive(userGamePlatformDto));
+    }
+
+    @PostMapping("/uploadArchive")
+    public String uploadArchive (@RequestBody UserGamePlatformDto userGamePlatformDto) {
+        userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
+        httpHandler.uploadArchive(userGamePlatformDto, null, 0);
+        return "upload";
     }
 }

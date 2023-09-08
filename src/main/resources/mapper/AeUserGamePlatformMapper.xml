@@ -24,5 +24,42 @@
         `SESSION`,EXTRA,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>
+    <update id="saveOrUpdateByInfo">
+        UPDATE AE_USER_GAME_PLATFORM
+        <set>
+            <if test="user.gameLoginId != null">
+                GAME_LOGIN_ID = #{user.gameLoginId},
+            </if>
+            <if test="user.gameUserId != null">
+                GAME_USER_ID = #{user.gameUserId},
+            </if>
+            <if test="user.gameUserName != null and user.gameUserName != ''">
+                GAME_USER_NAME = #{user.gameUserName},
+            </if>
+            <if test="user.openId != null and user.openId != ''">
+                OPEN_ID = #{user.openId},
+            </if>
+            <if test="user.session != null and user.session != ''">
+                `SESSION` = #{user.session},
+            </if>
+            <if test="user.extra != null and user.extra != ''">
+                EXTRA = #{user.extra}
+            </if>
+        </set>
+        <where>
+            DELETED = ${STATE_NO}
+            <if test="user.userId != null">
+                AND USER_ID = #{user.userId}
+            </if>
+            <if test="user.gameId != null">
+                AND GAME_ID = #{user.gameId}
+            </if>
+            <if test="user.platformId != null">
+                AND PLATFORM_ID = #{user.platformId}
+            </if>
+        </where>
+
+
+    </update>
 
 </mapper>

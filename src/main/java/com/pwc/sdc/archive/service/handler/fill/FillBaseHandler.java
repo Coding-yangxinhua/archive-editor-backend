@@ -6,57 +6,134 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.constants.FillConstants;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
+import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
 
 
-@Getter
-@Setter
 public class FillBaseHandler {
+
+    // md5加密工具
     private final static Digester md5 = new Digester(DigestAlgorithm.MD5);
-    private GamePlatformDto platform;
 
-    private UserGamePlatformDto user;
+    // 游戏对应平台信息
+    protected GamePlatformDto platform;
 
-    private String archive;
+    // 用户对应游戏对应平台的信息
+    protected UserGamePlatformDto user;
 
-    public FillBaseHandler(GamePlatformDto platform, UserGamePlatformDto user, String archive){
+    // 存档数据
+
+    protected String archive;
+
+    // js引擎，调用加密解密方法
+    protected JsEngineHandler jsEngineHandler;
+
+    // 记录当前状态：登录、获得存档内容，上传存档内容
+    protected RequestStatus status;
+
+    // 请求次数：根据自定义规则修改
+    protected Integer requestTimes;
+
+    // 当前请求次数：每次load，自动 +1
+    protected Integer currentTimes;
+
+    // 重试次数
+    protected Integer retryTimes;
+
+    // 记录最初状态的平台信息
+    protected GamePlatformDto platformOld;
+
+    public FillBaseHandler(JsEngineHandler jsEngineHandler, GamePlatformDto platform, UserGamePlatformDto user, String archive){
         this.platform = platform;
         this.user = user;
         this.archive = archive;
+        this.jsEngineHandler = jsEngineHandler;
+        this.requestTimes = 1;
+        this.currentTimes = 0;
+        this.retryTimes = 3;
+        platformOld = new GamePlatformDto();
+        BeanUtils.copyProperties(platform, platformOld);
     }
 
-    public void loadLogin() {
+    public FillBaseHandler(GamePlatformDto platform, UserGamePlatformDto user){
+        this.platform = platform;
+        this.user = user;
+        this.archive = null;
+    }
+
+    public void load(RequestStatus status) {
+        this.status = status;
+        switch (status) {
+            case DOWNLOAD:
+                loadDownload();
+                break;
+            case UPLOAD:
+                loadUpload();
+                break;
+            case LOGIN:
+            default:
+                loadLogin();
+        }
+        this.currentTimes ++;
+    }
+
+    /**
+     * 重置填充好的数据，以便第二次登录时使用
+     */
+    public void reset() {
+        this.platform = new GamePlatformDto();
+        BeanUtils.copyProperties(platformOld, platform);;
+    }
+
+
+    /**
+     * 根据响应结果自定义处理数据
+     * @param responseJson
+     */
+    public void setLoginByResponse(JSONObject responseJson) {}
+
+    public void setArchiveByResponse(JSONObject responseJson) {}
+
+
+    /**
+     * 自定义响应结果解密
+     * @param responseBody
+     * @return
+     */
+    public JSONObject responseDecode(String responseBody) {
+        return JSON.parseObject(responseBody);
+    }
+
+    /**
+     * 填充数据
+     */
+    protected void loadLogin() {
         // 填充登录url
         platform.setLoginUrl(fillTimeStamp(platform.getLoginUrl()));
         // 填充登录json
         platform.setLoginJson(fillLogin(platform.getLoginJson()));
     }
 
-    public void loadDownload() {
+    protected void loadDownload() {
         // 填充下载存档url
         platform.setDownloadArchiveUrl(fillTimeStamp(platform.getDownloadArchiveUrl()));
         // 填充登录json
         platform.setDownloadArchiveJson(fillLogin(platform.getDownloadArchiveJson()));
     }
 
-    public void loadUpload() {
+    protected void loadUpload() {
         // 填充上传存档rl
-        platform.setUploadArchiveUrl(fillTimeStamp(platform.getDownloadArchiveUrl()));
+        platform.setUploadArchiveUrl(fillTimeStamp(platform.getUploadArchiveUrl()));
         // 填充登录json
-        platform.setUploadArchiveJson(fillArchive(platform.getDownloadArchiveJson(), archive));
+        platform.setUploadArchiveJson(fillArchive(platform.getUploadArchiveJson(), archive));
     }
 
-
-    public void setLoginInfo(JSONObject responseJson) {}
-
-    public void setUserArchive(JSONObject responseJson) {}
 
 
     /**
@@ -79,7 +156,7 @@ public class FillBaseHandler {
      */
     public String fillLogin(String data) {
         // 填充登录信息
-        return data.replaceAll(FillConstants.GAME_LOGIN_ID, user.getGameLoginId())
+        return fillTimeStamp(data).replaceAll(FillConstants.GAME_LOGIN_ID, user.getGameLoginId())
                 .replaceAll(FillConstants.OPEN_ID, user.getOpenId());
     }
 
@@ -89,8 +166,9 @@ public class FillBaseHandler {
      * @return
      */
     public String fillArchive(String data, String archive) {
+        data = data.replaceAll(FillConstants.GAME_USER_ID, user.getGameUserId().toString());
         // 填充登录信息
-        return data.replaceAll(FillConstants.ARCHIVE, archive)
+        return fillLogin(data).replaceAll(FillConstants.ARCHIVE, archive)
                 .replaceAll(FillConstants.ARCHIVE_LENGTH, String.valueOf(archive.length()))
                 .replaceAll(FillConstants.MD5, md5.digestHex(archive).toUpperCase())
                 .replaceAll(FillConstants.GAME_USER_ID, user.getGameUserId().toString())
@@ -128,4 +206,55 @@ public class FillBaseHandler {
     }
 
 
+    public String getUrl() {
+        switch (status) {
+            case LOGIN:
+                return this.platform.getLoginUrl();
+            case UPLOAD:
+                return this.platform.getUploadArchiveUrl();
+            case DOWNLOAD:
+            default:
+                return this.platform.getDownloadArchiveUrl();
+        }
+    }
+    public String getBody() {
+        switch (status) {
+            case LOGIN:
+                return this.platform.getLoginJson();
+            case UPLOAD:
+                return this.platform.getUploadArchiveJson();
+            case DOWNLOAD:
+            default:
+                return this.platform.getDownloadArchiveJson();
+        }
+    }
+
+
+    public UserGamePlatformDto getUser() {
+        return user;
+    }
+
+    public Integer getRequestTimes() {
+        return requestTimes;
+    }
+
+    public Integer getRetryTimes() {
+        return retryTimes;
+    }
+
+    public boolean stillRequest() {
+        return this.currentTimes < this.requestTimes;
+    }
+
+    public String getArchive() {
+        return archive;
+    }
+
+    public void setArchive(String archive) {
+        this.archive = archive;
+    }
+
+    public void setCurrentTimes(Integer currentTimes) {
+        this.currentTimes = currentTimes;
+    }
 }

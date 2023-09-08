@@ -23,8 +23,8 @@ public class UserArchiveController {
     ArchiveHttpHandler httpHandler;
 
     @GetMapping("/getArchivePart")
-    public ResponseEntity<UserArchive> getArchivePart (@RequestParam("gameId") Long gameId) {
-        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(gameId, StpUtil.getLoginIdAsLong()));
+    public ResponseEntity<UserArchive> getArchivePart (@RequestParam("gameId") Long gameId, @RequestParam("platform") Long platformId) {
+        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(gameId, StpUtil.getLoginIdAsLong(), platformId));
     }
 
     @PutMapping("/setArchivePart")

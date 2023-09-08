@@ -7,7 +7,7 @@ public class FillConstants {
     public static final String UUID = "\\$\\{uuid}";
     public static final String ARCHIVE = "\\$\\{archive}";
     public static final String MD5 = "\\$\\{md5}";
-    public static final String ARCHIVE_LENGTH = "\\$\\{md5}";
-    public static final String SESSION = "\\$\\{archive\\.length}";
-    public static final String GAME_USER_ID = "\\$\\{session}";
+    public static final String ARCHIVE_LENGTH = "\\$\\{archive.length}";
+    public static final String SESSION = "\\$\\{session}";
+    public static final String GAME_USER_ID = "\\$\\{gameUserId}";
 }

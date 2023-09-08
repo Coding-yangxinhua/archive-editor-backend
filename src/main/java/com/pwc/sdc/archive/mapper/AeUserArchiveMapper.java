@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 * @Entity com.pwc.sdc.archive.domain.AeUserArchive
 */
 public interface AeUserArchiveMapper extends BaseMapper<AeUserArchive> {
-    AeUserArchive getLatestUserArchive(@Param("gameId") Long gameId, @Param("userId") Long userId);
+    AeUserArchive getLatestUserArchive(@Param("gameId") Long gameId, @Param("userId") Long userId, @Param("platformId") Long platformId);
 }
 
 

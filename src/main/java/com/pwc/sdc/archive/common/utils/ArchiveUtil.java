@@ -21,6 +21,9 @@ public class ArchiveUtil {
         String[] keyArray = key.split("\\.");
         Object value = null;
         JSONObject valueJson = archiveJson;
+        if (archiveJson == null) {
+            return null;
+        }
         for (String keySingle:
                 keyArray) {
             // 得到json数据，可能得到key对应的value，也可能得到另一个jsonObject
@@ -47,6 +50,9 @@ public class ArchiveUtil {
         }
         // 获得json Array格式
         JSONArray jsonArray = archiveJson.getJSONArray(keyArray[keyArray.length - 1]);
+        if (jsonArray == null) {
+            return new String[0];
+        }
         return jsonArray.toArray(new String[0]);
 
     }

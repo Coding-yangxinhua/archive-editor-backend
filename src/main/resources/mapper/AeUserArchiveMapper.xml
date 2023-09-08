@@ -16,13 +16,13 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID,USER_ID,GAME_ID,
+        ID,USER_ID,GAME_ID,PLATFORM_ID,
         ARCHIVE_DATA,VERSION,GMT_CREATE,
         GMT_MODIFIED
     </sql>
     <select id="getLatestUserArchive" resultType="com.pwc.sdc.archive.domain.AeUserArchive">
         SELECT <include refid="Base_Column_List" /> FROM AE_USER_ARCHIVE
-        WHERE DELETED = ${STATE_NO} AND GAME_ID = #{gameId} AND USER_ID = #{userId}
+        WHERE DELETED = ${STATE_NO} AND GAME_ID = #{gameId} AND USER_ID = #{userId} AND PLATFORM_ID = #{platformId}
         ORDER BY VERSION DESC
         LIMIT 1
     </select>

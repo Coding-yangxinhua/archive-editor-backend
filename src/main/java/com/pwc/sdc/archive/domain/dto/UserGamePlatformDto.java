@@ -7,6 +7,7 @@ import com.pwc.sdc.archive.domain.AeUserGamePlatform;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserGamePlatformDto implements Serializable {
+    Long id;
     Long userId;
 
     Long gameId;
@@ -35,19 +37,31 @@ public class UserGamePlatformDto implements Serializable {
     private JSONObject extraJson;
 
     public UserGamePlatformDto (AeUserGamePlatform aeUserGamePlatform) {
+        this.id = aeUserGamePlatform.getId();
         this.userId = aeUserGamePlatform.getUserId();
         this.gameId = aeUserGamePlatform.getGameId();
+        this.gameUserId = aeUserGamePlatform.getGameUserId();
         this.platformId = aeUserGamePlatform.getPlatformId();
         this.gameLoginId = aeUserGamePlatform.getGameLoginId();
         this.gameUserName = aeUserGamePlatform.getGameUserName();
         this.openId = aeUserGamePlatform.getOpenId();
         this.session = aeUserGamePlatform.getSession();
-        this.extra = aeUserGamePlatform.getExtra();
+        this.setExtra(aeUserGamePlatform.getExtra());
+    }
+
+    public UserGamePlatformDto (Long userId, Long gameId, Long platformId) {
+        this.userId = userId;
+        this.gameId = gameId;
+        this.platformId = platformId;
     }
 
     public void setExtra(String extra) {
         this.extra = extra;
-        this.extraJson = JSONObject.parseObject(extra);
+        if (StringUtils.hasText(this.extra)) {
+            this.extraJson = JSONObject.parseObject(extra);
+            return;
+        }
+        this.extraJson = new JSONObject();
     }
 
     public void putExtraJson(String key, Object value) {
@@ -57,6 +71,7 @@ public class UserGamePlatformDto implements Serializable {
 
     public AeUserGamePlatform createEntity() {
         AeUserGamePlatform entity = new AeUserGamePlatform();
+        entity.setId(id);
         entity.setUserId(userId);
         entity.setGameId(gameId);
         entity.setPlatformId(platformId);

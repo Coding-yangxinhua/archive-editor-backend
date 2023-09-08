@@ -3,6 +3,7 @@ package com.pwc.sdc.archive.mapper;
 import com.pwc.sdc.archive.domain.AeUserGamePlatform;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 * @Entity com.pwc.sdc.archive.domain.AeUserGamePlatform
 */
 public interface AeUserGamePlatformMapper extends BaseMapper<AeUserGamePlatform> {
+    boolean saveOrUpdateByInfo(@Param("user") UserGamePlatformDto user);
 
 }
 

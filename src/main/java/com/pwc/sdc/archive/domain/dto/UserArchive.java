@@ -15,13 +15,16 @@ public class UserArchive {
 
     Long userId;
 
+    Long platformId;
+
     UserPackage userPackage;
 
     List<ArchivePartDto> parts;
 
-    public UserArchive(Long gameId, Long userId) {
+    public UserArchive(Long gameId, Long userId, Long platformId) {
         this.gameId = gameId;
         this.userId = userId;
+        this.platformId = platformId;
         this.userPackage = new UserPackage();
         this.parts = new ArrayList<>();
     }

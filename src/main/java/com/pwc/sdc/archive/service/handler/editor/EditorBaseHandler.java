@@ -20,9 +20,9 @@ public class EditorBaseHandler {
 
     private UserArchive archiveEntity;
 
-    public EditorBaseHandler(JSONObject archiveJson, Long gameId, Long userId) {
+    public EditorBaseHandler(JSONObject archiveJson, Long gameId, Long userId, Long platformId) {
         this.archiveJson = archiveJson;
-        this.archiveEntity = new UserArchive(gameId, userId);
+        this.archiveEntity = new UserArchive(gameId, userId, platformId);
     }
 
     public EditorBaseHandler(JSONObject archiveJson, UserArchive archiveEntity) {

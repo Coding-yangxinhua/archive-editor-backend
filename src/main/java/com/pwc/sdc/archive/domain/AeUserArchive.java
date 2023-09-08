@@ -30,6 +30,11 @@ public class AeUserArchive implements Serializable {
     private Long gameId;
 
     /**
+     * 平台
+     */
+    private Long platformId;
+
+    /**
      * 存档信息
      */
     private String archiveData;

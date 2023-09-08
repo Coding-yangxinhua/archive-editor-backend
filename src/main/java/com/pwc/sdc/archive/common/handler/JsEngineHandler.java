@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.common.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.service.AeGameService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class JsEngineHandler {
     @SneakyThrows
     public String encode(Long gameId, String value) {
         ScriptEngine engine = this.getGameScriptEngine(gameId);
-        return (String) engine.eval("encode('" + value + "')");
+        return (String) engine.eval("encode('" + JSONObject.parseObject(value) + "')");
     }
 
     @SneakyThrows

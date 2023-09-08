@@ -3,7 +3,6 @@ package com.pwc.sdc.archive.service;
 import com.pwc.sdc.archive.domain.AeUserGamePlatform;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,7 +12,10 @@ import java.util.List;
 * @createDate 2023-09-07 10:30:30
 */
 public interface AeUserGamePlatformService extends IService<AeUserGamePlatform> {
+    String USER_GAME_PLATFORM = "USER_GAME_PLATFORM";
 
-    List<UserGamePlatformDto> getUserGamePlatformList(UserGamePlatformDto userGamePlatformDto);
+    UserGamePlatformDto getUserGamePlatform(Long userId, Long gameId, Long platformId);
+
+    boolean saveOrUpdateByInfo(UserGamePlatformDto userGamePlatformDto);
 
 }
