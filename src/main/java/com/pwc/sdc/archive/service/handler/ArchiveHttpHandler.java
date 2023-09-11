@@ -69,7 +69,6 @@ public class ArchiveHttpHandler {
         log.info("登录成功");
     }
 
-    @Cacheable(cacheNames = "CURRENT_ARCHIVE", key = "#p0.userId + ':' + #p0.gameId + ':' + #p0.platformId")
     public String downloadArchive(UserGamePlatformDto userGamePlatformDto) {
         return downloadArchive(userGamePlatformDto, 0);
     }
@@ -124,7 +123,8 @@ public class ArchiveHttpHandler {
             // 填充信息
             handler.load(status);
             // 设置请求链接与参数
-            HttpEntity<String> entity = new HttpEntity<>(handler.getBody(), headers);
+            String body = handler.getBody();
+            HttpEntity<String> entity = new HttpEntity<>(body, headers);
             try {
                 responseEntity = restTemplate.postForEntity(handler.getUrl(), entity, String.class);
             } catch (Exception e) {
@@ -139,7 +139,7 @@ public class ArchiveHttpHandler {
             temp = handler.responseDecode(responseEntity.getBody());
             // 叠加
             respSb.append(temp.get("data"));
-            log.info(status.name() + "请求参数：{}", handler.getBody());
+            log.info(status.name() + "请求参数：{}", body);
             // 重置填充后的信息
             handler.reset();
         }

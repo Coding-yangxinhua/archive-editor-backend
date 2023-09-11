@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Param;
 */
 public interface AeGameMapper extends BaseMapper<AeGame> {
 
-    String getScriptById(@Param("gameId") Long gameId);
 
 }
 

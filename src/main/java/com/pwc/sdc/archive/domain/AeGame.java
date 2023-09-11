@@ -34,6 +34,8 @@ public class AeGame implements Serializable {
      */
     private String jsScript;
 
+    private String editorHandler;
+
     /**
      * Header信息
      */

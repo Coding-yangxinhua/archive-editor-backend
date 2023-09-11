@@ -4,13 +4,14 @@ import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.pwc.sdc.archive.common.constants.FillConstants;
+import com.pwc.sdc.archive.common.enums.FillEnums;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
+import com.pwc.sdc.archive.common.utils.CryptoJSUtil;
+import com.pwc.sdc.archive.common.utils.FillUtil;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -19,7 +20,6 @@ import java.util.Map;
 public class FillBaseHandler {
 
     // md5加密工具
-    private final static Digester md5 = new Digester(DigestAlgorithm.MD5);
 
     // 游戏对应平台信息
     protected GamePlatformDto platform;
@@ -114,6 +114,8 @@ public class FillBaseHandler {
      * 填充数据
      */
     protected void loadLogin() {
+        // 一次请求
+        this.requestTimes = 1;
         // 填充登录url
         platform.setLoginUrl(fillTimeStamp(platform.getLoginUrl()));
         // 填充登录json
@@ -145,7 +147,7 @@ public class FillBaseHandler {
         // 得到当前时间戳
         String timeStamp = String.valueOf(new Date().getTime());
         // 替换掉普通内容
-        data = data.replaceAll(FillConstants.TIME_STAMP, timeStamp);
+        data = data.replaceFirst(FillEnums.TIME_STAMP.reg(), timeStamp);
         return data;
     }
 
@@ -156,8 +158,8 @@ public class FillBaseHandler {
      */
     public String fillLogin(String data) {
         // 填充登录信息
-        return fillTimeStamp(data).replaceAll(FillConstants.GAME_LOGIN_ID, user.getGameLoginId())
-                .replaceAll(FillConstants.OPEN_ID, user.getOpenId());
+        return fillTimeStamp(data).replaceFirst(FillEnums.GAME_LOGIN_ID.reg(), user.getGameLoginId())
+                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
     }
 
     /**
@@ -166,40 +168,18 @@ public class FillBaseHandler {
      * @return
      */
     public String fillArchive(String data, String archive) {
-        data = data.replaceAll(FillConstants.GAME_USER_ID, user.getGameUserId().toString());
+        // 默认填充extras所有信息
+        data = FillUtil.fillExtras(user.getExtraJson(), data);
         // 填充登录信息
-        return fillLogin(data).replaceAll(FillConstants.ARCHIVE, archive)
-                .replaceAll(FillConstants.ARCHIVE_LENGTH, String.valueOf(archive.length()))
-                .replaceAll(FillConstants.MD5, md5.digestHex(archive).toUpperCase())
-                .replaceAll(FillConstants.GAME_USER_ID, user.getGameUserId().toString())
-                .replaceAll(FillConstants.SESSION, user.getSession())
-                .replaceAll(FillConstants.OPEN_ID, user.getOpenId());
+        return fillLogin(data).replaceFirst(FillEnums.ARCHIVE.reg(), archive)
+                .replaceFirst(FillEnums.ARCHIVE_LENGTH.reg(), String.valueOf(archive.length()))
+                .replaceFirst(FillEnums.MD5.reg(), CryptoJSUtil.md5(archive).toUpperCase())
+                .replaceAll(FillEnums.GAME_USER_ID.reg(), user.getGameUserId().toString())
+                .replaceFirst(FillEnums.SESSION.reg(), user.getSession())
+                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
     }
 
-    /**
-     * 填充额外的信息
-     * @param data
-     * @return
-     */
-    public String fillExtras(String data) {
-        // 将额外的内容提取为json对象
-        JSONObject extraJson = user.getExtraJson();
-        // 循环赋值到data中
-        for (Map.Entry<String, Object> entry:
-             extraJson.entrySet()) {
-            data = data.replaceAll("\\$\\{" + entry.getKey() + "}", JSON.toJSONString(entry.getValue()));
-        }
-        return data;
-    }
 
-    public String fillExtra(String data, String placeholder, String key) {
-        // 将额外的内容提取为json对象
-        JSONObject extraJson = user.getExtraJson();
-        String value = extraJson.getString(key);
-        // 循环赋值到data中
-        data = data.replaceAll("\\$\\{" + placeholder + "}", JSON.toJSONString(value));
-        return data;
-    }
 
     public String getExtraByKey(String key) {
         return this.user.getExtraJson().getString(key);

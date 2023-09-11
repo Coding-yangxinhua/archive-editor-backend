@@ -10,6 +10,8 @@ import com.pwc.sdc.archive.service.handler.ArchiveHttpHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
+
 @RestController
 @RequestMapping("test")
 public class TestController {
@@ -20,13 +22,15 @@ public class TestController {
     @Autowired
     ArchiveHttpHandler httpHandler;
 
+
     @PostMapping("/triggerJs")
-    public String triggerJs (@RequestParam("gameId") Long gameId, @RequestParam("type") Integer type, @RequestBody String param) {
+    public Object triggerJs (@RequestParam("gameId") Long gameId, @RequestParam("type") Integer type, @RequestBody String param) {
         if (type == 0) {
             return engineHandler.decode(gameId, param);
         } else if (type == 1) {
             return engineHandler.encode(gameId, param);
         }
+        param = param.replaceAll("\"", "");
        return new Digester(DigestAlgorithm.MD5).digestHex(param).toUpperCase();
     }
 
@@ -36,6 +40,13 @@ public class TestController {
         httpHandler.login(userGamePlatformDto);
         return "login";
     }
+
+    @PostMapping("/callFunc")
+    public Object callFunc (Long gameId, String value, String func) {
+        Object call = engineHandler.call(gameId, value, func);
+        return call;
+    }
+
 
     @PostMapping("/downloadArchive")
     public JSONObject gameArchive (@RequestBody UserGamePlatformDto userGamePlatformDto) {

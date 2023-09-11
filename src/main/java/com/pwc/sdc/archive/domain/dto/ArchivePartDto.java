@@ -8,5 +8,7 @@ public class ArchivePartDto {
 
     private String label;
 
+    private String itemId;
+
     private Long count;
 }

@@ -7,6 +7,7 @@ import com.pwc.sdc.archive.domain.dto.UserItem;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @UtilityClass
@@ -33,13 +34,29 @@ public class ArchiveUtil {
                 valueJson = (JSONObject) value;
                 continue;
             }
-            return String.valueOf(value);
+            return value == null? null : String.valueOf(value);
 
         }
         return valueJson.toJSONString();
     }
 
-    public String[] getValueArrayString(JSONObject archiveJson, String key) {
+    public void putValue(JSONObject archiveJson, String key, Object value) {
+        String[] keyArray = key.split("\\.");
+        if (archiveJson == null) {
+            return;
+        }
+        String keySingle;
+        JSONObject tempJson = archiveJson;
+        for (int i = 0; i < keyArray.length - 1; i++) {
+            keySingle = keyArray[i];
+            // 得到json数据，可能得到key对应的value，也可能得到另一个jsonObject
+            tempJson = archiveJson.getJSONObject(keySingle);
+
+        }
+        tempJson.put(keyArray[keyArray.length - 1], value);
+    }
+
+    public String[] getValueArrayString(@NotNull JSONObject archiveJson, String key) {
         String[] keyArray = key.split("\\.");
         String keySingle;
         JSONObject valueJson = archiveJson;
@@ -54,6 +71,24 @@ public class ArchiveUtil {
             return new String[0];
         }
         return jsonArray.toArray(new String[0]);
+
+    }
+
+    public JSONArray getValueArray(@NotNull JSONObject archiveJson, String key) {
+        String[] keyArray = key.split("\\.");
+        String keySingle;
+        JSONObject valueJson = archiveJson;
+        for (int i = 0; i < keyArray.length - 1; i ++) {
+            keySingle = keyArray[i];
+            // 得到json数据，可能得到key对应的value，也可能得到另一个jsonObject
+            valueJson = valueJson.getJSONObject(keySingle);
+        }
+        // 获得json Array格式
+        JSONArray jsonArray = archiveJson.getJSONArray(keyArray[keyArray.length - 1]);
+        if (jsonArray == null) {
+            return null;
+        }
+        return jsonArray;
 
     }
 

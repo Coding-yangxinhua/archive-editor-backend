@@ -1,6 +1,5 @@
 package com.pwc.sdc.archive.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,15 +36,17 @@ public class AeGameArchivePart implements Serializable {
     @TableField(value = "`KEY`")
     private String key;
 
+    private String itemId;
+
+    /**
+     * 是否启用
+     */
+    private Integer isPackage;
+
     /**
      * 是否启用
      */
     private Integer enable;
-
-    /**
-     * 特殊处理
-     */
-    private String special;
 
     /**
      * 创建时间

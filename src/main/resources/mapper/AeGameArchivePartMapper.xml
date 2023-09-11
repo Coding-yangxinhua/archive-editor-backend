@@ -9,8 +9,9 @@
             <result property="gameId" column="GAME_ID" jdbcType="BIGINT"/>
             <result property="label" column="LABEL" jdbcType="VARCHAR"/>
             <result property="key" column="KEY" jdbcType="VARCHAR"/>
+            <result property="itemId" column="ITEM_ID" jdbcType="VARCHAR"/>
             <result property="enable" column="ENABLE" jdbcType="TINYINT"/>
-            <result property="special" column="SPECIAL" jdbcType="VARCHAR" />
+            <result property="isPackage" column="IS_PACKAGE" jdbcType="TINYINT" />
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
@@ -18,7 +19,7 @@
 
     <sql id="Base_Column_List">
         ID,GAME_ID,LABEL,
-        `KEY`,ENABLE,SPECIAL,GMT_CREATE,
+        `KEY`,`ITEM_ID`,IS_PACKAGE,`ENABLE`,SPECIAL,GMT_CREATE,
         GMT_MODIFIED,DELETED
     </sql>
 </mapper>

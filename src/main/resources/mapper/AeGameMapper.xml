@@ -9,7 +9,7 @@
             <result property="name" column="NAME" jdbcType="VARCHAR"/>
             <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
             <result property="jsScript" column="JS_SCRIPT" jdbcType="VARCHAR"/>
-            <result property="archiveStructure" column="ARCHIVE_STRUCTURE" jdbcType="VARCHAR"/>
+            <result property="editorHandler" column="EDITOR_HANDLER" jdbcType="VARCHAR"/>
             <result property="header" column="HEADER" jdbcType="VARCHAR"/>
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
@@ -17,11 +17,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID,NAME,DESCRIPTION,
-        JS_SCRIPT,ARCHIVE_STRUCTURE,HEADER,
+        ID,`NAME`,`DESCRIPTION`,
+        JS_SCRIPT,EDITOR_HANDLER,ARCHIVE_STRUCTURE,HEADER,
         GMT_CREATE,GMT_MODIFIED
     </sql>
-    <select id="getScriptById" resultType="java.lang.String">
-        SELECT JS_SCRIPT FROM AE_GAME WHERE DELETED = ${STATE_NO} AND ID = #{gameId}
-    </select>
+
 </mapper>
