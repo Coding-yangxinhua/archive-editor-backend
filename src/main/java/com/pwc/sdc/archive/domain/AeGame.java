@@ -29,12 +29,16 @@ public class AeGame implements Serializable {
      */
     private String description;
 
+    private String url;
+
     /**
      * 加密解密脚本文件
      */
     private String jsScript;
 
     private String editorHandler;
+
+    private String fillHandler;
 
     /**
      * Header信息

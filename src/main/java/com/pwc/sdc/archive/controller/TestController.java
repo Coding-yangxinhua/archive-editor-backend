@@ -31,7 +31,7 @@ public class TestController {
             return engineHandler.encode(gameId, param);
         }
         param = param.replaceAll("\"", "");
-       return new Digester(DigestAlgorithm.MD5).digestHex(param).toUpperCase();
+       return new Digester(DigestAlgorithm.MD5).digestHex(param.toString()).toUpperCase();
     }
 
     @PostMapping("/gameLogin")

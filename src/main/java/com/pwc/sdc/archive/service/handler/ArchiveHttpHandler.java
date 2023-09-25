@@ -8,6 +8,7 @@ import com.pwc.sdc.archive.domain.AeUserArchive;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.AeGamePlatformService;
+import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.service.AeUserArchiveService;
 import com.pwc.sdc.archive.service.AeUserGamePlatformService;
 import com.pwc.sdc.archive.service.handler.fill.FillAnimalHandler;
@@ -43,6 +44,9 @@ public class ArchiveHttpHandler {
 
     @Autowired
     private AeGamePlatformService gamePlatformService;
+
+    @Autowired
+    private AeGameService gameService;
     public ArchiveHttpHandler() {
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
@@ -161,6 +165,6 @@ public class ArchiveHttpHandler {
         GamePlatformDto gamePlatform = gamePlatformService.getGamePlatform(userGamePlatformDto.getGameId(), userGamePlatformDto.getPlatformId());
         Assert.notNull(result, GameConstants.USER_GAME_PLATFORM_NOT_EXISTS);
         Assert.notNull(gamePlatform, GameConstants.GAME_PLATFORM_NOT_EXISTS);
-        return new FillAnimalHandler(jsEngineHandler, gamePlatform, result, null);
+        return gameService.getFillHandler(jsEngineHandler, gamePlatform, result);
     }
 }

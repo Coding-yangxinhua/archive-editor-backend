@@ -1,7 +1,14 @@
 package com.pwc.sdc.archive.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
+import com.pwc.sdc.archive.domain.dto.UserArchive;
+import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
+import com.pwc.sdc.archive.service.handler.editor.EditorBaseHandler;
+import com.pwc.sdc.archive.service.handler.fill.FillBaseHandler;
 
 /**
 * @author Xinhua X Yang
@@ -12,7 +19,9 @@ public interface AeGameService extends IService<AeGame> {
     String AE_GAME = "AE_GAME";
     String getScriptById(Long gameId);
 
-    String getEditorHandler(Long gameId);
+    EditorBaseHandler getEditorHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive);
+
+    FillBaseHandler getFillHandler(JsEngineHandler jsEngineHandler, GamePlatformDto gamePlatform, UserGamePlatformDto userGamePlatform);
 
     AeGame getGameById(Long gameId);
 

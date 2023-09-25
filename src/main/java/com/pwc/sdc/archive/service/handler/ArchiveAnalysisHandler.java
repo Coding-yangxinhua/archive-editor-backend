@@ -107,19 +107,7 @@ public class ArchiveAnalysisHandler {
     }
 
     private EditorBaseHandler getEditorHandler(JSONObject archiveJson, UserArchive userArchive) {
-        String editorHandler = "com.pwc.sdc.archive.service.handler.editor." + gameService.getEditorHandler(userArchive.getGameId());
-        // 获取类的 Class 对象
-        try {
-            Class<?> editorClass = Class.forName(editorHandler);
-            // 获取构造方法对象
-            Constructor<?> constructor = editorClass.getConstructor(JsEngineHandler.class, JSONObject.class, UserArchive.class);
-            // 创建实例
-            return  (EditorBaseHandler) constructor.newInstance(jsEngineHandler, archiveJson, userArchive);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
+        return gameService.getEditorHandler(jsEngineHandler, archiveJson, userArchive);
     }
 
 
