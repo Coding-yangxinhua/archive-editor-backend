@@ -1,6 +1,7 @@
 package com.pwc.sdc.archive.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.ResultConstants;
@@ -9,6 +10,8 @@ import com.pwc.sdc.archive.domain.AeUser;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.service.AeUserService;
 import com.pwc.sdc.archive.mapper.AeUserMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ObjectUtils;
@@ -53,6 +56,26 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         // 登录
         StpUtil.login(userDb.getId());
         return ResponseEntity.ok();
+    }
+
+    @Override
+    @Cacheable(cacheNames = USER_KEY, key = "#userId")
+    public AeUserDto getUserInfoById(Long userId) {
+        AeUser user = this.getById(userId);
+        return new AeUserDto(user);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = USER_KEY, key = "#userDto.id")
+    public void updateUserInfo(AeUserDto userDto) {
+        if (userDto.getId() == null) {
+            return;
+        }
+        LambdaUpdateWrapper<AeUser> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(userDto.getUserName()!= null, AeUser::getUserName, userDto.getUserName())
+                .set(userDto.getPassword() != null, AeUser::getPassword, userDto.getPassword())
+                .eq(AeUser::getId, userDto.getId());
+        this.update(updateWrapper);
     }
 
 }

@@ -3,6 +3,11 @@ server:
   servlet:
     context-path: /archive-editor
 spring:
+  mail:
+    # 163
+    host: smtp.163.com #163的主机地址，通用的
+    username: archive_editor@163.com          # SMTP 账号
+    password: ZDKMVZYNYPPLSTOU      # SMTP 密码
   redis:
     host: 192.210.197.111
     port: 6379

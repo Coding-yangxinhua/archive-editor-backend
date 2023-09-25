@@ -11,8 +11,15 @@ import com.pwc.sdc.archive.domain.dto.AeUserDto;
 * @createDate 2023-09-04 15:41:59
 */
 public interface AeUserService extends IService<AeUser> {
+
+    String USER_KEY = "USER";
+
     ResponseEntity<String> saveUser(AeUserDto aeUserDto);
 
     ResponseEntity<String> login(AeUserDto aeUserDto);
+
+    AeUserDto getUserInfoById(Long userId);
+
+    void updateUserInfo(AeUserDto userDto);
 
 }

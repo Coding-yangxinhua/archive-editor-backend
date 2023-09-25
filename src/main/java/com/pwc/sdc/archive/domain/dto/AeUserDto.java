@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.pwc.sdc.archive.common.constants.ValidConstant;
 import com.pwc.sdc.archive.domain.AeUser;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
@@ -24,13 +26,15 @@ public class AeUserDto implements Serializable {
     /**
      * 用户账号
      */
-    @NotEmpty(message = "Account 不能为空")
+    @NotEmpty(message = "账号不能为空")
+    @Email(message = "账号需要为邮箱格式", groups = {ValidConstant.User.Register.class})
     private String account;
 
     /**
      * 用户密码
      */
-    @NotEmpty(message = "Password 不能为空")
+    @NotEmpty(message = "密码不能为空")
+    @Length(message = "密码至少要六位", groups = {ValidConstant.User.Register.class})
     private String password;
 
     /**
@@ -55,6 +59,10 @@ public class AeUserDto implements Serializable {
 
     private int deleted;
 
+    public AeUserDto() {
+
+    }
+
     public AeUser createEntity() {
         AeUser aeUser = new AeUser();
         aeUser.setId(this.id);
@@ -65,6 +73,14 @@ public class AeUserDto implements Serializable {
         aeUser.setGmtModified(this.getGmtModified());
         aeUser.setDeleted(this.deleted);
         return aeUser;
+    }
+
+    public AeUserDto(AeUser user) {
+        this.id = user.getId();
+        this.account = user.getAccount();
+        this.password = user.getPassword();
+        this.userName = user.getUserName();
+        this.gmtCreate = user.getGmtCreate();
     }
 
 }
