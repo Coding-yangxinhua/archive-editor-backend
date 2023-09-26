@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.common.aop;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.pwc.sdc.archive.common.annotation.Auth;
+import com.pwc.sdc.archive.common.constants.RoleConstants;
 import io.netty.util.internal.StringUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,6 +37,9 @@ public class AuthAspect {
         // 获得所需角色和权限
         String[] roles = annotation.roles();
         String[] permissions = annotation.permissions();
+        if (StpUtil.hasRole(RoleConstants.ADMIN)) {
+            return;
+        }
         if (roles != null && roles.length > 0) {
             StpUtil.checkRoleOr(roles);
         }

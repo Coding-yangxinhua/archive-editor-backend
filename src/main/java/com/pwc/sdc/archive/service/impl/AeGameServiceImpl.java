@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
+import com.pwc.sdc.archive.domain.dto.GameDto;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
@@ -18,9 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import reactor.util.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author Xinhua X Yang
@@ -33,6 +37,15 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
 
     @Autowired
     private AeGameService gameService;
+
+    @Override
+    public List<GameDto> listByUserId(@Nullable Long gameId, @Nullable Long platformId, @Nullable Long userId) {
+        List<GameDto> gameDtos = baseMapper.listByUserId(gameId, platformId, userId);
+        if (userId != null) {
+            return gameDtos.stream().filter(i -> i.getIsUserStar() == 1).collect(Collectors.toList());
+        }
+        return gameDtos;
+    }
 
     @Override
     public String getScriptById(Long gameId) {
