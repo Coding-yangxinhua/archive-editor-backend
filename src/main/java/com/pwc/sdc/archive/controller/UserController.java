@@ -41,8 +41,11 @@ public class UserController {
 
     @PostMapping("/sendResetCode")
     public ResponseEntity<String> sendResetCode() {
-        this.mailService.sendVerifyCode(USER_CODE + StpUtil.getLoginId(), MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
-        return ResponseEntity.ok();
+        boolean success = this.mailService.sendVerifyCode(USER_CODE + StpUtil.getLoginId(), MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
+        if (success) {
+            return ResponseEntity.ok();
+        }
+        return ResponseEntity.error();
     }
 
     @PostMapping("/resetPassword")
