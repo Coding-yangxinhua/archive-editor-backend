@@ -43,6 +43,9 @@
         JS_SCRIPT,EDITOR_HANDLER,FILL_HANDLER,ARCHIVE_STRUCTURE,HEADER,
         GMT_CREATE,GMT_MODIFIED
     </sql>
+    <update id="gameStar">
+        INSERT INTO
+    </update>
     <select id="listByUserId" resultMap="BaseResultDtoMap">
         SELECT g.ID, g.`NAME`, g.`DESCRIPTION`, g.URL, g.GMT_CREATE
              , p.ID AS 'platform_id', p.PLATFORM AS 'platform_name'

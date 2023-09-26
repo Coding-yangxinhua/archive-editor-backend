@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
+import com.pwc.sdc.archive.domain.AeUserGame;
 import com.pwc.sdc.archive.domain.dto.GameDto;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.mapper.AeGameMapper;
+import com.pwc.sdc.archive.service.AeUserGameService;
 import com.pwc.sdc.archive.service.handler.editor.EditorBaseHandler;
 import com.pwc.sdc.archive.service.handler.fill.FillAnimalHandler;
 import com.pwc.sdc.archive.service.handler.fill.FillBaseHandler;
@@ -36,6 +38,8 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     implements AeGameService{
 
     @Autowired
+    private AeUserGameService userGameService;
+    @Autowired
     private AeGameService gameService;
 
     @Override
@@ -45,6 +49,14 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
             return gameDtos.stream().filter(i -> i.getIsUserStar() == 1).collect(Collectors.toList());
         }
         return gameDtos;
+    }
+
+    @Override
+    public void starGame(Long userId, Long gameId) {
+        AeUserGame aeUserGame = new AeUserGame();
+        aeUserGame.setUserId(userId);
+        aeUserGame.setGameId(gameId);
+        userGameService.save(aeUserGame);
     }
 
     @Override

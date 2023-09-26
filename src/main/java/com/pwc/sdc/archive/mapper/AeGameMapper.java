@@ -16,6 +16,7 @@ import java.util.List;
 public interface AeGameMapper extends BaseMapper<AeGame> {
     List<GameDto> listByUserId(@Param("gameId") Long gameId, @Param("platformId") Long platformId, @Param("userId") Long userId);
 
+    void gameStar(@Param("userId") Long userId, @Param("gameId") Long gameId);
 }
 
 

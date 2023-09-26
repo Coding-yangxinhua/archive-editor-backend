@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.AeUserGame;
 import com.pwc.sdc.archive.domain.dto.GameDto;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
@@ -22,6 +23,9 @@ import java.util.List;
 public interface AeGameService extends IService<AeGame> {
     String AE_GAME = "AE_GAME";
     List<GameDto> listByUserId(Long gameId, Long platformId, Long userId);
+
+    void starGame(Long userId, Long gameId);
+
 
     String getScriptById(Long gameId);
     EditorBaseHandler getEditorHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive);
