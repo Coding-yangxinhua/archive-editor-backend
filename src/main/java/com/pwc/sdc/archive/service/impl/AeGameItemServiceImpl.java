@@ -6,6 +6,8 @@ import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.pwc.sdc.archive.domain.AeGameItem;
 import com.pwc.sdc.archive.service.AeGameItemService;
 import com.pwc.sdc.archive.mapper.AeGameItemMapper;
+import com.pwc.sdc.archive.service.AeGameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,22 @@ import java.util.stream.Collectors;
 public class AeGameItemServiceImpl extends ServiceImpl<AeGameItemMapper, AeGameItem>
     implements AeGameItemService{
 
+    @Autowired
+    private AeGameService gameService;
+
     @Override
     @Cacheable(cacheNames = GAME_ITEMS, key = "#gameId")
     public List<AeGameItem> listItemsByGameId(Long gameId) {
         LambdaQueryWrapper<AeGameItem> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AeGameItem::getGameId, gameId);
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<AeGameItem> listItemsByLabel(Long gameId, String label) {
+        LambdaQueryWrapper<AeGameItem> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(gameId != null,AeGameItem::getGameId, gameId)
+                .like(label != null, AeGameItem::getLabel, label);
         return this.list(queryWrapper);
     }
 

@@ -17,5 +17,7 @@ public interface AeGameItemService extends IService<AeGameItem> {
     String GAME_ITEMS_MAP = "GAME_ITEMS_MAP";
     List<AeGameItem> listItemsByGameId(Long gameId);
 
+    List<AeGameItem> listItemsByLabel(Long gameId, String label);
+
     Map<String, AeGameItem> mapItemsByGameId(Long gameId);
 }

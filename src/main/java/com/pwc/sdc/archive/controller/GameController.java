@@ -1,8 +1,10 @@
 package com.pwc.sdc.archive.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.pwc.sdc.archive.common.annotation.Auth;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.RoleConstants;
+import com.pwc.sdc.archive.domain.AeGame;
 import com.pwc.sdc.archive.domain.AeUserGame;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.domain.dto.GameDto;
@@ -23,9 +25,21 @@ public class GameController {
     }
 
     @PostMapping("/star")
-    public ResponseEntity<String> list(Long gameId) {
+    public ResponseEntity<String> star(Long gameId) {
         gameService.starGame(StpUtil.getLoginIdAsLong(), gameId);
         return ResponseEntity.ok();
     }
 
+    @GetMapping("/saveOrUpdate")
+    @Auth(roles = {RoleConstants.ADMIN})
+    public ResponseEntity<String> list(AeGame game) {
+        gameService.saveOrUpdate(game);
+        return ResponseEntity.ok();
+    }
+
+    @GetMapping("/detail")
+    @Auth(roles = {RoleConstants.ADMIN})
+    public ResponseEntity<AeGame> detail(@RequestParam(value = "gameId", required = false) Long gameId) {
+        return ResponseEntity.ok(gameService.getGameById(gameId));
+    }
 }
