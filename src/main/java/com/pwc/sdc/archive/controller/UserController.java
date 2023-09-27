@@ -73,6 +73,8 @@ public class UserController {
             // 屏蔽用户密码
             userDto.setPassword(null);
             userDto.setAccount(null);
+            userDto.setPoint(null);
+            userDto.setBanTime(null);
         }
         this.userService.updateUserInfo(userDto);
         return ResponseEntity.ok();

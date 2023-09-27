@@ -1,6 +1,7 @@
 package com.pwc.sdc.archive.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -22,7 +23,7 @@ import java.util.List;
 */
 public interface AeGameService extends IService<AeGame> {
     String AE_GAME = "AE_GAME";
-    List<GameDto> listByUserId(Long gameId, Long platformId, Long userId);
+    IPage<GameDto> listByUserId(Long gameId, Long platformId, Long userId, Integer page, Integer size);
 
     void starGame(Long userId, Long gameId);
 

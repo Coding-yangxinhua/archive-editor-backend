@@ -9,7 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class GamePlatformDto {
+public class GamePlatformDto extends AeGamePlatform {
 
     private String gameName;
 

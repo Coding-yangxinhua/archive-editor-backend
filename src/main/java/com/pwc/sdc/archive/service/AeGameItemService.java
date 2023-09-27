@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pwc.sdc.archive.domain.AeGameItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,7 +18,7 @@ public interface AeGameItemService extends IService<AeGameItem> {
     String GAME_ITEMS_MAP = "GAME_ITEMS_MAP";
     List<AeGameItem> listItemsByGameId(Long gameId);
 
-    List<AeGameItem> listItemsByLabel(Long gameId, String label);
+    IPage<AeGameItem> listItemsByLabel(Long gameId, String label, Integer page, Integer size);
 
     Map<String, AeGameItem> mapItemsByGameId(Long gameId);
 }

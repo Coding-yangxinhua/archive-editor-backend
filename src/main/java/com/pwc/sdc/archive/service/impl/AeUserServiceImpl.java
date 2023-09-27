@@ -74,6 +74,8 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         LambdaUpdateWrapper<AeUser> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(userDto.getUserName()!= null, AeUser::getUserName, userDto.getUserName())
                 .set(userDto.getPassword() != null, AeUser::getPassword, userDto.getPassword())
+                .set(userDto.getPoint() != null, AeUser::getPoint, userDto.getPoint())
+                .set(userDto.getBanTime() != null, AeUser::getBanTime, userDto.getBanTime())
                 .eq(AeUser::getId, userDto.getId());
         this.update(updateWrapper);
     }

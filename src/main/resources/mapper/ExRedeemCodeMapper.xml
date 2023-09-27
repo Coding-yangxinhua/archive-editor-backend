@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.ExRedeemCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.ExRedeemCode">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="cdKey" column="CD_KEY" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <result property="point" column="POINT" jdbcType="VARCHAR"/>
+            <result property="isUsed" column="IS_USED" jdbcType="TINYINT"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,CDKEY,POINT,
+        IS_USED,GMT_CREATE,GMT_MODIFIED,
+        DELETED
+    </sql>
+</mapper>

@@ -2,6 +2,8 @@ package com.pwc.sdc.archive.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
@@ -43,12 +45,9 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     private AeGameService gameService;
 
     @Override
-    public List<GameDto> listByUserId(@Nullable Long gameId, @Nullable Long platformId, @Nullable Long userId) {
-        List<GameDto> gameDtos = baseMapper.listByUserId(gameId, platformId, userId);
-        if (userId != null) {
-            return gameDtos.stream().filter(i -> i.getIsUserStar() == 1).collect(Collectors.toList());
-        }
-        return gameDtos;
+    public IPage<GameDto> listByUserId(@Nullable Long gameId, @Nullable Long platformId, @Nullable Long userId, Integer page, Integer size) {
+        Page<GameDto> gamePage = new Page<>(page, size);
+        return baseMapper.listByUserId(gamePage, gameId, platformId, userId);
     }
 
     @Override

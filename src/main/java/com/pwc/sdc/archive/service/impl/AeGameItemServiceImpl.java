@@ -1,8 +1,9 @@
 package com.pwc.sdc.archive.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.pwc.sdc.archive.domain.AeGameItem;
 import com.pwc.sdc.archive.service.AeGameItemService;
 import com.pwc.sdc.archive.mapper.AeGameItemMapper;
@@ -37,11 +38,12 @@ public class AeGameItemServiceImpl extends ServiceImpl<AeGameItemMapper, AeGameI
     }
 
     @Override
-    public List<AeGameItem> listItemsByLabel(Long gameId, String label) {
+    public IPage<AeGameItem> listItemsByLabel(Long gameId, String label, Integer page, Integer size) {
+        Page<AeGameItem> gameItemPage = new Page<>(page, size);
         LambdaQueryWrapper<AeGameItem> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(gameId != null,AeGameItem::getGameId, gameId)
                 .like(label != null, AeGameItem::getLabel, label);
-        return this.list(queryWrapper);
+        return this.page(gameItemPage, queryWrapper);
     }
 
     @Override

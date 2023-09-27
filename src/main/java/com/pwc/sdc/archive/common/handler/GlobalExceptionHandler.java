@@ -70,4 +70,15 @@ public class GlobalExceptionHandler {
         log.error("无权访问: {}", e.getMessage());
         return ResponseEntity.error(ResultStatus.AUTH_ERROR, e.getMessage());
     }
+
+    /**
+     * 参数异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value= {IllegalArgumentException.class})
+    public ResponseEntity<Map<String, String>> onArgumentException(Exception e) {
+        log.error("参数异常: {}", e.getMessage());
+        return ResponseEntity.error(ResultStatus.BIZ_ERROR, e.getMessage());
+    }
 }

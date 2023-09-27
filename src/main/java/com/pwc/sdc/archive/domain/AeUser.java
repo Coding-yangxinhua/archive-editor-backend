@@ -34,6 +34,10 @@ public class AeUser implements Serializable {
      */
     private String userName;
 
+    private Date banTime;
+
+    private Integer point;
+
     /**
      * 创建时间
      */

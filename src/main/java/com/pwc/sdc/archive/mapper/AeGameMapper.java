@@ -1,5 +1,7 @@
 package com.pwc.sdc.archive.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pwc.sdc.archive.domain.dto.GameDto;
@@ -14,7 +16,7 @@ import java.util.List;
 * @Entity com.pwc.sdc.archive.domain.AeGame
 */
 public interface AeGameMapper extends BaseMapper<AeGame> {
-    List<GameDto> listByUserId(@Param("gameId") Long gameId, @Param("platformId") Long platformId, @Param("userId") Long userId);
+    IPage<GameDto> listByUserId(Page<GameDto> page, @Param("gameId") Long gameId, @Param("platformId") Long platformId, @Param("userId") Long userId);
 
     void gameStar(@Param("userId") Long userId, @Param("gameId") Long gameId);
 }

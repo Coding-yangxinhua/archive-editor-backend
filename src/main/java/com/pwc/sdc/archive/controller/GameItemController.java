@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pwc.sdc.archive.common.annotation.Auth;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.RoleConstants;
@@ -28,8 +29,8 @@ public class GameItemController {
     @Autowired
     private AeGameItemService gameItemService;
     @GetMapping("/list")
-    public ResponseEntity<List<AeGameItem>> list(@RequestParam(value = "gameId") Long gameId, @RequestParam(value = "itemName", required = false) String label) {
-        return ResponseEntity.ok(gameItemService.listItemsByLabel(gameId, label));
+    public ResponseEntity<IPage<AeGameItem>> list(@RequestParam(value = "gameId") Long gameId, @RequestParam(value = "itemName", required = false) String label, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return ResponseEntity.ok(gameItemService.listItemsByLabel(gameId, label, page, size));
     }
 
 

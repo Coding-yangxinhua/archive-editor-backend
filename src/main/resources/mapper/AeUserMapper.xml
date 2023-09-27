@@ -9,6 +9,8 @@
             <result property="account" column="ACCOUNT" jdbcType="VARCHAR"/>
             <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
             <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+            <result property="point" column="POINT" jdbcType="INTEGER" />
+            <result property="banTime" column="BAN_TIME" jdbcType="TIMESTAMP" />
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
@@ -16,12 +18,12 @@
 
     <sql id="Base_Column_List">
         ID,ACCOUNT,PASSWORD,
-        USER_NAME,GMT_CREATE,GMT_MODIFIED
+        USER_NAME,POINT,BAN_TIME,GMT_CREATE,GMT_MODIFIED
     </sql>
 
     <select id="getUserByAccount" resultType="com.pwc.sdc.archive.domain.AeUser">
         SELECT <include refid="Base_Column_List" />
         FROM AE_USER
-        WHERE ACCOUNT = #{account} AND DELETED = ${STATE_NO}
+        WHERE ACCOUNT = #{account} AND DELETED = ${STATE_NO} AND BAN_TIME IS NULL
     </select>
 </mapper>

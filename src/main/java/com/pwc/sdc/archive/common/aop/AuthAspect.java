@@ -28,7 +28,7 @@ import java.util.Map;
 public class AuthAspect {
 
     @Before("@annotation(com.pwc.sdc.archive.common.annotation.Auth)")
-    public void beforeAdvice(JoinPoint joinPoint) throws Throwable {
+    public void beforeAdvice(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         // 获取注解

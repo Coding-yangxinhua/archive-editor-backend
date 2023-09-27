@@ -1,9 +1,11 @@
 package com.pwc.sdc.archive.domain.dto;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pwc.sdc.archive.common.constants.ValidConstant;
 import com.pwc.sdc.archive.domain.AeUser;
 import lombok.Data;
@@ -47,6 +49,12 @@ public class AeUserDto implements Serializable {
 
     private List<String> permissionList;
 
+    private Date banTime;
+
+    private boolean isBan;
+
+    private Integer point;
+
     /**
      * 创建时间
      */
@@ -81,6 +89,14 @@ public class AeUserDto implements Serializable {
         this.password = user.getPassword();
         this.userName = user.getUserName();
         this.gmtCreate = user.getGmtCreate();
+        this.point = user.getPoint();
+        this.banTime = user.getBanTime();
     }
 
+    public boolean isBan() {
+        return this.banTime != null;
+    }
+
+    @JsonIgnore
+    private static final long serialVersionUID = 166646682221916857L;
 }
