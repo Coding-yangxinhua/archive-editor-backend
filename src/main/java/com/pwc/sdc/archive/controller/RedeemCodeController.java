@@ -29,6 +29,7 @@ public class RedeemCodeController {
     private ExRedeemCodeService redeemCodeService;
 
     @ApiOperation("激活码列表")
+    @Auth(roles = {RoleConstants.ADMIN})
     @GetMapping("list")
     public ResponseEntity<IPage<ExRedeemCode>> list(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         IPage<ExRedeemCode> redeemCodeIPage = new Page<>(page, size);

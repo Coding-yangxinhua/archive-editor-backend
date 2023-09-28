@@ -5,6 +5,8 @@ import com.pwc.sdc.archive.domain.AeUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 
+import java.util.List;
+
 /**
 * @author Xinhua X Yang
 * @description 针对表【AE_USER(用户信息表)】的数据库操作Service
@@ -27,5 +29,7 @@ public interface AeUserService extends IService<AeUser> {
     int addPoint(Long userId, Integer point);
 
     int changePoint(Long userId, Integer point);
+
+    void changePoint(List<AeUserDto> list);
 
 }

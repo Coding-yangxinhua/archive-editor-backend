@@ -1,6 +1,7 @@
 package com.pwc.sdc.archive.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
@@ -10,12 +11,13 @@ import com.pwc.sdc.archive.domain.AeUser;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.service.AeUserService;
 import com.pwc.sdc.archive.mapper.AeUserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -25,6 +27,8 @@ import org.springframework.util.StringUtils;
 @Service
 public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     implements AeUserService{
+    @Value("${system.invitation.enableRegister}")
+    private Boolean enableRegister;
 
     @Override
     public ResponseEntity<String> saveUser(AeUserDto aeUserDto) {
@@ -32,13 +36,23 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         aeUserDto.setId(null);
         aeUserDto.setGmtCreate(null);
         aeUserDto.setGmtModified(null);
+        // 判断是否有邀请码
+        AeUser inviter = baseMapper.getUserByInvitationCode(aeUserDto.getInvitationCode());
         // 查看账号是否存在
         AeUser userDB = baseMapper.getUserByAccount(aeUserDto.getAccount());
-        if (userDB == null) {
-            this.save(aeUserDto.createEntity());
-            return ResponseEntity.ok();
+        if (inviter == null) {
+            return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.INVITATION_CODE_NOT_EXISTS);
         }
-        return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_EXISTS);
+        if (userDB != null) {
+            return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_EXISTS);
+        }
+        // 设置用户邀请人
+        aeUserDto.setInviter(inviter.getId());
+        if (enableRegister) {
+            aeUserDto.setInvitationCode(RandomUtil.randomString(5).toUpperCase());
+        }
+        this.save(aeUserDto.createEntity());
+        return ResponseEntity.ok();
     }
 
     @Override
@@ -90,6 +104,11 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         }
         baseMapper.changePoint(userId, point);
         return pointDB + point;
+    }
+
+    @Override
+    public void changePoint(List<AeUserDto> list) {
+        baseMapper.changePointBatch(list);
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.pwc.sdc.archive.domain.dto.UserArchive;
 * @createDate 2023-09-27 15:02:57
 */
 public interface AeUserStatementService extends IService<AeUserStatement> {
-    void recordRedeemCode(AeUserDto user, ExRedeemCode redeemCode);
+    void recordRedeemCode(AeUserDto user, AeUserDto inviter, ExRedeemCode redeemCode);
 
     void recordBuyItem(UserArchive userArchive, Integer point);
 }

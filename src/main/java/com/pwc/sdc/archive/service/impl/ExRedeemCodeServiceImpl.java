@@ -13,6 +13,7 @@ import com.pwc.sdc.archive.service.AeUserStatementService;
 import com.pwc.sdc.archive.service.ExRedeemCodeService;
 import com.pwc.sdc.archive.mapper.ExRedeemCodeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -33,6 +34,8 @@ import java.util.stream.Collectors;
 public class ExRedeemCodeServiceImpl extends ServiceImpl<ExRedeemCodeMapper, ExRedeemCode>
     implements ExRedeemCodeService{
 
+    @Value("${system.invitation.rate}")
+    private double rate;
     @Autowired
     private AeUserService userService;
 
@@ -79,20 +82,28 @@ public class ExRedeemCodeServiceImpl extends ServiceImpl<ExRedeemCodeMapper, ExR
     @Transactional
     public Integer exchange(Long userId, String cdKey) {
         synchronized (getLock(cdKey)) {
+            List<AeUserDto> list = new ArrayList<>(2);
             // 获得用户信息
             AeUserDto user = userService.getUserInfoById(userId);
+            // 获得邀请者信息
+            AeUserDto inviter = userService.getUserInfoById(user.getInviter());
             // 获得激活码数据
             ExRedeemCode redeemCode = this.getByCdKey(cdKey);
             Assert.notNull(redeemCode, ResultConstants.CD_KEY_ERROR);
             // 向用户增加激活码积分
             Integer point = redeemCode.getPoint();
             user.setPoint(user.getPoint() + point);
+            if (inviter != null) {
+                list.add(inviter);
+                inviter.setPoint(inviter.getPoint() + (int) (point * rate));
+            }
             // 作废激活码
             redeemCode.setIsUsed(EnableStatus.ENABLE.value());
             // 记录流水
-            userStatementService.recordRedeemCode(user, redeemCode);
+            userStatementService.recordRedeemCode(user, inviter, redeemCode);
             // 增加point
-            userService.updateUserInfo(user);
+            list.add(user);
+            userService.changePoint(list);
             this.updateById(redeemCode);
             return user.getPoint();
         }

@@ -35,7 +35,7 @@ public class AeUserDto implements Serializable {
     /**
      * 用户密码
      */
-    @NotEmpty(message = "密码不能为空")
+    @NotEmpty(message = "密码不能为空", groups = {ValidConstant.User.Register.class, ValidConstant.User.Login.class})
     @Length(message = "密码至少要六位", groups = {ValidConstant.User.Register.class})
     private String password;
 
@@ -45,15 +45,15 @@ public class AeUserDto implements Serializable {
     @NotEmpty(message = "昵称不能为空", groups = ValidConstant.User.Register.class)
     private String userName;
 
-    private List<String> roleList;
-
-    private List<String> permissionList;
-
     private Date banTime;
 
     private boolean isBan;
 
     private Integer point;
+
+    private Long inviter;
+
+    private String invitationCode;
 
     /**
      * 创建时间
@@ -74,6 +74,8 @@ public class AeUserDto implements Serializable {
     public AeUser createEntity() {
         AeUser aeUser = new AeUser();
         aeUser.setId(this.id);
+        aeUser.setInviter(this.inviter);
+        aeUser.setInvitationCode(this.invitationCode);
         aeUser.setAccount(this.account);
         aeUser.setPassword(this.password);
         aeUser.setUserName(this.userName);
@@ -90,6 +92,8 @@ public class AeUserDto implements Serializable {
         this.userName = user.getUserName();
         this.gmtCreate = user.getGmtCreate();
         this.point = user.getPoint();
+        this.inviter = user.getInviter();
+        this.invitationCode = user.getInvitationCode();
         this.banTime = user.getBanTime();
     }
 

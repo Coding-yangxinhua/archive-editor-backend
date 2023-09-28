@@ -16,4 +16,6 @@ public class ResultConstants {
     public static final String CD_KEY_ERROR = "CdKey不存在或已使用";
 
     public static final String ERROR_CONFIGURATION = "错误的配置";
+
+    public static final String INVITATION_CODE_NOT_EXISTS = "邀请码不存在";
 }

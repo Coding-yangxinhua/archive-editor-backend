@@ -38,6 +38,10 @@ public class AeUser implements Serializable {
 
     private Integer point;
 
+    private Long inviter;
+
+    private String invitationCode;
+
     /**
      * 创建时间
      */

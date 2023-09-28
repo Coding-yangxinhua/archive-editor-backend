@@ -10,6 +10,8 @@
             <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
             <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
             <result property="point" column="POINT" jdbcType="INTEGER" />
+            <result property="inviter" column="INVITER" jdbcType="BIGINT" />
+            <result property="invitationCode" column="INVITATION_CODE" jdbcType="VARCHAR" />
             <result property="banTime" column="BAN_TIME" jdbcType="TIMESTAMP" />
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
@@ -23,10 +25,20 @@
     <update id="changePoint">
         UPDATE AE_USER SET POINT = POINT + #{point} WHERE ID = #{userId} AND DELETED = ${STATE_NO}
     </update>
+    <update id="changePointBatch">
+        <foreach collection="list" item="data" separator=";">
+            UPDATE AE_USER SET POINT = #{data.point} WHERE ID = #{data.id} AND DELETED = ${STATE_NO}
+        </foreach>
+    </update>
 
     <select id="getUserByAccount" resultType="com.pwc.sdc.archive.domain.AeUser">
         SELECT <include refid="Base_Column_List" />
         FROM AE_USER
         WHERE ACCOUNT = #{account} AND DELETED = ${STATE_NO} AND BAN_TIME IS NULL
+    </select>
+    <select id="getUserByInvitationCode" resultType="com.pwc.sdc.archive.domain.AeUser">
+        SELECT <include refid="Base_Column_List" />
+        FROM AE_USER
+        WHERE INVITATION_CODE = #{invitationCode} AND DELETED = ${STATE_NO} AND BAN_TIME IS NULL
     </select>
 </mapper>

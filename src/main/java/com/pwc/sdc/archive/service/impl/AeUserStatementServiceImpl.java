@@ -8,7 +8,12 @@ import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.service.AeUserStatementService;
 import com.pwc.sdc.archive.mapper.AeUserStatementMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -19,13 +24,24 @@ import org.springframework.stereotype.Service;
 public class AeUserStatementServiceImpl extends ServiceImpl<AeUserStatementMapper, AeUserStatement>
     implements AeUserStatementService{
 
+    @Value("${system.invitation.rate}")
+    private double rate;
+
     @Override
-    public void recordRedeemCode(AeUserDto user, ExRedeemCode redeemCode) {
+    public void recordRedeemCode(AeUserDto user, AeUserDto inviter, ExRedeemCode redeemCode) {
+        List<AeUserStatement> list = new ArrayList<>(2);
         // 生成明细
         String detail = user.getUserName() + "花费" + redeemCode.getMoney() + "元, 兑换了激活码：" + redeemCode.getCdKey() + ", 获得" + redeemCode.getPoint() + "积分";
+        String inviterDetail = detail + ", 你获得了" + (redeemCode.getPoint() * rate) + "积分";
         // 记录流水
         AeUserStatement userStatement = new AeUserStatement(user.getId(), redeemCode.getMoney(),0, detail);
-        this.save(userStatement);
+        list.add(userStatement);
+        if (inviter != null) {
+            AeUserStatement inviterStatement = new AeUserStatement(inviter.getId(), 0,0, inviterDetail);
+            list.add(inviterStatement);
+        }
+
+        this.saveBatch(list);
     }
 
     @Override
