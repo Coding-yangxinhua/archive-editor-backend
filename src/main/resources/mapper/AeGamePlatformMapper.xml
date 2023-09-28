@@ -35,5 +35,7 @@
         INNER JOIN AE_PLATFORM p ON gp.PLATFORM_ID = p.ID AND p.DELETED = ${STATE_NO}
         INNER JOIN AE_GAME g ON g.ID = gp.GAME_ID AND g.DELETED = ${STATE_NO}
         WHERE gp.DELETED = ${STATE_NO}
+        AND GAME_ID = #{gameId}
+        AND PLATFORM_ID = #{platformId}
     </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.ResultConstants;
@@ -16,13 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 /**
 * @author Xinhua X Yang
@@ -53,6 +53,23 @@ public class ExRedeemCodeServiceImpl extends ServiceImpl<ExRedeemCodeMapper, ExR
         return this.getOne(queryWrapper);
     }
 
+    @Override
+    public List<String> generate(Integer money, Integer point, Integer size) {
+        String cdKey;
+        ExRedeemCode redeemCode;
+        List<ExRedeemCode> redeemCodes = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            // 生成激活码
+            cdKey = RandomUtil.randomString(20).toUpperCase();
+            // 生成对象
+            redeemCode = new ExRedeemCode(money, cdKey, point);
+            redeemCodes.add(redeemCode);
+        }
+        // 入库
+        this.saveBatch(redeemCodes);
+        return redeemCodes.stream().map(ExRedeemCode::getCdKey).collect(Collectors.toList());
+    }
+
     /**
      * 使用兑换码
      * @param userId
@@ -73,11 +90,10 @@ public class ExRedeemCodeServiceImpl extends ServiceImpl<ExRedeemCodeMapper, ExR
             // 作废激活码
             redeemCode.setIsUsed(EnableStatus.ENABLE.value());
             // 记录流水
-            AeUserStatement userStatement = new AeUserStatement(userId, 0, user.getUserName() + "兑换了激活码：" + cdKey);
-            // 入库
+            userStatementService.recordRedeemCode(user, redeemCode);
+            // 增加point
             userService.updateUserInfo(user);
             this.updateById(redeemCode);
-            userStatementService.save(userStatement);
             return user.getPoint();
         }
     }

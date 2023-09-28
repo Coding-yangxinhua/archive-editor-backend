@@ -81,7 +81,7 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
 
     @Override
     public FillBaseHandler getFillHandler(JsEngineHandler jsEngineHandler, GamePlatformDto gamePlatform, UserGamePlatformDto userGamePlatform) {
-        String fillHandler = "com.pwc.sdc.archive.service.handler.editor." + gameService.getGameById(userGamePlatform.getGameId()).getFillHandler();
+        String fillHandler = "com.pwc.sdc.archive.service.handler.fill." + gameService.getGameById(userGamePlatform.getGameId()).getFillHandler();
         // 获取类的 Class 对象
         try {
             Class<?> editorClass = Class.forName(fillHandler);

@@ -9,6 +9,7 @@
             <result property="userId" column="USER_ID" jdbcType="BIGINT" />
             <result property="statementType" column="STATEMENT_TYPE" jdbcType="TINYINT"/>
             <result property="gameId" column="GAME_ID" jdbcType="VARCHAR"/>
+            <result property="cost" column="COST" jdbcType="INTEGER"/>
             <result property="detail" column="DETAIL" jdbcType="VARCHAR"/>
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
@@ -16,7 +17,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID,USER_ID,STATEMENT_TYPE,GAME_ID,
+        ID,USER_ID,STATEMENT_TYPE,GAME_ID,COST
         DETAIL,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>

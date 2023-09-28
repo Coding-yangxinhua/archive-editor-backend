@@ -39,21 +39,9 @@ public class RedeemCodeController {
     @ApiOperation("激活码生成")
     @Auth(roles = {RoleConstants.ADMIN})
     @GetMapping("generate")
-    public ResponseEntity<List<String>> generate(@RequestParam("point") Integer point, @RequestParam("size") Integer size) {
-        String cdKey;
-        ExRedeemCode redeemCode;
-        List<ExRedeemCode> redeemCodes = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            // 生成激活码
-            cdKey = RandomUtil.randomString(20).toUpperCase();
-            // 生成对象
-            redeemCode = new ExRedeemCode(cdKey, point);
-            redeemCodes.add(redeemCode);
-        }
-        // 入库
-        redeemCodeService.saveBatch(redeemCodes);
+    public ResponseEntity<List<String>> generate(@RequestParam("money") Integer money, @RequestParam("point") Integer point, @RequestParam("size") Integer size) {
         // 返回生成列表
-        return ResponseEntity.ok(redeemCodes.stream().map(ExRedeemCode::getCdKey).collect(Collectors.toList()));
+        return ResponseEntity.ok(redeemCodeService.generate(money, point, size));
     }
 
     @ApiOperation("激活码兑换")

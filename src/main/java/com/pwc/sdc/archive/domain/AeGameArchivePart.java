@@ -36,6 +36,10 @@ public class AeGameArchivePart implements Serializable {
     @TableField(value = "`KEY`")
     private String key;
 
+    private Integer price;
+
+    private Integer amount;
+
     private String itemId;
 
     /**

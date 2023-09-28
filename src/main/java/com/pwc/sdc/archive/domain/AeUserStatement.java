@@ -34,6 +34,8 @@ public class AeUserStatement implements Serializable {
      */
     private String gameId;
 
+    private Integer cost;
+
     /**
      * 流水具体信息
      */
@@ -57,8 +59,9 @@ public class AeUserStatement implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public AeUserStatement (Long userId, Integer statementType, String detail) {
+    public AeUserStatement (Long userId, Integer cost, Integer statementType, String detail) {
         this.userId = userId;
+        this.cost = cost;
         this.statementType = statementType;
         this.detail = detail;
     }

@@ -36,6 +36,10 @@ public class AeGameItem implements Serializable {
      */
     private String label;
 
+    private Integer price;
+
+    private Integer amount;
+
     /**
      * 是否启用
      */

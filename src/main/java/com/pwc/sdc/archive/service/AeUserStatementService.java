@@ -2,6 +2,9 @@ package com.pwc.sdc.archive.service;
 
 import com.pwc.sdc.archive.domain.AeUserStatement;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.ExRedeemCode;
+import com.pwc.sdc.archive.domain.dto.AeUserDto;
+import com.pwc.sdc.archive.domain.dto.UserArchive;
 
 /**
 * @author Xinhua X Yang
@@ -9,5 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-27 15:02:57
 */
 public interface AeUserStatementService extends IService<AeUserStatement> {
+    void recordRedeemCode(AeUserDto user, ExRedeemCode redeemCode);
 
+    void recordBuyItem(UserArchive userArchive, Integer point);
 }

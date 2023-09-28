@@ -4,6 +4,7 @@ import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Xinhua X Yang
@@ -14,4 +15,6 @@ public interface AeGameArchivePartService extends IService<AeGameArchivePart> {
     String ARCHIVE_PART = "ARCHIVE_PART";
 
     List<AeGameArchivePart> getPartByGameId(Long gameId);
+
+    Map<Long, AeGameArchivePart> getPartMapByGameId(Long gameId);
 }

@@ -104,10 +104,47 @@ public class ArchiveUtil {
         return valueJson;
     }
 
-    public void setKeyValueForPackage(JSONObject archiveJson, String key, Long value) {
+    public void addKeyValue(JSONObject archiveJson, List<ArchivePartDto> parts) {
+        setKeyValue(archiveJson, parts, true);
+    }
+
+    public void setKeyValue(JSONObject archiveJson, List<ArchivePartDto> parts) {
+        setKeyValue(archiveJson, parts, false);
+    }
+
+    public void setKeyValue(JSONObject archiveJson, List<ArchivePartDto> parts, boolean add) {
+        if (archiveJson == null || parts == null || parts.isEmpty()) {
+            return;
+        }
+        for (ArchivePartDto part:
+                parts) {
+            setKeyValueForPackage(archiveJson, part.getKey(), part.getCount(), add);
+        }
+    }
+    public void addKeyValueForPackage(JSONObject archiveJson, List<UserItem> userItems) {
+        setKeyValueForPackage(archiveJson, userItems, true);
+    }
+
+    public void setKeyValueForPackage(JSONObject archiveJson, List<UserItem> userItems, boolean add) {
+        if (userItems == null || userItems.isEmpty()){
+            return;
+        }
+        long count;
+        for (UserItem item:
+                userItems) {
+            count = item.getCount();
+            if (add) {
+                count += archiveJson.getLongValue(item.getItemId());
+            }
+            archiveJson.put(item.getItemId(), count);
+        }
+    }
+
+    public void setKeyValueForPackage(JSONObject archiveJson, String key, Long value, boolean add) {
         String[] keyArray = key.split("\\.");
         JSONObject tempJson = archiveJson;
         String currentKey = null;
+        long count = value;
         for (int i = 0; i < keyArray.length - 1; ) {
             currentKey = keyArray[i];
             // 遍历key，当到最底层后，设置对应json值
@@ -118,28 +155,14 @@ public class ArchiveUtil {
             }
         }
         if (StringUtils.hasText(currentKey)) {
-            tempJson.put(currentKey, value);
+            if (add) {
+                count += archiveJson.getLongValue(currentKey);
+            }
+            tempJson.put(currentKey, count);
         }
     }
 
-    public void setKeyValue(JSONObject archiveJson, List<ArchivePartDto> parts) {
-        if (archiveJson == null || parts == null || parts.isEmpty()) {
-            return;
-        }
-        for (ArchivePartDto part:
-                parts) {
-            setKeyValueForPackage(archiveJson, part.getKey(), part.getCount());
-        }
-    }
 
-    public void setKeyValueForPackage(JSONObject archiveJson, List<UserItem> userItems) {
-        if (userItems == null || userItems.isEmpty()){
-            return;
-        }
-        for (UserItem item:
-             userItems) {
-            archiveJson.put(item.getItemId(), item.getCount());
-        }
-    }
+
 
 }

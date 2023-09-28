@@ -6,7 +6,8 @@
 
     <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.ExRedeemCode">
             <id property="id" column="ID" jdbcType="BIGINT"/>
-            <result property="cdKey" column="CD_KEY" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <result property="cdKey" column="CD_KEY" jdbcType="VARCHAR" />
+            <result property="money" column="MONEY" jdbcType="INTEGER" />
             <result property="point" column="POINT" jdbcType="VARCHAR"/>
             <result property="isUsed" column="IS_USED" jdbcType="TINYINT"/>
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
@@ -15,7 +16,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID,CDKEY,POINT,
+        ID,CDKEY,MONEY,POINT,
         IS_USED,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>

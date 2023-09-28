@@ -9,6 +9,8 @@
             <result property="gameId" column="GAME_ID" jdbcType="BIGINT"/>
             <result property="label" column="LABEL" jdbcType="VARCHAR"/>
             <result property="key" column="KEY" jdbcType="VARCHAR"/>
+            <result property="price" column="PRICE" jdbcType="INTEGER"/>
+            <result property="amount" column="AMOUNT" jdbcType="INTEGER"/>
             <result property="itemId" column="ITEM_ID" jdbcType="VARCHAR"/>
             <result property="enable" column="ENABLE" jdbcType="TINYINT"/>
             <result property="isPackage" column="IS_PACKAGE" jdbcType="TINYINT" />
@@ -19,7 +21,7 @@
 
     <sql id="Base_Column_List">
         ID,GAME_ID,LABEL,
-        `KEY`,`ITEM_ID`,IS_PACKAGE,`ENABLE`,SPECIAL,GMT_CREATE,
+        `KEY`, PRICE, AMOUNT`ITEM_ID`,IS_PACKAGE,`ENABLE`,SPECIAL,GMT_CREATE,
         GMT_MODIFIED,DELETED
     </sql>
 </mapper>

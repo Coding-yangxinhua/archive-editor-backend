@@ -2,6 +2,9 @@ package com.pwc.sdc.archive.service;
 
 import com.pwc.sdc.archive.domain.ExRedeemCode;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -11,6 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ExRedeemCodeService extends IService<ExRedeemCode> {
     ExRedeemCode getByCdKey(String cdKey);
 
+    List<String> generate(Integer money, Integer point, Integer size);
     Integer exchange(Long userId, String cdKey);
 
 }

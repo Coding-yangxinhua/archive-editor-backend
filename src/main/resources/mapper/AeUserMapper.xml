@@ -20,6 +20,9 @@
         ID,ACCOUNT,PASSWORD,
         USER_NAME,POINT,BAN_TIME,GMT_CREATE,GMT_MODIFIED
     </sql>
+    <update id="changePoint">
+        UPDATE AE_USER SET POINT = POINT + #{point} WHERE ID = #{userId} AND DELETED = ${STATE_NO}
+    </update>
 
     <select id="getUserByAccount" resultType="com.pwc.sdc.archive.domain.AeUser">
         SELECT <include refid="Base_Column_List" />

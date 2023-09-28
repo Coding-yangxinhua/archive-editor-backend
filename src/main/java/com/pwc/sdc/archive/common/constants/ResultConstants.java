@@ -14,4 +14,6 @@ public class ResultConstants {
     public static final String NOT_NULL = "不能为空";
 
     public static final String CD_KEY_ERROR = "CdKey不存在或已使用";
+
+    public static final String ERROR_CONFIGURATION = "错误的配置";
 }

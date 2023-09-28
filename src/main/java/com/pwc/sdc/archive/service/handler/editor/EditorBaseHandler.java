@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.common.utils.ArchiveUtil;
+import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.pwc.sdc.archive.domain.AeGameItem;
 import com.pwc.sdc.archive.domain.dto.ArchivePartDto;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
@@ -42,7 +43,7 @@ public class EditorBaseHandler {
         String itemId;
         Object valueObject;
         long itemCount;
-        AeGameItem aeGameItems;
+        AeGameItem gameItem;
         // 获得背包对应json
         String keyValue = ArchiveUtil.getValueString(this.archiveJson, key);
         JSONObject packageJson = JSON.parseObject(keyValue);
@@ -60,10 +61,12 @@ public class EditorBaseHandler {
             // 转为Long类型
             itemCount = Long.parseLong(String.valueOf(valueObject));
             // 设置item label与item url
-            aeGameItems = itemMap.get(itemId);
-            if (aeGameItems != null) {
-                userItem.setUrl(aeGameItems.getUrl());
-                userItem.setLabel(aeGameItems.getLabel());
+            gameItem = itemMap.get(itemId);
+            if (gameItem != null) {
+                userItem.setUrl(gameItem.getUrl());
+                userItem.setLabel(gameItem.getLabel());
+                userItem.setPrice(gameItem.getPrice());
+                userItem.setAmount(gameItem.getAmount());
             }
             // 设置item id与 item count
             userItem.setItemId(entry.getKey());
@@ -79,20 +82,17 @@ public class EditorBaseHandler {
     /**
      * 加载普通项
      */
-    public void loadParts(String key, String label, String packageKey) {
-        // 正常的值
-        ArchivePartDto temp = new ArchivePartDto();
-        temp.setKey(key);
-        temp.setLabel(label);
-        temp.setCount(Long.valueOf(ArchiveUtil.getValueString(archiveJson, key)));
-        temp.setItemId(packageKey);
+    public void loadParts(AeGameArchivePart part) {
+        ArchivePartDto temp = new ArchivePartDto(part);
+        temp.setCount(Long.valueOf(ArchiveUtil.getValueString(archiveJson, part.getKey())));
         this.archiveEntity.getParts().add(temp);
     }
+
 
     public void loadArchiveJsonByEntity(UserArchive userArchive) {
         // 设置普通项
         List<ArchivePartDto> parts = userArchive.getParts();
-        ArchiveUtil.setKeyValue(this.archiveJson, parts);
+        ArchiveUtil.addKeyValue(this.archiveJson, parts);
         // 将需要设置到背包里的道具提取出来
         List<UserItem> partItemList = parts.stream().filter(i -> StringUtils.hasText(i.getItemId())).map(UserItem::new).collect(Collectors.toList());
         // 循环设置背包项
@@ -100,7 +100,7 @@ public class EditorBaseHandler {
         userPackage.getItems().addAll(partItemList);
         // 获得背包对应json
         JSONObject packageJson = ArchiveUtil.getKeyJson(this.archiveJson, userPackage.getKey());
-        ArchiveUtil.setKeyValueForPackage(packageJson, userPackage.getItems());
+        ArchiveUtil.addKeyValueForPackage(packageJson, userPackage.getItems());
     }
 
     public JSONObject loadArchiveJsonByEntity() {

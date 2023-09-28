@@ -32,6 +32,8 @@ public class ExRedeemCode implements Serializable {
      */
     private String cdKey;
 
+    private Integer money;
+
     /**
      * 积分
      */
@@ -60,8 +62,9 @@ public class ExRedeemCode implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public ExRedeemCode(String cdKey, int point) {
+    public ExRedeemCode(Integer money, String cdKey, int point) {
         this.cdKey = cdKey;
+        this.money = money;
         this.point = point;
         this.isUsed = EnableStatus.DISABLE.value();
     }

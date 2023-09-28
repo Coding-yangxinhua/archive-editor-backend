@@ -80,6 +80,36 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         this.update(updateWrapper);
     }
 
+    @Override
+    public int changePoint(Long userId, Integer point) {
+        AeUserDto userInfoById = getUserInfoById(userId);
+        Integer pointDB = userInfoById.getPoint();
+        // 花费的Point > 用户持有的Point
+        if (pointDB + point < 0) {
+            return pointDB + point;
+        }
+        baseMapper.changePoint(userId, point);
+        return pointDB + point;
+    }
+
+    @Override
+    public int addPoint(Long userId, Integer point) {
+        if (point < 0) {
+            return -1;
+        }
+        return changePoint(userId, point);
+    }
+
+    @Override
+    public int costPoint(Long userId, Integer point) {
+        if (point < 0) {
+            return -1;
+        }
+        return changePoint(userId, -point);
+    }
+
+
+
 }
 
 

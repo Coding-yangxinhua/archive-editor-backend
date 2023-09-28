@@ -22,4 +22,10 @@ public interface AeUserService extends IService<AeUser> {
 
     void updateUserInfo(AeUserDto userDto);
 
+    int costPoint(Long userId, Integer point);
+
+    int addPoint(Long userId, Integer point);
+
+    int changePoint(Long userId, Integer point);
+
 }

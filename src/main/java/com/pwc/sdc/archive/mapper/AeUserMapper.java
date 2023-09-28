@@ -14,6 +14,7 @@ public interface AeUserMapper extends BaseMapper<AeUser> {
 
     AeUser getUserByAccount(@Param("account") String account);
 
+    boolean changePoint(@Param("userId") Long userId, @Param("point") Integer point);
 }
 
 
