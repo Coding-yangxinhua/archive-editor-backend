@@ -10,6 +10,7 @@ import com.pwc.sdc.archive.common.enums.ResultStatus;
 import com.pwc.sdc.archive.common.handler.MailService;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.service.AeUserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +31,19 @@ public class UserController {
     private MailService mailService;
 
     @PostMapping("/register")
+    @ApiOperation(value = "用户注册", httpMethod = "POST")
     public ResponseEntity<String> register(@RequestBody @Validated(ValidConstant.User.Register.class) AeUserDto aeUserDto) {
         return userService.saveUser(aeUserDto);
     }
 
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录", httpMethod = "POST")
     public ResponseEntity<String> login(@RequestBody @Validated(ValidConstant.User.Login.class) AeUserDto aeUserDto) {
         return userService.login(aeUserDto);
     }
 
     @PostMapping("/sendResetCode")
+    @ApiOperation(value = "发送重置密码验证码", httpMethod = "POST")
     public ResponseEntity<String> sendResetCode() {
         boolean success = this.mailService.sendVerifyCode(USER_CODE + StpUtil.getLoginId(), MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
         if (success) {
@@ -49,6 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
+    @ApiOperation(value = "重置密码", httpMethod = "POST")
     public ResponseEntity<String> resetPassword(String code, String newPassword) {
         boolean codeRight = mailService.verifyCode(USER_CODE + StpUtil.getLoginId(), code);
         if (!codeRight) {
@@ -64,6 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUser")
+    @ApiOperation(value = "更新用户信息", httpMethod = "POST")
     public ResponseEntity<String> updateUser(AeUserDto userDto) {
         // 判断是否为管理员
         boolean admin = StpUtil.hasRole(RoleConstants.ADMIN);

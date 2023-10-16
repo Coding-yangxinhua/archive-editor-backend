@@ -17,14 +17,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("activity")
 public class ActivityController {
 
 
-    @ApiOperation("")
+    @ApiOperation("signIn")
     @Auth(roles = {RoleConstants.ADMIN})
-//    @RequestMapping("generate")
-    public ResponseEntity<List<String>> generate(@RequestParam("point") Integer point, @RequestParam("size") Integer size) {
+    @RequestMapping("signIn")
+    public ResponseEntity<List<String>> generate() {
        return ResponseEntity.ok();
     }
+
+
 }

@@ -13,6 +13,7 @@ import com.pwc.sdc.archive.domain.dto.GameItemDto;
 import com.pwc.sdc.archive.service.AeGameItemService;
 import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.service.listener.GameItemImportListener;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,7 @@ public class GameItemController {
     @Autowired
     private AeGameItemService gameItemService;
     @GetMapping("/list")
+    @ApiOperation(value = "查看游戏道具列表", httpMethod = "GET")
     public ResponseEntity<IPage<AeGameItem>> list(@RequestParam(value = "gameId") Long gameId, @RequestParam(value = "itemName", required = false) String label, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         return ResponseEntity.ok(gameItemService.listItemsByLabel(gameId, label, page, size));
     }
@@ -36,13 +38,15 @@ public class GameItemController {
 
     @PostMapping("/saveOrUpdate")
     @Auth(roles = {RoleConstants.ADMIN})
+    @ApiOperation(value = "新增或修改游戏道具", httpMethod = "POST")
     public ResponseEntity<String> saveOrUpdate(List<AeGameItem> games) {
         gameItemService.saveOrUpdateBatch(games);
         return ResponseEntity.ok();
     }
 
-    @GetMapping("/import")
+    @PostMapping("/import")
     @Auth(roles = {RoleConstants.ADMIN})
+    @ApiOperation(value = "导入游戏道具信息", httpMethod = "POST")
     public ResponseEntity<String> saveByImport(@RequestParam("gameId") Long gameId, @RequestPart("file") MultipartFile file) throws IOException {
         GameItemImportListener gameItemImportListener = new GameItemImportListener(gameId, gameItemService);
         EasyExcel.read(file.getInputStream(), GameItemDto.class, gameItemImportListener).sheet().doRead();
@@ -51,6 +55,7 @@ public class GameItemController {
 
     @GetMapping("/export")
     @Auth(roles = {RoleConstants.ADMIN})
+    @ApiOperation(value = "导出游戏所有道具", httpMethod = "GET")
     public ResponseEntity<String> export(@RequestParam("gameId") Long gameId, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
