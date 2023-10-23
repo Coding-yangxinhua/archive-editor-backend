@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@ApiOperation("用户接口")
 @RestController
 @RequestMapping("user")
 public class UserController {

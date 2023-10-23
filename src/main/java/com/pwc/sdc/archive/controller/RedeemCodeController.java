@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiOperation("兑换码接口")
 @RestController
 @RequestMapping("redeemCode")
 public class RedeemCodeController {

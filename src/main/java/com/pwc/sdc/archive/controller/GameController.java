@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@ApiOperation("游戏接口")
 @RestController
 @RequestMapping("game")
 public class GameController {

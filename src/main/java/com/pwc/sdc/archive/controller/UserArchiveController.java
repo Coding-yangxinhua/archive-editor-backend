@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@ApiOperation("用户存档接口")
 @RestController
 @RequestMapping("userArchive")
 public class UserArchiveController {

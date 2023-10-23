@@ -7,11 +7,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.handler.ArchiveHttpHandler;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 
+@ApiOperation("后端测试接口")
 @RestController
 @RequestMapping("test")
 public class TestController {

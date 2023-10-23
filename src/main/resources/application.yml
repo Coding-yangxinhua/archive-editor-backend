@@ -46,7 +46,7 @@ knife4j:
     title: Archive Editor 文档
     description: 这个Archive Editor的文档
     email: yangxinhua152@gmail.com
-    url: http://localhost:8899/
+    url: http://192.210.197.111:8899/
     version: v4.0
     license: Apache 2.0
 

@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiOperation("游戏道具接口")
 @RestController
 @RequestMapping("gameItem")
 public class GameItemController {
