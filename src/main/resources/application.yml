@@ -70,3 +70,7 @@ system:
   invitation:
     enableRegister: true
     rate: 0.25
+  bind:
+    # 换绑间隔时间 1天
+    interval: 86400
+    buyCost: 1000

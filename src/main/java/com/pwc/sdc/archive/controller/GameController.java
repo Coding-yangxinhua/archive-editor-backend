@@ -50,4 +50,5 @@ public class GameController {
     public ResponseEntity<AeGame> detail(@RequestParam(value = "gameId", required = false) Long gameId) {
         return ResponseEntity.ok(gameService.getGameById(gameId));
     }
+
 }

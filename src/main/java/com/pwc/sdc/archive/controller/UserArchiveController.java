@@ -5,6 +5,7 @@ import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.AeUserArchiveService;
+import com.pwc.sdc.archive.service.AeUserGamePlatformService;
 import com.pwc.sdc.archive.service.handler.ArchiveAnalysisHandler;
 import com.pwc.sdc.archive.service.handler.ArchiveHttpHandler;
 import io.swagger.annotations.ApiOperation;
@@ -20,10 +21,21 @@ public class UserArchiveController {
     AeUserArchiveService userArchiveService;
 
     @Autowired
+    AeUserGamePlatformService userGamePlatformService;
+
+    @Autowired
     ArchiveAnalysisHandler archiveAnalysisHandler;
 
     @Autowired
     ArchiveHttpHandler httpHandler;
+
+    @ApiOperation("绑定游戏对应平台账号")
+    @PostMapping("/bind")
+    public ResponseEntity<UserArchive> bindGame (@RequestBody UserGamePlatformDto userGamePlatform, @RequestParam Integer buy) {
+        userGamePlatform.setUserId(StpUtil.getLoginIdAsLong());
+        userGamePlatformService.saveOrUpdateWithCheck(userGamePlatform, buy);
+        return ResponseEntity.ok();
+    }
 
     @ApiOperation("获得用户存档")
     @GetMapping("/get")
@@ -33,9 +45,12 @@ public class UserArchiveController {
 
     @ApiOperation("更新用户存档")
     @PutMapping("/update")
-    public ResponseEntity<Integer> updateArchive (@RequestBody UserArchive userArchive) {
+    public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive) {
         int i = archiveAnalysisHandler.addUserArchive(userArchive);
-        return ResponseEntity.ok(i);
+        if (i > 0) {
+            return ResponseEntity.error("积分不够, 还差 " + i + "积分" );
+        }
+        return ResponseEntity.ok();
     }
 
     @ApiOperation("上传用户存档")

@@ -11,11 +11,9 @@ import com.pwc.sdc.archive.service.AeGamePlatformService;
 import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.service.AeUserArchiveService;
 import com.pwc.sdc.archive.service.AeUserGamePlatformService;
-import com.pwc.sdc.archive.service.handler.fill.FillAnimalHandler;
 import com.pwc.sdc.archive.service.handler.fill.FillBaseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -69,7 +67,7 @@ public class ArchiveHttpHandler {
         // 根据值设置用户相关信息
         handler.setLoginByResponse(responseJson);
         // 入库
-        userGamePlatformService.saveOrUpdateByInfo(handler.getUser());
+        userGamePlatformService.updateByInfo(handler.getUser());
         log.info("登录成功");
     }
 
@@ -91,7 +89,7 @@ public class ArchiveHttpHandler {
         // 根据响应体设置存档
         handler.setArchiveByResponse(responseJson);
         // 更新用户信息
-        userGamePlatformService.saveOrUpdateByInfo(handler.getUser());
+        userGamePlatformService.updateByInfo(handler.getUser());
         return handler.getArchive();
     }
 

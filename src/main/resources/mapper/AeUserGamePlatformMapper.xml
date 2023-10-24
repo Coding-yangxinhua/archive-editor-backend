@@ -24,7 +24,7 @@
         `SESSION`,EXTRA,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>
-    <update id="saveOrUpdateByInfo">
+    <update id="updateByInfo">
         UPDATE AE_USER_GAME_PLATFORM
         <set>
             <if test="user.gameLoginId != null">
@@ -45,18 +45,15 @@
             <if test="user.extra != null and user.extra != ''">
                 EXTRA = #{user.extra}
             </if>
+            <if test="user.gmtCreate != null">
+                GMT_CREATE = #{user.gmtCreate}
+            </if>
         </set>
         <where>
             DELETED = ${STATE_NO}
-            <if test="user.userId != null">
-                AND USER_ID = #{user.userId}
-            </if>
-            <if test="user.gameId != null">
-                AND GAME_ID = #{user.gameId}
-            </if>
-            <if test="user.platformId != null">
-                AND PLATFORM_ID = #{user.platformId}
-            </if>
+            AND USER_ID = #{user.userId}
+            AND GAME_ID = #{user.gameId}
+            AND PLATFORM_ID = #{user.platformId}
         </where>
 
 

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -99,6 +100,7 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         AeUserDto userInfoById = getUserInfoById(userId);
         Integer pointDB = userInfoById.getPoint();
         // 花费的Point > 用户持有的Point
+        Assert.isTrue(pointDB + point >= 0, "剩余积分不够");
         if (pointDB + point < 0) {
             return pointDB + point;
         }

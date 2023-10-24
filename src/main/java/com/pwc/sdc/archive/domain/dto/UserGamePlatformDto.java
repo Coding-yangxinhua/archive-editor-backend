@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -36,6 +37,8 @@ public class UserGamePlatformDto implements Serializable {
 
     private JSONObject extraJson;
 
+    private Date gmtCreate;
+
     public UserGamePlatformDto (AeUserGamePlatform aeUserGamePlatform) {
         this.id = aeUserGamePlatform.getId();
         this.userId = aeUserGamePlatform.getUserId();
@@ -47,6 +50,7 @@ public class UserGamePlatformDto implements Serializable {
         this.openId = aeUserGamePlatform.getOpenId();
         this.session = aeUserGamePlatform.getSession();
         this.setExtra(aeUserGamePlatform.getExtra());
+        this.gmtCreate = aeUserGamePlatform.getGmtCreate();
     }
 
     public UserGamePlatformDto (Long userId, Long gameId, Long platformId) {
@@ -81,6 +85,7 @@ public class UserGamePlatformDto implements Serializable {
         entity.setOpenId(openId);
         entity.setSession(session);
         entity.setExtra(extra);
+        entity.setGmtCreate(gmtCreate);
         return entity;
     }
 }
