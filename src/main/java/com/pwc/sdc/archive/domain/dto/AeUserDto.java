@@ -36,7 +36,7 @@ public class AeUserDto implements Serializable {
      * 用户密码
      */
     @NotEmpty(message = "密码不能为空", groups = {ValidConstant.User.Register.class, ValidConstant.User.Login.class})
-    @Length(message = "密码至少要六位", groups = {ValidConstant.User.Register.class})
+    @Length(min = 6, message = "密码至少要六位", groups = {ValidConstant.User.Register.class})
     private String password;
 
     /**

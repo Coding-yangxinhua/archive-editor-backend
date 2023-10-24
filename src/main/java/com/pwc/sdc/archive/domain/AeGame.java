@@ -58,10 +58,10 @@ public class AeGame implements Serializable {
     private Date gmtModified;
 
     /**
-     * 修改时间
+     * 逻辑删除
      */
-    @TableLogic
-    private int deleted;
+    @TableField(fill = FieldFill.INSERT)
+    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

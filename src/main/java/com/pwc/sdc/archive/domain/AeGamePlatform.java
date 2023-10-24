@@ -1,9 +1,7 @@
 package com.pwc.sdc.archive.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -64,16 +62,19 @@ public class AeGamePlatform implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**
      * 逻辑删除
      */
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
     @TableField(exist = false)

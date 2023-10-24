@@ -3,8 +3,6 @@ package com.pwc.sdc.archive.common.handler;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.pwc.sdc.archive.common.bean.ResponseEntity;
-import com.pwc.sdc.archive.common.constants.MailConstants;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.service.AeUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

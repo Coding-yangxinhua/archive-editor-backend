@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -55,16 +56,19 @@ public class AeGameArchivePart implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**
      * 逻辑删除
      */
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
     @TableField(exist = false)
