@@ -44,7 +44,7 @@
                 `SESSION` = #{user.session},
             </if>
             <if test="user.extra != null and user.extra != ''">
-                EXTRA = #{user.extra}
+                EXTRA = #{user.extra},
             </if>
             <if test="user.bindTime != null">
                 BIND_TIME = #{user.bindTime}
