@@ -11,13 +11,14 @@ import com.pwc.sdc.archive.domain.dto.AeUserDto;
 import com.pwc.sdc.archive.domain.dto.GameDto;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.service.AeGameService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@ApiOperation("游戏接口")
+@Api("游戏接口")
 @RestController
 @RequestMapping("game")
 public class GameController {

@@ -13,6 +13,7 @@ import com.pwc.sdc.archive.domain.dto.GameItemDto;
 import com.pwc.sdc.archive.service.AeGameItemService;
 import com.pwc.sdc.archive.service.AeGameService;
 import com.pwc.sdc.archive.service.listener.GameItemImportListener;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApiOperation("游戏道具接口")
+@Api("游戏道具接口")
 @RestController
 @RequestMapping("gameItem")
 public class GameItemController {

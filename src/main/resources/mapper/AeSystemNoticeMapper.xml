@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pwc.sdc.archive.mapper.AeSystemNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="com.pwc.sdc.archive.domain.AeSystemNotice">
+            <id property="id" column="ID" jdbcType="BIGINT"/>
+            <result property="title" column="TITLE" jdbcType="VARCHAR"/>
+            <result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+            <result property="enable" column="ENABLE" jdbcType="TINYINT"/>
+            <result property="startDate" column="START_DATE" jdbcType="TIMESTAMP"/>
+            <result property="endDate" column="END_DATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,TITLE,CONTENT,
+        ENABLE,START_DATE,END_DATE,
+        GMT_CREATE,GMT_MODIFIED,DELETED
+    </sql>
+    <select id="listNoticeByActive" resultType="com.pwc.sdc.archive.domain.AeSystemNotice">
+        SELECT <include refid="Base_Column_List" />
+        FROM AE_SYSTEM_NOTICE
+        WHERE ENABLE = ${STATE_YES}
+        AND START_DATE <![CDATA[<=]]> #{today}
+        AND END_DATE >= #{today}
+    </select>
+</mapper>

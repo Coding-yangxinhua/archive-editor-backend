@@ -9,6 +9,7 @@ import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.RoleConstants;
 import com.pwc.sdc.archive.domain.ExRedeemCode;
 import com.pwc.sdc.archive.service.ExRedeemCodeService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApiOperation("兑换码接口")
+@Api("兑换码接口")
 @RestController
 @RequestMapping("redeemCode")
 public class RedeemCodeController {

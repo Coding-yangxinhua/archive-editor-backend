@@ -6,6 +6,7 @@ import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.RoleConstants;
 import com.pwc.sdc.archive.domain.ExRedeemCode;
 import com.pwc.sdc.archive.service.ExRedeemCodeService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApiOperation("活动接口")
+@Api("活动接口")
 @RestController
 @RequestMapping("activity")
 public class ActivityController {

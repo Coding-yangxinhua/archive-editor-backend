@@ -8,11 +8,12 @@ import com.pwc.sdc.archive.service.AeUserArchiveService;
 import com.pwc.sdc.archive.service.AeUserGamePlatformService;
 import com.pwc.sdc.archive.service.handler.ArchiveAnalysisHandler;
 import com.pwc.sdc.archive.service.handler.ArchiveHttpHandler;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@ApiOperation("用户存档接口")
+@Api("用户存档接口")
 @RestController
 @RequestMapping("userArchive")
 public class UserArchiveController {
