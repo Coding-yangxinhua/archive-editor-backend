@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -74,14 +75,14 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     }
 
     @Override
-    @Cacheable(cacheNames = USER_KEY, key = "#userId")
-    public AeUserDto getUserInfoById(Long userId) {
+    @Cacheable(cacheNames = USER_KEY, key = "#userId", condition = "#userId != null")
+    public AeUserDto getUserInfoById(@NotNull Long userId) {
         AeUser user = this.getById(userId);
         return new AeUserDto(user);
     }
 
     @Override
-    @CacheEvict(cacheNames = USER_KEY, key = "#userDto.id")
+    @CacheEvict(cacheNames = USER_KEY, key = "#userDto.id", condition = "#userDto.id != null")
     public void updateUserInfo(AeUserDto userDto) {
         if (userDto.getId() == null) {
             return;

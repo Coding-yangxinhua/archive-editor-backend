@@ -86,7 +86,10 @@ public class ExRedeemCodeServiceImpl extends ServiceImpl<ExRedeemCodeMapper, ExR
             // 获得用户信息
             AeUserDto user = userService.getUserInfoById(userId);
             // 获得邀请者信息
-            AeUserDto inviter = userService.getUserInfoById(user.getInviter());
+            AeUserDto inviter = null;
+            if (user.getInviter() != null) {
+                inviter = userService.getUserInfoById(user.getInviter());
+            }
             // 获得激活码数据
             ExRedeemCode redeemCode = this.getByCdKey(cdKey);
             Assert.notNull(redeemCode, ResultConstants.CD_KEY_ERROR);
