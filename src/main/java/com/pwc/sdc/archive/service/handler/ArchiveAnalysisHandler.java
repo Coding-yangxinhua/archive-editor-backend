@@ -14,6 +14,7 @@ import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserItem;
 import com.pwc.sdc.archive.service.*;
 import com.pwc.sdc.archive.service.handler.editor.EditorBaseHandler;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,6 +93,11 @@ public class ArchiveAnalysisHandler {
     public int addUserArchive(UserArchive userArchive) {
         // 获得该用户此游戏最新的一份存档
         AeUserArchive latestUserArchive = userArchiveService.getLatestUserArchive(userArchive.getGameId(), userArchive.getUserId(), userArchive.getPlatformId());
+        if (latestUserArchive == null) {
+            latestUserArchive = new AeUserArchive();
+            BeanUtils.copyProperties(userArchive, latestUserArchive);
+            latestUserArchive.setVersion(0);
+        }
         UserGamePlatformDto user = new UserGamePlatformDto(userArchive.getUserId(), userArchive.getGameId(), userArchive.getPlatformId());
         // 登录请求网络最新存档数据
         String archive = httpHandler.downloadArchive(user);
@@ -138,26 +144,36 @@ public class ArchiveAnalysisHandler {
                 parts) {
             // 防止用户篡改前端传来的值
             partDB = partMap.get(part.getId());
+            // 数量为零，跳过
+            if ( part.getCountRight() == 0 || partDB.getAmount() == null) {
+                part.setCount(0L);
+                continue;
+            }
             // 防止用户获取配置以外的值
             Assert.notNull(part, ResultConstants.ERROR_CONFIGURATION);
             // 防止用户购买非正常数量的道具
             count = part.getCountRight() /  partDB.getAmount();
             count = count > 0 ? count : 1;
             // 叠加总价
-            priceSum += count * partDB.getPrice();
+            priceSum += (int) (count * partDB.getPrice());
         }
         // 计算item所需point
         for (UserItem item:
                 items) {
             // 防止用户篡改前端传来的值
             itemDB = itemMap.get(item.getItemId());
+            // 数量为零，跳过
+            if ( item.getCountRight() == 0 || itemDB == null) {
+                item.setCount(0L);
+                continue;
+            }
             // 防止用户获取配置以外的值
             Assert.notNull(itemDB, ResultConstants.ERROR_CONFIGURATION);
             // 防止用户购买非正常数量的道具
-            count = item.getCountRight() /  item.getAmount();
+            count = item.getCountRight() /  itemDB.getAmount();
             count = count > 0 ? count : 1;
             // 叠加总价
-            priceSum += count * item.getPrice();
+            priceSum += (int) (count * item.getPrice());
         }
         int restPoint = userService.costPoint(userArchive.getUserId(), priceSum);
         if (restPoint >= 0) {

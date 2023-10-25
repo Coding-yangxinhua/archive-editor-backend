@@ -50,8 +50,8 @@ public class UserArchiveController {
     public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive) {
         userArchive.setUserId(StpUtil.getLoginIdAsLong());
         int i = archiveAnalysisHandler.addUserArchive(userArchive);
-        if (i > 0) {
-            return ResponseEntity.error("积分不够, 还差 " + i + "积分" );
+        if (i < 0) {
+            return ResponseEntity.error("积分不够, 还差 " + -i + "积分" );
         }
         return ResponseEntity.ok();
     }
