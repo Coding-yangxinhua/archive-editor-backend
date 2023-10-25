@@ -9,9 +9,12 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class GamePlatformDto extends AeGamePlatform {
+public class GamePlatformDto extends AeGamePlatform implements Serializable {
+    private Long userId;
 
     private String gameName;
 
     private Long platformName;
+
+
 }

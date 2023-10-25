@@ -25,14 +25,17 @@ public class GameController {
     @Autowired
     private AeGameService gameService;
     @GetMapping("/list")
-    @ApiOperation(value = "游戏列表查询", httpMethod = "GET")
+    @ApiOperation(value = "游戏列表查询， ", httpMethod = "GET")
     public ResponseEntity<IPage<GameDto>> list(@RequestBody GamePlatformDto gamePlatformDto, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return ResponseEntity.ok(gameService.listByUserId(gamePlatformDto.getGameId(),gamePlatformDto.getPlatformId(), StpUtil.getLoginIdAsLong(), page, size));
+        if (gamePlatformDto.getUserId() != null) {
+            gamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
+        }
+        return ResponseEntity.ok(gameService.listByUserId(gamePlatformDto, page, size));
     }
 
-    @PostMapping("/star")
+    @PostMapping("/listStar")
     @ApiOperation(value = "收藏游戏", httpMethod = "POST")
-    public ResponseEntity<String> star(Long gameId) {
+    public ResponseEntity<String> listStar(Long gameId) {
         gameService.starGame(StpUtil.getLoginIdAsLong(), gameId);
         return ResponseEntity.ok();
     }

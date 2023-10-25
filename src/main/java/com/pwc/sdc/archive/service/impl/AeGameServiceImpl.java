@@ -45,9 +45,9 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     private AeGameService gameService;
 
     @Override
-    public IPage<GameDto> listByUserId(@Nullable Long gameId, @Nullable Long platformId, @Nullable Long userId, Integer page, Integer size) {
+    public IPage<GameDto> listByUserId(GamePlatformDto gamePlatformDto, Integer page, Integer size) {
         Page<GameDto> gamePage = new Page<>(page, size);
-        return baseMapper.listByUserId(gamePage, gameId, platformId, userId);
+        return baseMapper.listByUserId(gamePage, gamePlatformDto);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class UserGamePlatformDto implements Serializable {
 
     private JSONObject extraJson;
 
-    private Date gmtCreate;
+    private Date bindTime;
 
     public UserGamePlatformDto (AeUserGamePlatform aeUserGamePlatform) {
         this.id = aeUserGamePlatform.getId();
@@ -50,7 +50,7 @@ public class UserGamePlatformDto implements Serializable {
         this.openId = aeUserGamePlatform.getOpenId();
         this.session = aeUserGamePlatform.getSession();
         this.setExtra(aeUserGamePlatform.getExtra());
-        this.gmtCreate = aeUserGamePlatform.getGmtCreate();
+        this.bindTime = aeUserGamePlatform.getBindTime();
     }
 
     public UserGamePlatformDto (Long userId, Long gameId, Long platformId) {
@@ -85,7 +85,7 @@ public class UserGamePlatformDto implements Serializable {
         entity.setOpenId(openId);
         entity.setSession(session);
         entity.setExtra(extra);
-        entity.setGmtCreate(gmtCreate);
+        entity.setBindTime(bindTime);
         return entity;
     }
 }

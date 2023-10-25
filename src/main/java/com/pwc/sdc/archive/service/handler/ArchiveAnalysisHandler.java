@@ -54,20 +54,18 @@ public class ArchiveAnalysisHandler {
 
     /**
      * 获得用户存档信息包含普通物品与背包物品
-     * @param gameId
-     * @param userId
+     * @param user
      * @return
      */
-    public UserArchive getUserArchive(Long gameId, Long userId, Long platformId) {
-        UserGamePlatformDto user = new UserGamePlatformDto(gameId, userId, platformId);
+    public UserArchive getUserArchive(UserGamePlatformDto user) {
         // 登录请求网络最新存档数据
         String latestUserArchive = httpHandler.downloadArchive(user);
         // 转换存档为JSON格式
         JSONObject archiveJson = JSON.parseObject(latestUserArchive);
         // 获得此游戏可修改的存档部分
-        List<AeGameArchivePart> partByGameId = aeGameArchivePartService.getPartByGameId(gameId);
+        List<AeGameArchivePart> partByGameId = aeGameArchivePartService.getPartByGameId(user.getGameId());
         String key;
-        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, new UserArchive(gameId, userId, platformId));
+        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, new UserArchive(user.getGameId(), user.getUserId(), user.getPlatformId()));
         for (AeGameArchivePart part:
              partByGameId) {
             key = part.getKey();
@@ -76,7 +74,7 @@ public class ArchiveAnalysisHandler {
                 // 是否需要特殊处理
                 if (1 == part.getIsPackage()) {
                     // 增加背包项
-                    editorHandler.loadPackage(key, gameItemService.mapItemsByGameId(gameId));
+                    editorHandler.loadPackage(key, gameItemService.mapItemsByGameId(user.getGameId()));
                     continue;
                 }
                 // 增加普通项

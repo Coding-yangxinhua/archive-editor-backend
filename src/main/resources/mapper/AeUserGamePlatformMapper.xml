@@ -13,6 +13,7 @@
             <result property="gameLoginId" column="GAME_LOGIN_ID" jdbcType="BIGINT"/>
             <result property="openId" column="OPEN_ID" jdbcType="VARCHAR"/>
             <result property="session" column="SESSION" jdbcType="VARCHAR"/>
+            <result property="bindTime" column="BIND_TIME" jdbcType="TIMESTAMP"/>
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
@@ -21,7 +22,7 @@
     <sql id="Base_Column_List">
         ID,USER_ID,GAME_ID,
         PLATFORM_ID,GAME_USER_ID,GAME_USER_NAME,GAME_LOGIN_ID,OPEN_ID,
-        `SESSION`,EXTRA,GMT_CREATE,GMT_MODIFIED,
+        `SESSION`,EXTRA,BIND_TIME,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>
     <update id="updateByInfo">
@@ -45,8 +46,8 @@
             <if test="user.extra != null and user.extra != ''">
                 EXTRA = #{user.extra}
             </if>
-            <if test="user.gmtCreate != null">
-                GMT_CREATE = #{user.gmtCreate}
+            <if test="user.bindTime != null">
+                BIND_TIME = #{user.bindTime}
             </if>
         </set>
         <where>

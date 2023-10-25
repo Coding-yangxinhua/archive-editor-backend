@@ -39,14 +39,16 @@ public class UserArchiveController {
     }
 
     @ApiOperation("获得用户存档")
-    @GetMapping("/get")
-    public ResponseEntity<UserArchive> getArchive (@RequestParam("gameId") Long gameId, @RequestParam("platform") Long platformId) {
-        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(gameId, StpUtil.getLoginIdAsLong(), platformId));
+    @PostMapping("/get")
+    public ResponseEntity<UserArchive> getArchive (@RequestBody UserGamePlatformDto user) {
+        user.setUserId(StpUtil.getLoginIdAsLong());
+        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user));
     }
 
     @ApiOperation("更新用户存档")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive) {
+        userArchive.setUserId(StpUtil.getLoginIdAsLong());
         int i = archiveAnalysisHandler.addUserArchive(userArchive);
         if (i > 0) {
             return ResponseEntity.error("积分不够, 还差 " + i + "积分" );

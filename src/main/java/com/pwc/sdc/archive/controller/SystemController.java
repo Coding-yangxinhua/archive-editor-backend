@@ -48,7 +48,7 @@ public class SystemController {
     @Auth(roles = {RoleConstants.ADMIN})
     @GetMapping("/deleteBatch")
     @ApiOperation(value = "删除公告", httpMethod = "GET")
-    public ResponseEntity<String> add(List<Long> ids) {
+    public ResponseEntity<String> add(@RequestBody List<Long> ids) {
         systemNoticeService.removeBatchByIds(ids);
         return ResponseEntity.ok();
     }

@@ -62,6 +62,8 @@ public class AeUserGamePlatform implements Serializable {
 
     private String extra;
 
+    private Date bindTime;
+
     /**
      * 创建时间
      */

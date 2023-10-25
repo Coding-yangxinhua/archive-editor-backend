@@ -18,7 +18,7 @@ public class AeGamePlatformServiceImpl extends ServiceImpl<AeGamePlatformMapper,
     implements AeGamePlatformService{
 
     @Override
-    @Cacheable(cacheNames = GAME_PLATFORM)
+    @Cacheable(cacheNames = GAME_PLATFORM, key = "#gameId + ':' + #platformId", condition = "#gameId != null && #platformId != null")
     public GamePlatformDto getGamePlatform(Long gameId, Long platformId) {
         return baseMapper.getGamePlatform(gameId, platformId);
     }

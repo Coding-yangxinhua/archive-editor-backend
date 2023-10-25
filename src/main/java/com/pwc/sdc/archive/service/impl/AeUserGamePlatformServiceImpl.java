@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
 * @author Xinhua X Yang
@@ -53,27 +55,31 @@ public class AeUserGamePlatformServiceImpl extends ServiceImpl<AeUserGamePlatfor
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = USER_GAME_PLATFORM, key = "#p0.userId + ':' + #p0.gameId+ ':' + #p0.platformId")
     public boolean saveOrUpdateWithCheck(UserGamePlatformDto userGamePlatformDto, Integer buy) {
+        userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
         // 查询数据库是否已存在值
         UserGamePlatformDto userGamePlatformDb = getUserGamePlatform(userGamePlatformDto.getUserId(), userGamePlatformDto.getGameId(), userGamePlatformDto.getPlatformId());
-        boolean modify = userGamePlatformDb != null;
+        // 是否已存在数据
+        boolean exist = userGamePlatformDb != null;
         Date nowDate = new Date();
-        // 已绑定的账号才会有这一步
-        if (modify) {
+        if (exist) {
             // 直接购买，跳过冷却
             if (buy == 1 ) {
                 userService.costPoint(userGamePlatformDb.getUserId(), buyCost);
             } else {
-                // 创建时间超过指定时间才允许修改
-                Date gmtCreate = userGamePlatformDb.getGmtCreate();
-                long between = DateUtil.between(gmtCreate, nowDate, DateUnit.SECOND);
-                Assert.isTrue(between >= interval, "还需等待" + DateUtil.formatBetween((interval - between) * 1000, BetweenFormatter.Level.SECOND) + "才能重新绑定，是否花费" + buyCost + "积分重新绑定");
+                // 创建时间超过指定时间才允许修改或未绑定游戏信息
+                Date bindTime = userGamePlatformDb.getBindTime();
+                if (bindTime != null && userGamePlatformDb.getGameLoginId() != null) {
+                    long between = DateUtil.between(bindTime, nowDate, DateUnit.SECOND);
+                    Assert.isTrue(between >= interval, "还需等待" + DateUtil.formatBetween((interval - between) * 1000, BetweenFormatter.Level.SECOND) + "才能重新绑定，是否花费" + buyCost + "积分重新绑定");
+                }
                 // 更新创建时间为当前时间
-                userGamePlatformDto.setGmtCreate(nowDate);
+                userGamePlatformDto.setBindTime(nowDate);
             }
         }
-        // 更新或入库
-        if (modify) {
+        // 存在才更新，否则入库
+        if (exist) {
             return this.updateByInfo(userGamePlatformDto);
         }
         return this.save(userGamePlatformDto.createEntity());
