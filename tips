@@ -1,7 +1,7 @@
-POST https://subway.dskystudio.com/api/user/user_other_save?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTEyMDc2ODcsImhvc3QiOiJzdWJ3YXkuZHNreXN0dWRpby5jb20iLCJsb2dpbl9zaWduIjoiZmMzMDQ3YmExNDViYjU2NzMyNzk0MmJhODMwNGFhN2QiLCJvcmlnX2lhdCI6MTY5ODI0NzY4NywidG9rZW5fdmVyc2lvbiI6IjIwMjEwOTI2IiwidXNlcl9pZCI6NTgyNDg2ODl9.nGaX5zTv1Py7DShX-GKvkY3aV3GRNKVZPoPgixrPsug HTTP/1.1
-Host: subway.dskystudio.com
+POST https://simh5.soloknight.xyz:9443/FDH5Server/game/wx/login HTTP/1.1
+Host: simh5.soloknight.xyz:9443
 Connection: keep-alive
-Content-Length: 11934
+Content-Length: 63
 xweb_xhr: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF XWEB/8447
 Content-Type: application/x-www-form-urlencoded
@@ -9,17 +9,17 @@ Accept: */*
 Sec-Fetch-Site: cross-site
 Sec-Fetch-Mode: cors
 Sec-Fetch-Dest: empty
-Referer: https://servicewechat.com/wx6003cd3bbeb50e2a/48/page-frame.html
+Referer: https://servicewechat.com/wxdba37589b1a5522b/135/page-frame.html
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-CN,zh;q=0.9
 
-save_type=saveData&save_data=%7b%22vid%22%3a104%2c%22gold%22%3a%7b%22coins%22%3a149550770%2c%22keys%22%3a508%2c%22pvpPoint%22%3a0%2c%22curSeason%22%3a9%2c%22curCup%22%3a0%2c%22curPvpRank%22%3a0%2c%22skids%22%3a10%2c%22sbster%22%3a11%2c%22hstart%22%3a14%2c%22hasShowAd%22%3afalse%2c%22isGoGameHub%22%3a0%2c%22isGetNewGameClubReward%22%3a0%2c%22isGetGoGameHubReward%22%3a0%2c%22isGetGameHubReward1%22%3a0%2c%22isGetGameHubReward2%22%3a0%2c%22isGetGameHubRewardTime%22%3a0%7d%2c%22double%22%3a%7b%22coin%22%3a0%7d%2c%22task%22%3a%7b%22grade%22%3a1%7d%2c%22upgrade%22%3a%7b%22jetpack%22%3a6%2c%22sneakers%22%3a6%2c%22magnet%22%3a6%2c%22multiplier%22%3a6%7d%2c%22role%22%3a%7b%22slick%22%3a%5b%5d%2c%22easterSpecialCharacter01%22%3a%5b%5d%2c%22Pirates%22%3a%5b%5d%2c%22yangJianCharacter%22%3a%5b%5d%2c%22naZha%22%3a%5b%5d%2c%22lucy%22%3a%5b%5d%7d%2c%22skids%22%3a%7b%22normal%22%3a%5b%5d%7d%2c%22ornament%22%3a%7b%7d%2c%22achievement%22%3a%7b%22SCORE_POINTS_SINGLE_LANE%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22SCORE_POINTS_SINGLE_LANE%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_HUNT_SINGLE_RUN_X_TIMES%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_HUNT_SINGLE_RUN_X_TIMES%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c41%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22OPEN_X_SUPER_MYSTERY_BOXES%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22OPEN_X_SUPER_MYSTERY_BOXES%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c42%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_X_WORDY_WEEKEND_CHALLENGES_IN_ONE_WEEKEND%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_X_WORDY_WEEKEND_CHALLENGES_IN_ONE_WEEKEND%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c40%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22WIN_X_JACKPOTS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22WIN_X_JACKPOTS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c39%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_X_WORDY_WEEKEND_CHALLENGES%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_X_WORDY_WEEKEND_CHALLENGES%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c38%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22SCORE_POINTS_SINGLE_RUN_NO_JUMP_OR_ROLL%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22SCORE_POINTS_SINGLE_RUN_NO_JUMP_OR_ROLL%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22BEAT_X_TOPRUN_FRIENDS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22BEAT_X_TOPRUN_FRIENDS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c37%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22OPEN_X_MYSTERY_BOXES%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22OPEN_X_MYSTERY_BOXES%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c24%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22PICK_X_KEYS_INGAME%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22PICK_X_KEYS_INGAME%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c23%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22POKE_FRIENDS_X_TIMES%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22POKE_FRIENDS_X_TIMES%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COLLECT_COINS_SINGLE_RUN%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COLLECT_COINS_SINGLE_RUN%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22HAVE_SUPERSNICKERS_ACTIVE_X_MIN_IN_A_ROW%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22HAVE_SUPERSNICKERS_ACTIVE_X_MIN_IN_A_ROW%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22TOPRUN_RANK_1%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22TOPRUN_RANK_1%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c25%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_MISSIONS_SINGLE_RUN%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_MISSIONS_SINGLE_RUN%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22SCORE_POINTS_SINGLE_RUN_NO_COINS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22SCORE_POINTS_SINGLE_RUN_NO_COINS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22OWN_CHARACTER_OUTFITS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22OWN_CHARACTER_OUTFITS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22PICKUP_POWERUPS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22PICKUP_POWERUPS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c22%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22TOPRUN_RANK5_OR_BETTER%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22TOPRUN_RANK5_OR_BETTER%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c35%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22OWN_X_BOARDS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22OWN_X_BOARDS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_DAILY_CHALLANGES_INROW%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_DAILY_CHALLANGES_INROW%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c0%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22OWN_X_CHARACTERS%22%3a%7b%22type%22%3a1%2c%22status%22%3a2%2c%22string%22%3a%22OWN_X_CHARACTERS%3d1%2c2%2c2%2c1%2c08%2f22%2f2023%2004%3a35%3a02%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COMPLETE_X_MISSIONS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COMPLETE_X_MISSIONS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c13%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a2%7d%2c%22COLLECT_X_COINS_FROM_FRIENDS%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COLLECT_X_COINS_FROM_FRIENDS%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c9%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22COLLECT_OLD_TROPHY_ITEMS_MB%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COLLECT_OLD_TROPHY_ITEMS_MB%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c3%230%256%230%258%230%257%230%2cTrue%22%2c%22state%22%3a1%2c%22num%22%3a%5b0%2c0%2c0%2c0%5d%7d%2c%22COLLECT_OLD_TROPHY_ITEMS_SMB%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22COLLECT_OLD_TROPHY_ITEMS_SMB%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c4%230%255%230%252%230%251%230%2cTrue%22%2c%22state%22%3a1%2c%22num%22%3a%5b0%2c0%2c0%2c0%5d%7d%2c%22REAL_PVP_FIGHT_King%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_King%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c46%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_Win%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_Win%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c47%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22Treasure_Get%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22Treasure_Get%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c49%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22Treasure_Upgrade%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22Treasure_Upgrade%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c48%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22Give_Friend_Skateboard_Count%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22Give_Friend_Skateboard_Count%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c50%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_Beyond%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_Beyond%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c51%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_Beyond_Self%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_Beyond_Self%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c52%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_NumberOne%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_NumberOne%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c53%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_WIN_MAX%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_WIN_MAX%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c54%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22REAL_PVP_FIGHT_Friend%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22REAL_PVP_FIGHT_Friend%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c55%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%2c%22GAME_CLUB_ACTIVITY%22%3a%7b%22type%22%3a1%2c%22status%22%3a1%2c%22string%22%3a%22GAME_CLUB_ACTIVITY%3d1%2c1%2c1%2c1%2c01%2f01%2f0001%2000%3a00%3a00%2c56%230%2cTrue%22%2c%22state%22%3a0%2c%22num%22%3a0%7d%7d%2c%22hscore%22%3a1647%2c%22numberOfRuns%22%3a9%2c%22daily%22%3a%7b%22word%22%3a%22DEER%22%2c%22mask%22%3a0%2c%22extime%22%3a%2210%2f26%2f2023%202%3a00%3a05%20AM%22%2c%22payout%22%3a0%2c%22row%22%3a0%2c%22day%22%3a0%7d%2c%22version%22%3a%224%22%2c%22weekly%22%3a%5b0%2c0%2c0%2c0%5d%2c%22pieces%22%3a%5b0%2c0%2c0%2c0%2c15%5d%2c%22DailyMission%22%3a%7b%7d%2c%22DailyMissionDate%22%3a%2210-25-2023%22%2c%22EffectSkill%22%3a%2200000%22%2c%22ReviveRelay%22%3a0%2c%22FirstReCharge%22%3a0%2c%22CurrentUsing%22%3a%7b%22Character%22%3a0%2c%22Hoverboard%22%3a0%2c%22CharacterTheme%22%3a0%2c%22HoverboardTheme%22%3a0%2c%22Ornament%22%3a0%7d%2c%22collectdata%22%3a%7b%22PickupNumPerDay%22%3a0%2c%22PickupDate%22%3a%221%2f1%2f0001%22%2c%22collectList%22%3a%220%2c0%2c0%22%7d%2c%22ShopDiscount%22%3a%7b%7d%2c%22TotalPay%22%3a0%2c%22CurrencyPay%22%3a0%2c%22HasReceivedFreeTokenMysteryBox%22%3a0%2c%22OwnedFrame%22%3a0%2c%22UsingFrame%22%3a0%2c%22RewardCenter%22%3a%7b%22UpdateTime%22%3a1698247696%2c%22OnlineTime%22%3a8%2c%22OnlineList%22%3a%22%22%2c%22SpecifyList%22%3a%22%22%2c%22TotalDay%22%3a1%2c%22TotalLoginList%22%3a%22%22%7d%2c%22CumulativeSign%22%3a%7b%22ActivityId%22%3a0%2c%22LastSignTime%22%3a0%2c%22SignDay%22%3a0%7d%2c%22SevenDayAdSign%22%3a%7b%22SevenDayLastSignTime%22%3a0%2c%22SevenDaySignDay%22%3a0%2c%22SevenDayAdCount%22%3a0%2c%22SevenDayLastAdTime%22%3a0%7d%2c%22FirstChargeDouble%22%3a%7b%22Version%22%3a1%2c%22Record%22%3a%22%22%7d%2c%22SuperRunVIP%22%3a%7b%22SuperRunRewardHasReceive%22%3a0%7d%2c%22NoviceGiftInfo%22%3a%22%22%2c%22GloryRoadData%22%3a%22%22%2c%22PvpBoxData%22%3a%22%7b%20%5c%22data%5c%22%3a%5b%5d%20%7d%22%2c%22BattlePass%22%3a%7b%22ActivityId%22%3a20230731%2c%22Exp%22%3a129%2c%22DayCollect%22%3a0%2c%22CollectTime%22%3a1698247687%2c%22HasUnlock%22%3a0%2c%22NormalAwardLevel%22%3a-1%2c%22SuperAwardLevel%22%3a-1%2c%22BoxAwardIndex%22%3a0%7d%2c%22NewTreasure%22%3a%7b%22NewTreasureKey%22%3a0%2c%22TreasureList%22%3a%22%22%2c%22NormalSlot%22%3a%22%22%2c%22PvpSlot%22%3a%22%22%2c%22LastVideoTime%22%3a0%2c%22LastSuperVideoTime%22%3a0%2c%22LastExchangeTime%22%3a1698247687%2c%22DayExchangeCount%22%3a0%7d%2c%22DailyProp%22%3a%7b%22dailyPropTime%22%3a1698247687%2c%22refreshTodayTime%22%3a0%2c%22refreshTotalTime%22%3a0%2c%22dailyPropList%22%3a%22101%230%2c201%230%2c300%230%2c400%230%2c500%230%2c600%230%22%7d%2c%22guideData%22%3a%7b%22FirstIn%22%3a1%7d%2c%22SuperStart%22%3a%7b%22_sstart_energy%22%3a5%2c%22_sstart_time%22%3a1698247687%2c%22_sstart_pro%22%3a0%2c%22_sstart_task_index%22%3a6%2c%22_sstart_task_num%22%3a0%7d%2c%22GameLive%22%3a%7b%22_finish_new_tv%22%3a0%2c%22_finish_from_tv%22%3a0%2c%22_finish_task_str%22%3a%22%22%2c%22_task_pro_tv%22%3a%22%7b%7d%22%2c%22_finish_feed_id%22%3a%22%22%2c%22_today_time%22%3a%221698247687%22%2c%22_today_tv_time%22%3a0%7d%2c%22NewYearAct1%22%3a%7b%22_sign%22%3a%22%7b%7d%22%2c%22_gift%22%3a%22%7b%7d%22%7d%2c%22WhiteReward%22%3a%7b%22_lastTime%22%3a0%7d%7d
+code=0f3CVv000hKlWQ1xNZ000IQ3GC0CVv0l&deviceId=microsoftwindows
+{"openId":"oo6VQ5B8VOkOWr9SZp1jP5NOtt8Q","token":"c4eec80df36341678bf053a54d3fbc97","time":"2023-10-26 22:24:41","code":0}
 
-
-POST https://subway.dskystudio.com/api/login HTTP/1.1
-Host: subway.dskystudio.com
+POST https://simh5.soloknight.xyz:9443/FDH5Server/game/wx/loadArchive HTTP/1.1
+Host: simh5.soloknight.xyz:9443
 Connection: keep-alive
-Content-Length: 48
+Content-Length: 100
 xweb_xhr: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF XWEB/8447
 Content-Type: application/x-www-form-urlencoded
@@ -27,16 +27,16 @@ Accept: */*
 Sec-Fetch-Site: cross-site
 Sec-Fetch-Mode: cors
 Sec-Fetch-Dest: empty
-Referer: https://servicewechat.com/wx6003cd3bbeb50e2a/48/page-frame.html
+Referer: https://servicewechat.com/wxdba37589b1a5522b/135/page-frame.html
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-CN,zh;q=0.9
 
-code=0f3HjO000qJnWQ1djH100QdnqC2HjO0T&way=wx_xyx
+openId=oo6VQ5B8VOkOWr9SZp1jP5NOtt8Q&token=c4eec80df36341678bf053a54d3fbc97&deviceId=microsoftwindows
 
-POST https://subway.dskystudio.com/api/user/user_other_save_read?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTEyMDc3MTgsImhvc3QiOiJzdWJ3YXkuZHNreXN0dWRpby5jb20iLCJsb2dpbl9zaWduIjoiMDVjOTVhZTNiNDUzNTBkOWRlMjA1MGQ3Y2YwZGQwMTMiLCJvcmlnX2lhdCI6MTY5ODI0NzcxOCwidG9rZW5fdmVyc2lvbiI6IjIwMjEwOTI2IiwidXNlcl9pZCI6NTgyNDg2ODl9.Lz2-eFohkl0uR_agLGDaQLNvTIXDzf5KEQf3HWUNmVM HTTP/1.1
-Host: subway.dskystudio.com
+POST https://simh5.soloknight.xyz:9443/FDH5Server/game/wx/saveArchive HTTP/1.1
+Host: simh5.soloknight.xyz:9443
 Connection: keep-alive
-Content-Length: 18
+Content-Length: 119014
 xweb_xhr: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF XWEB/8447
 Content-Type: application/x-www-form-urlencoded
@@ -44,8 +44,50 @@ Accept: */*
 Sec-Fetch-Site: cross-site
 Sec-Fetch-Mode: cors
 Sec-Fetch-Dest: empty
-Referer: https://servicewechat.com/wx6003cd3bbeb50e2a/48/page-frame.html
+Referer: https://servicewechat.com/wxdba37589b1a5522b/135/page-frame.html
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-CN,zh;q=0.9
 
-save_type=saveData
+openId=oo6VQ5B8VOkOWr9SZp1jP5NOtt8Q&data=%data&token=c4eec80df36341678bf053a54d3fbc97&deviceId=microsoftwindows
+
+
+
+
+POST https://smartfox4.top/user/login HTTP/1.1
+Host: smartfox4.top
+Connection: keep-alive
+Content-Length: 116
+Accept: application/json
+Timestamp: 1698330873000
+xweb_xhr: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF XWEB/8447
+Sign: 9CA9ED52017C162D143D8AE125E28B61
+Content-Type: application/json; charset=UTF-8
+Sec-Fetch-Site: cross-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: https://servicewechat.com/wx008e65896a159866/21/page-frame.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+
+{"route":"user/login","game":"store","platform":"wechat","userId":"oigeZ4rDi63-OjwpOpx1ThxHFbM0","version":"2.0.52"}
+
+
+POST https://smartfox4.top/user/save-data HTTP/1.1
+Host: smartfox4.top
+Connection: keep-alive
+Content-Length: 1414
+Accept: application/json
+Timestamp: 1698330906000
+xweb_xhr: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF XWEB/8447
+Sign: 39B185880D18FC1E707E155AFA308FB4
+Content-Type: application/json; charset=UTF-8
+Sec-Fetch-Site: cross-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: https://servicewechat.com/wx008e65896a159866/21/page-frame.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+
+{"route":"user/save-data","game":"store","userId":3456626,"version":"2.0.52","syncData":{"0":"{\"version\":\"2.0.6\",\"data\":\"NoRgNAzALArAbHATHMiAMIDsiwhmADjH3HTDTACIBvAHUpHoC5QQNc2IO0pucR0cALph6iZqEGo2ORG3AC0+OWggj6ECRE6Q2vbWn5SDIdZRgS27K/zSrcd3lZhm4E9PY+3rjh0rOYWnb4EL6hnr42QgC+lLi4RACcFAq6dqkKcIkEENBQUOAohVAEKSlgAHYArgA2NfHglAAmAJYAhgC2APYVTXFFRNV1lbX14AQKFBRD9fxUAGYtNR1xVonxMyPDCpgcG6Oo8ZQALi0AxgDWAKbHq/vDmwok5ZtzlADmXTV9xMRQdlt6o8wJgKOtpgc3gBnC4tCoAfTONRaAAc4k5AZjwCVCORMW8zm0AE6rSKY4FTeJOLI5UIEOClAEgGm5ND0ojgcqpSk8qmHDLpBr8wVzZnZXJwOwUIhvOiUCqdK7MegAZWOxOOAAUal1jgAZK5tJpXIkAdQAYvRRJQoccriiocwZrF4lxyryPULPeUALScvGU/3gP24FmhRIwXaBgN4sW0tDZXb+3ncmPJmM4ShoOKUIlXeZ5qEACwAKi0Olcc4gc7a2na4ilGnn3i1bSayxWq4ZED6lL3MCW8ExoEwMAA6KUAail2aoZxaxwAngBJO0dABK+cLpfLldw+THIAg6xtxy6eYAgk0mgAhKrzeYANTaNSqe4op/PVyvt/v8wN8zHB2e7MjAyCIAQiAwPglBFrqVw1D+d4Ps+r7vlQcF2oh17If++ZAbuqxwGBSCQdBVCfN8cQwa0nQ9D8MHHFURIVCWbQAEY1Fc5p5lcADCXRVBUxxQnclCLEStram0FR7pQOZVFCJoAKK9GqGrarqBpGiaDZCEAA\"}","1":"{\"version\":\"2.0.6\",\"data\":\"NoRgNA7AHAnG4LANnmADPF4BMBmBaaArKuBgLRHYYggB0RIRMLrbE2q2SBaWqAFmphKwkLjpQoaNrJhJcXGDUL9wQilRoT5AuWxD98EeIRKINIrfHrRs+1ifC4B51aTCXRNbHSQxYBxhzMFwIXgEPL2sQNDoIAUCHKCMWUzRFC2FveAE6fGYg7Ej1PHTEUs0xOJhEoJYoQUZyqOyYiWwoEHqBTM8u0xASwTaxX3lCh0TUIhlB4cqrMfiAnv4iXEbYtArPUZo87qT9XHWkLEJOLKqaegzuoKkZmEzCPsWc8To0BLXUJGq4laNxsdAC9iCCn+AicOwWexBtHySEm+mgHloaE40m+0kI+IJOzAVxsGWJGBo8GoJEiFPQ9LpjIZAF0gA\"}"}}
