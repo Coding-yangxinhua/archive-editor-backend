@@ -22,7 +22,7 @@
     </sql>
     <select id="getLatestUserArchive" resultType="com.pwc.sdc.archive.domain.AeUserArchive">
         SELECT <include refid="Base_Column_List" /> FROM AE_USER_ARCHIVE
-        WHERE DELETED = ${STATE_NO} AND GAME_ID = #{gameId} AND USER_ID = #{userId} AND PLATFORM_ID = #{platformId}
+        WHERE DELETED = ${STATE_NO} AND GAME_ID = #{user.gameId} AND USER_ID = #{user.userId} AND PLATFORM_ID = #{user.platformId}
         ORDER BY VERSION DESC
         LIMIT 1
     </select>

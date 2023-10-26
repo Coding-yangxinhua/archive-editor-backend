@@ -2,6 +2,9 @@ package com.pwc.sdc.archive.service;
 
 import com.pwc.sdc.archive.domain.AeUserArchive;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.dto.BaseInfoDto;
+import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Xinhua X Yang
@@ -9,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-04 15:41:59
 */
 public interface AeUserArchiveService extends IService<AeUserArchive> {
-    AeUserArchive getLatestUserArchive(Long gameId, Long userId, Long platformId);
+    AeUserArchive getLatestUserArchive(BaseInfoDto user);
 }

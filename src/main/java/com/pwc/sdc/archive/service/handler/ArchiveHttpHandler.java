@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.service.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 /**
  * 基础的存档操作类：登录游戏，获得当前存档，上传存档等操作
  */
@@ -26,8 +29,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class ArchiveHttpHandler {
     //创建请求头
-    private HttpHeaders headers = new HttpHeaders();
-
     @Autowired
     private JsEngineHandler jsEngineHandler;
 
@@ -46,7 +47,7 @@ public class ArchiveHttpHandler {
     @Autowired
     private AeGameService gameService;
     public ArchiveHttpHandler() {
-        headers.setContentType(MediaType.APPLICATION_JSON);
+
     }
 
     /**
@@ -71,7 +72,11 @@ public class ArchiveHttpHandler {
         log.info("登录成功");
     }
 
-    public String downloadArchive(UserGamePlatformDto userGamePlatformDto) {
+    public String downloadArchive(UserGamePlatformDto userGamePlatformDto, boolean downloadOnline) {
+        // 获取数据库最新存档
+        if (!downloadOnline) {
+            return Optional.ofNullable(userArchiveService.getLatestUserArchive(userGamePlatformDto)).orElse(new AeUserArchive()).getArchiveData();
+        }
         return downloadArchive(userGamePlatformDto, 0);
     }
     public String downloadArchive(UserGamePlatformDto userGamePlatformDto, Integer retryCount) {
@@ -99,7 +104,7 @@ public class ArchiveHttpHandler {
     public void uploadArchive(UserGamePlatformDto user, AeUserArchive latestUserArchive, Integer retryCount) {
         // 获取最新存档
         if (latestUserArchive == null) {
-            latestUserArchive = userArchiveService.getLatestUserArchive(user.getGameId(), user.getUserId(), user.getPlatformId());
+            latestUserArchive = userArchiveService.getLatestUserArchive(user);
         }
         FillBaseHandler handler = initFillHandler(user);
         handler.setArchive(latestUserArchive.getArchiveData());
@@ -125,13 +130,18 @@ public class ArchiveHttpHandler {
             // 填充信息
             handler.load(status);
             // 设置请求链接与参数
-            String body = handler.getBody();
-            HttpEntity<String> entity = new HttpEntity<>(body, headers);
+            HttpEntity<Object> entity = handler.getHttpEntity();
             try {
+                log.info("请求地址{}", handler.getUrl());
                 responseEntity = restTemplate.postForEntity(handler.getUrl(), entity, String.class);
             } catch (Exception e) {
+                // todo 登录请求失败了，用静态值代替
                 log.warn("用户登录信息过期");
-                return null;
+                if (status.equals(RequestStatus.LOGIN)) {
+                    responseEntity = new ResponseEntity<>("{\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTEyMDc3MTgsImhvc3QiOiJzdWJ3YXkuZHNreXN0dWRpby5jb20iLCJsb2dpbl9zaWduIjoiMDVjOTVhZTNiNDUzNTBkOWRlMjA1MGQ3Y2YwZGQwMTMiLCJvcmlnX2lhdCI6MTY5ODI0NzcxOCwidG9rZW5fdmVyc2lvbiI6IjIwMjEwOTI2IiwidXNlcl9pZCI6NTgyNDg2ODl9.Lz2-eFohkl0uR_agLGDaQLNvTIXDzf5KEQf3HWUNmVM\"}}", HttpStatus.OK);
+                } else {
+                    return null;
+                }
             }
             // 响应返回失败
             if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
@@ -141,12 +151,14 @@ public class ArchiveHttpHandler {
             temp = handler.responseDecode(responseEntity.getBody());
             // 叠加
             respSb.append(temp.get("data"));
-            log.info(status.name() + "请求参数：{}", body);
+            log.info(status.name() + "请求参数：{}", entity.getBody());
             // 重置填充后的信息
             handler.reset();
         }
+        // 属于正常返回的值为null
+        JSONObject jsonObject = Optional.ofNullable(JSONObject.parseObject(respSb.toString())).orElse(new JSONObject());
         log.info(status.name() + "解密后参数：{}", respSb);
-        return JSONObject.parseObject(respSb.toString());
+        return jsonObject;
     }
 
     /**

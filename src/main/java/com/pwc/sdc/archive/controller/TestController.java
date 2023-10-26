@@ -52,9 +52,9 @@ public class TestController {
 
 
     @PostMapping("/downloadArchive")
-    public JSONObject gameArchive (@RequestBody UserGamePlatformDto userGamePlatformDto) {
+    public JSONObject gameArchive (@RequestBody UserGamePlatformDto userGamePlatformDto, @RequestParam Boolean downloadOnline) {
         userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
-        return JSONObject.parseObject(httpHandler.downloadArchive(userGamePlatformDto));
+        return JSONObject.parseObject(httpHandler.downloadArchive(userGamePlatformDto, downloadOnline));
     }
 
     @PostMapping("/uploadArchive")

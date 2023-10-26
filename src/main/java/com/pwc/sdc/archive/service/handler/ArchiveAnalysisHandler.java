@@ -19,9 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 基础的存档解析类：解析存档结构，将存档分部分解析，将存档重新封装
@@ -58,9 +61,12 @@ public class ArchiveAnalysisHandler {
      * @param user
      * @return
      */
-    public UserArchive getUserArchive(UserGamePlatformDto user) {
+    public UserArchive getUserArchive(UserGamePlatformDto user, boolean downloadOnline) {
         // 登录请求网络最新存档数据
-        String latestUserArchive = httpHandler.downloadArchive(user);
+        String latestUserArchive = httpHandler.downloadArchive(user, downloadOnline);
+        if (!StringUtils.hasText(latestUserArchive)) {
+            return new UserArchive();
+        }
         // 转换存档为JSON格式
         JSONObject archiveJson = JSON.parseObject(latestUserArchive);
         // 获得此游戏可修改的存档部分
@@ -92,7 +98,7 @@ public class ArchiveAnalysisHandler {
     @Transactional
     public int addUserArchive(UserArchive userArchive) {
         // 获得该用户此游戏最新的一份存档
-        AeUserArchive latestUserArchive = userArchiveService.getLatestUserArchive(userArchive.getGameId(), userArchive.getUserId(), userArchive.getPlatformId());
+        AeUserArchive latestUserArchive = userArchiveService.getLatestUserArchive(userArchive);
         if (latestUserArchive == null) {
             latestUserArchive = new AeUserArchive();
             BeanUtils.copyProperties(userArchive, latestUserArchive);
@@ -100,7 +106,7 @@ public class ArchiveAnalysisHandler {
         }
         UserGamePlatformDto user = new UserGamePlatformDto(userArchive.getUserId(), userArchive.getGameId(), userArchive.getPlatformId());
         // 登录请求网络最新存档数据
-        String archive = httpHandler.downloadArchive(user);
+        String archive = httpHandler.downloadArchive(user, true);
         Assert.notNull(archive, "下载存档失败");
         // 计算所需Point，并判断积分是否足够
         int restPoint = calculatePriceTotal(userArchive);
@@ -130,8 +136,8 @@ public class ArchiveAnalysisHandler {
      */
     private int calculatePriceTotal(UserArchive userArchive) {
         Long gameId = userArchive.getGameId();
-        List<ArchivePartDto> parts = userArchive.getParts();
-        List<UserItem> items = userArchive.getUserPackage().getItems();
+        List<ArchivePartDto> parts = Optional.ofNullable(userArchive.getParts()).orElse(Collections.emptyList());
+        List<UserItem> items = Optional.ofNullable(userArchive.getUserPackage().getItems()).orElse(Collections.emptyList());
         // 获得part单价与item单价
         Map<String, AeGameItem> itemMap = gameItemService.mapItemsByGameId(gameId);
         Map<Long, AeGameArchivePart> partMap = aeGameArchivePartService.getPartMapByGameId(gameId);

@@ -1,7 +1,5 @@
 package com.pwc.sdc.archive.service.handler.fill;
 
-import cn.hutool.crypto.digest.DigestAlgorithm;
-import cn.hutool.crypto.digest.Digester;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.enums.FillEnums;
@@ -12,15 +10,21 @@ import com.pwc.sdc.archive.common.utils.FillUtil;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.Optional;
 
 
 public class FillBaseHandler {
 
     // md5加密工具
-
+    protected final HttpHeaders headers = new HttpHeaders();
     // 游戏对应平台信息
     protected GamePlatformDto platform;
 
@@ -59,7 +63,10 @@ public class FillBaseHandler {
         this.retryTimes = 3;
         platformOld = new GamePlatformDto();
         BeanUtils.copyProperties(platform, platformOld);
+        // 默认请求json格式
+        headers.setContentType(MediaType.APPLICATION_JSON);
     }
+
 
     public FillBaseHandler(GamePlatformDto platform, UserGamePlatformDto user){
         this.platform = platform;
@@ -117,23 +124,25 @@ public class FillBaseHandler {
         // 一次请求
         this.requestTimes = 1;
         // 填充登录url
-        platform.setLoginUrl(fillTimeStamp(platform.getLoginUrl()));
+        platform.setLoginUrl(fillLogin(platform.getLoginUrl()));
         // 填充登录json
         platform.setLoginJson(fillLogin(platform.getLoginJson()));
     }
 
     protected void loadDownload() {
         // 填充下载存档url
-        platform.setDownloadArchiveUrl(fillTimeStamp(platform.getDownloadArchiveUrl()));
+        platform.setDownloadArchiveUrl(fillDownload(platform.getDownloadArchiveUrl()));
         // 填充登录json
-        platform.setDownloadArchiveJson(fillLogin(platform.getDownloadArchiveJson()));
+        platform.setDownloadArchiveJson(fillDownload(platform.getDownloadArchiveJson()));
     }
 
     protected void loadUpload() {
         // 填充上传存档rl
-        platform.setUploadArchiveUrl(fillTimeStamp(platform.getUploadArchiveUrl()));
-        // 填充登录json
-        platform.setUploadArchiveJson(fillArchive(platform.getUploadArchiveJson(), archive));
+        platform.setUploadArchiveUrl(fillDownload(platform.getUploadArchiveUrl()));
+        if (StringUtils.hasText(platform.getUploadArchiveJson())) {
+            // 填充登录json
+            platform.setUploadArchiveJson(fillUpload(platform.getUploadArchiveJson(), archive));
+        }
     }
 
 
@@ -162,19 +171,26 @@ public class FillBaseHandler {
                 .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
     }
 
+    public String fillDownload(String data) {
+        // 填充登录信息
+        return fillTimeStamp(data).replaceFirst(FillEnums.SESSION.reg(), user.getSession())
+                .replaceFirst(FillEnums.GAME_LOGIN_ID.reg(), user.getGameLoginId())
+                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
+    }
+
     /**
      * 填充存档信息
      * @param data
      * @return
      */
-    public String fillArchive(String data, String archive) {
+    public String fillUpload(String data, String archive) {
         // 默认填充extras所有信息
         data = FillUtil.fillExtras(user.getExtraJson(), data);
         // 填充登录信息
         return fillLogin(data).replaceFirst(FillEnums.ARCHIVE.reg(), archive)
                 .replaceFirst(FillEnums.ARCHIVE_LENGTH.reg(), String.valueOf(archive.length()))
                 .replaceFirst(FillEnums.MD5.reg(), CryptoJSUtil.md5(archive).toUpperCase())
-                .replaceAll(FillEnums.GAME_USER_ID.reg(), user.getGameUserId().toString())
+                .replaceAll(FillEnums.GAME_USER_ID.reg(), String.valueOf(Optional.ofNullable(user.getGameUserId()).orElse(0L)))
                 .replaceFirst(FillEnums.SESSION.reg(), user.getSession())
                 .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
     }
@@ -197,7 +213,7 @@ public class FillBaseHandler {
                 return this.platform.getDownloadArchiveUrl();
         }
     }
-    public String getBody() {
+    protected String getBody() {
         switch (status) {
             case LOGIN:
                 return this.platform.getLoginJson();
@@ -206,6 +222,25 @@ public class FillBaseHandler {
             case DOWNLOAD:
             default:
                 return this.platform.getDownloadArchiveJson();
+        }
+    }
+
+    public HttpEntity<Object> getHttpEntity() {
+        String body = this.getBody();
+        try {
+            JSON.parseObject(this.getBody());
+            return new HttpEntity<>(body, headers);
+        } catch (Exception e) {
+            // 非Json格式数据，根据&拆解组装
+            String[] params = body.split("&");
+            String[] paramEntry;
+            MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+            for (String param
+                    : params) {
+                paramEntry = param.split("=", 2);
+                parameters.add(paramEntry[0], paramEntry[1]);
+            }
+            return new HttpEntity<>(parameters, headers);
         }
     }
 
@@ -236,5 +271,9 @@ public class FillBaseHandler {
 
     public void setCurrentTimes(Integer currentTimes) {
         this.currentTimes = currentTimes;
+    }
+
+    public HttpHeaders getHeaders() {
+        return headers;
     }
 }

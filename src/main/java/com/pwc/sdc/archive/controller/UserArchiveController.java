@@ -38,11 +38,18 @@ public class UserArchiveController {
         return ResponseEntity.ok();
     }
 
-    @ApiOperation("获得用户存档")
-    @PostMapping("/get")
+    @ApiOperation("获得用户网络存档")
+    @PostMapping("/getOnline")
     public ResponseEntity<UserArchive> getArchive (@RequestBody UserGamePlatformDto user) {
         user.setUserId(StpUtil.getLoginIdAsLong());
-        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user));
+        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user, true));
+    }
+
+    @ApiOperation("获得用户保存存档")
+    @PostMapping("/get")
+    public ResponseEntity<UserArchive> getDB (@RequestBody UserGamePlatformDto user) {
+        user.setUserId(StpUtil.getLoginIdAsLong());
+        return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user, false));
     }
 
     @ApiOperation("更新用户存档")

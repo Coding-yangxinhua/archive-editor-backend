@@ -6,12 +6,9 @@ import com.pwc.sdc.archive.common.enums.FillEnums;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.common.utils.ArchiveUtil;
-import com.pwc.sdc.archive.common.utils.FillUtil;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
-import springfox.documentation.spring.web.json.Json;
 
 import java.util.Date;
 
@@ -63,7 +60,7 @@ public class FillAnimalHandler extends FillBaseHandler{
     }
 
     @Override
-    public String fillArchive(String data, String archive) {
+    public String fillUpload(String data, String archive) {
         // 将存档转为JSON格式
         JSONObject archiveJson = JSONObject.parseObject(archive);
         // 获得存档次数
@@ -75,7 +72,7 @@ public class FillAnimalHandler extends FillBaseHandler{
         this.user.getExtraJson().put(SAVE_VERSION, saveVersion + 1);
         this.user.getExtraJson().put(BASE_DATA_VERSION, saveVersion);
         // 设置userId
-        return super.fillArchive(data, encode).replaceAll(REQUEST_USER_ID_REG, getRequestUserId().toString());
+        return super.fillUpload(data, encode).replaceAll(REQUEST_USER_ID_REG, getRequestUserId().toString());
     }
 
     @Override
@@ -94,7 +91,7 @@ public class FillAnimalHandler extends FillBaseHandler{
     }
 
     @Override
-    public String getBody() {
+    protected String getBody() {
         JSONObject enc = new JSONObject();
         String body = super.getBody();
         // 下载时的json，需要加密

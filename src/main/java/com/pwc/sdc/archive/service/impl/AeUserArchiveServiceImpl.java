@@ -2,6 +2,8 @@ package com.pwc.sdc.archive.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.domain.AeUserArchive;
+import com.pwc.sdc.archive.domain.dto.BaseInfoDto;
+import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.AeUserArchiveService;
 import com.pwc.sdc.archive.mapper.AeUserArchiveMapper;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AeUserArchiveServiceImpl extends ServiceImpl<AeUserArchiveMapper, AeUserArchive>
     implements AeUserArchiveService{
-    public AeUserArchive getLatestUserArchive(Long gameId, Long userId, Long platformId) {
-        return baseMapper.getLatestUserArchive(gameId, userId, platformId);
+    public AeUserArchive getLatestUserArchive(BaseInfoDto user) {
+        return baseMapper.getLatestUserArchive(user);
     }
 }
 

@@ -8,6 +8,8 @@ public enum FillEnums {
     MD5("md5"),
     ARCHIVE_LENGTH("archive.length"),
     SESSION("session"),
+
+    TOKEN("token"),
     GAME_USER_ID("gameUserId");
 
 

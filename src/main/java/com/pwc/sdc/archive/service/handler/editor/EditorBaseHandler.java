@@ -13,9 +13,7 @@ import com.pwc.sdc.archive.domain.dto.UserPackage;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -93,14 +91,19 @@ public class EditorBaseHandler {
         // 设置普通项
         List<ArchivePartDto> parts = userArchive.getParts();
         ArchiveUtil.addKeyValue(this.archiveJson, parts);
-        // 将需要设置到背包里的道具提取出来
-        List<UserItem> partItemList = parts.stream().filter(i -> StringUtils.hasText(i.getItemId())).map(UserItem::new).collect(Collectors.toList());
-        // 循环设置背包项
+        // 设置背包项
         UserPackage userPackage = userArchive.getUserPackage();
-        userPackage.getItems().addAll(partItemList);
+        // 没有背包
+        if (!StringUtils.hasText(userPackage.getKey())) {
+            return;
+        }
+        // 将需要设置到背包里的道具提取出来
+        List<UserItem> partItemList = Optional.of(parts.stream().filter(i -> StringUtils.hasText(i.getItemId())).map(UserItem::new).collect(Collectors.toList())).orElse(Collections.emptyList());
+        // 循环设置背包项
+        partItemList.addAll(userPackage.getItems());
         // 获得背包对应json
         JSONObject packageJson = ArchiveUtil.getKeyJson(this.archiveJson, userPackage.getKey());
-        ArchiveUtil.addKeyValueForPackage(packageJson, userPackage.getItems());
+        ArchiveUtil.addKeyValueForPackage(packageJson, partItemList);
     }
 
     public JSONObject loadArchiveJsonByEntity() {

@@ -10,12 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserArchive {
-    Long gameId;
-
-    Long userId;
-
-    Long platformId;
+public class UserArchive extends BaseInfoDto{
 
     UserPackage userPackage;
 

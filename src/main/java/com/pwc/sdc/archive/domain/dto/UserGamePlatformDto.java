@@ -15,13 +15,8 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserGamePlatformDto implements Serializable {
+public class UserGamePlatformDto extends BaseInfoDto implements Serializable {
     Long id;
-    Long userId;
-
-    Long gameId;
-
-    Long platformId;
 
     private String gameLoginId;
 
