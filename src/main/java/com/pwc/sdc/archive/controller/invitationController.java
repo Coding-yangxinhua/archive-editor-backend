@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("邀请接口")
 @RestController
 @RequestMapping("invitation")

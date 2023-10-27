@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("活动接口")
 @RestController
 @RequestMapping("activity")
