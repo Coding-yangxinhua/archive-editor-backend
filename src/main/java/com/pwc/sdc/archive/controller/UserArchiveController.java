@@ -38,6 +38,14 @@ public class UserArchiveController {
         return ResponseEntity.ok();
     }
 
+    @ApiOperation("登录")
+    @PostMapping("/login")
+    public ResponseEntity<UserArchive> loginGame (@RequestBody UserGamePlatformDto user) {
+        user.setUserId(StpUtil.getLoginIdAsLong());
+        httpHandler.login(user);
+        return ResponseEntity.ok();
+    }
+
     @ApiOperation("获得用户网络存档")
     @PostMapping("/getOnline")
     public ResponseEntity<UserArchive> getArchive (@RequestBody UserGamePlatformDto user) {

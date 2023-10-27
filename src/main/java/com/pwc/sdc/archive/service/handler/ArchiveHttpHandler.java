@@ -81,6 +81,9 @@ public class ArchiveHttpHandler {
     }
     public String downloadArchive(UserGamePlatformDto userGamePlatformDto, Integer retryCount) {
         FillBaseHandler handler = initFillHandler(userGamePlatformDto);
+        // 防止当前登录token有缓存，影响结果
+        reLogin(handler);
+        handler.setCurrentTimes(0);
         JSONObject responseJson = post(handler, RequestStatus.DOWNLOAD);
         // 登录信息过期，重登录: 超过三次，不再尝试
         if (responseJson == null) {
@@ -90,7 +93,7 @@ public class ArchiveHttpHandler {
                 return downloadArchive(userGamePlatformDto, ++ retryCount);
             }
         }
-        Assert.isTrue(responseJson != null && retryCount <= 3, "多次尝试登录，仍无法获取存档");
+        Assert.isTrue(responseJson != null && retryCount <= 2, "多次尝试登录，仍无法获取存档");
         // 根据响应体设置存档
         handler.setArchiveByResponse(responseJson);
         // 更新用户信息
@@ -124,7 +127,7 @@ public class ArchiveHttpHandler {
     public JSONObject post(FillBaseHandler handler, RequestStatus status) {
         ResponseEntity<String> responseEntity;
         StringBuilder respSb = new StringBuilder();
-        JSONObject temp = new JSONObject();
+        JSONObject temp;
         // 判断是否还请求
         while (handler.stillRequest()) {
             // 填充信息
@@ -135,13 +138,9 @@ public class ArchiveHttpHandler {
                 log.info("请求地址{}", handler.getUrl());
                 responseEntity = restTemplate.postForEntity(handler.getUrl(), entity, String.class);
             } catch (Exception e) {
-                // todo 登录请求失败了，用静态值代替
+                Assert.isTrue(!status.equals(RequestStatus.LOGIN), "登录信息失效，请重新绑定游戏id");
                 log.warn("用户登录信息过期");
-                if (status.equals(RequestStatus.LOGIN)) {
-                    responseEntity = new ResponseEntity<>("{\"data\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTEyMDc3MTgsImhvc3QiOiJzdWJ3YXkuZHNreXN0dWRpby5jb20iLCJsb2dpbl9zaWduIjoiMDVjOTVhZTNiNDUzNTBkOWRlMjA1MGQ3Y2YwZGQwMTMiLCJvcmlnX2lhdCI6MTY5ODI0NzcxOCwidG9rZW5fdmVyc2lvbiI6IjIwMjEwOTI2IiwidXNlcl9pZCI6NTgyNDg2ODl9.Lz2-eFohkl0uR_agLGDaQLNvTIXDzf5KEQf3HWUNmVM\"}}", HttpStatus.OK);
-                } else {
-                    return null;
-                }
+                return null;
             }
             // 响应返回失败
             if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
@@ -151,19 +150,17 @@ public class ArchiveHttpHandler {
             temp = handler.responseDecode(responseEntity.getBody());
             // 叠加
             respSb.append(temp.get("data"));
-            log.info(status.name() + "请求参数：{}", entity.getBody());
             // 重置填充后的信息
             handler.reset();
         }
         // 属于正常返回的值为null
         JSONObject jsonObject = Optional.ofNullable(JSONObject.parseObject(respSb.toString())).orElse(new JSONObject());
-        log.info(status.name() + "解密后参数：{}", respSb);
+//        log.info(status.name() + "响应参数：{}", respSb);
         return jsonObject;
     }
 
     /**
      * 生成对url与json操作的handler
-     * todo 反射实现多态，以实例化不同的子类
      * @param userGamePlatformDto
      * @return
      */
