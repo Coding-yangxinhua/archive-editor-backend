@@ -94,7 +94,7 @@ public class EditorBaseHandler {
         // 设置背包项
         UserPackage userPackage = userArchive.getUserPackage();
         // 没有背包
-        if (!StringUtils.hasText(userPackage.getKey())) {
+        if (userPackage == null || !StringUtils.hasText(userPackage.getKey())) {
             return;
         }
         // 将需要设置到背包里的道具提取出来

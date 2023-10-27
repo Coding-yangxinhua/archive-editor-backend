@@ -8,10 +8,7 @@ import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGameArchivePart;
 import com.pwc.sdc.archive.domain.AeGameItem;
 import com.pwc.sdc.archive.domain.AeUserArchive;
-import com.pwc.sdc.archive.domain.dto.ArchivePartDto;
-import com.pwc.sdc.archive.domain.dto.UserArchive;
-import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
-import com.pwc.sdc.archive.domain.dto.UserItem;
+import com.pwc.sdc.archive.domain.dto.*;
 import com.pwc.sdc.archive.service.*;
 import com.pwc.sdc.archive.service.handler.editor.EditorBaseHandler;
 import org.springframework.beans.BeanUtils;
@@ -137,7 +134,7 @@ public class ArchiveAnalysisHandler {
     private int calculatePriceTotal(UserArchive userArchive) {
         Long gameId = userArchive.getGameId();
         List<ArchivePartDto> parts = Optional.ofNullable(userArchive.getParts()).orElse(Collections.emptyList());
-        List<UserItem> items = Optional.ofNullable(userArchive.getUserPackage().getItems()).orElse(Collections.emptyList());
+        List<UserItem> items = userArchive.getUserPackage() == null || userArchive.getUserPackage().getItems() == null? Collections.emptyList() : userArchive.getUserPackage().getItems();
         // 获得part单价与item单价
         Map<String, AeGameItem> itemMap = gameItemService.mapItemsByGameId(gameId);
         Map<Long, AeGameArchivePart> partMap = aeGameArchivePartService.getPartMapByGameId(gameId);

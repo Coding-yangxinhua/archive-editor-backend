@@ -156,7 +156,7 @@ public class ArchiveUtil {
         }
         if (StringUtils.hasText(currentKey)) {
             if (add) {
-                count += archiveJson.getLongValue(currentKey);
+                count += tempJson.getLongValue(currentKey);
             }
             tempJson.put(currentKey, count);
         }
