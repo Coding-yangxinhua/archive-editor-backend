@@ -1,7 +1,11 @@
 package com.pwc.sdc.archive.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pwc.sdc.archive.domain.AeUserStatement;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pwc.sdc.archive.domain.dto.AeUserDto;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Xinhua X Yang
@@ -10,6 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.pwc.sdc.archive.domain.AeUserStatement
 */
 public interface AeUserStatementMapper extends BaseMapper<AeUserStatement> {
+
+    IPage<AeUserDto> listInvitee(Page<AeUserDto> page, @Param("userId") Long userId);
 
 }
 

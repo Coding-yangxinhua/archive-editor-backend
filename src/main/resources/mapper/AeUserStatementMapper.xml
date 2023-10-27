@@ -21,4 +21,10 @@
         DETAIL,GMT_CREATE,GMT_MODIFIED,
         DELETED
     </sql>
+    <select id="listInvitee" resultType="com.pwc.sdc.archive.domain.dto.AeUserDto">
+        SELECT ID, USER_NAME, ACCOUNT
+        FROM AE_USER
+        WHERE INVITER = #{userId}
+          AND DELETED = ${STATE_NO}
+    </select>
 </mapper>

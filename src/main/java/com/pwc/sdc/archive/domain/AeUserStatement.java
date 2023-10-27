@@ -23,7 +23,7 @@ public class AeUserStatement implements Serializable {
 
 
     /**
-     * 流水类型 0-兑换码，1-购买道具
+     * 流水类型 0-兑换码，1-购买道具 3-返利
      */
     private Integer statementType;
 
