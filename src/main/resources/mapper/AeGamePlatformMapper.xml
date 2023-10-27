@@ -14,6 +14,7 @@
             <result property="downloadArchiveJson" column="DOWNLOAD_ARCHIVE_JSON" jdbcType="VARCHAR"/>
             <result property="uploadArchiveUrl" column="UPLOAD_ARCHIVE_URL" jdbcType="VARCHAR"/>
             <result property="uploadArchiveJson" column="UPLOAD_ARCHIVE_JSON" jdbcType="VARCHAR"/>
+            <result property="gameVersion" column="GAME_VERSION" jdbcType="VARCHAR"/>
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
@@ -22,14 +23,14 @@
     <sql id="Base_Column_List">
         ID,GAME_ID,PLATFORM_ID,
         LOGIN_URL,LOGIN_JSON,DOWNLOAD_ARCHIVE_URL,
-        DOWNLOAD_ARCHIVE_JSON,UPLOAD_ARCHIVE_URL,UPLOAD_ARCHIVE_JSON,
+        DOWNLOAD_ARCHIVE_JSON,UPLOAD_ARCHIVE_URL,UPLOAD_ARCHIVE_JSON,GAME_VERSION
         GMT_CREATE,GMT_MODIFIED,DELETED
     </sql>
     <select id="getGamePlatform" resultType="com.pwc.sdc.archive.domain.dto.GamePlatformDto">
         select       gp.ID,gp.GAME_ID,gp.PLATFORM_ID,
                      gp.LOGIN_URL,gp.LOGIN_JSON,gp.DOWNLOAD_ARCHIVE_URL,
                      gp.DOWNLOAD_ARCHIVE_JSON,gp.UPLOAD_ARCHIVE_URL,gp.UPLOAD_ARCHIVE_JSON,
-                     gp.GMT_CREATE,gp.GMT_MODIFIED,gp.DELETED,
+                     gp.GMT_CREATE,gp.GMT_MODIFIED,gp.DELETED,gp.GAME_VERSION,
                      g.NAME, p.PLATFORM
         FROM AE_GAME_PLATFORM gp
         INNER JOIN AE_PLATFORM p ON gp.PLATFORM_ID = p.ID AND p.DELETED = ${STATE_NO}

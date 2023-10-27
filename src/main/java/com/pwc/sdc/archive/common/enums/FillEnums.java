@@ -32,6 +32,10 @@ public enum FillEnums {
         return "\\$\\{" + reg + "}";
     }
 
+    public static String reg(String reg) {
+        return "\\$\\{" + reg + "}";
+    }
+
     public String field() {
         return field;
     }

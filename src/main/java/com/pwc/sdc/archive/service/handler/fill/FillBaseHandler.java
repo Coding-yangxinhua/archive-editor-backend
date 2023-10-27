@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -157,6 +158,21 @@ public class FillBaseHandler {
         String timeStamp = String.valueOf(new Date().getTime());
         // 替换掉普通内容
         data = data.replaceFirst(FillEnums.TIME_STAMP.reg(), timeStamp);
+        return fillGameVersion(data);
+    }
+
+    /**
+     * 填充游戏版本
+     * @param data
+     * @return
+     */
+    public String fillGameVersion(String data) {
+        JSONObject versionJson = JSON.parseObject(this.platform.getGameVersion());
+        // 遍历存在的版本
+        for (Map.Entry<String, Object> entry
+                : versionJson.entrySet()) {
+            data = data.replaceAll(FillEnums.reg(entry.getKey()), String.valueOf(entry.getValue()));
+        }
         return data;
     }
 

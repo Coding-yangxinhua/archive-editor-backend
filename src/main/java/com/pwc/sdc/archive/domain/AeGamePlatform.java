@@ -59,6 +59,8 @@ public class AeGamePlatform implements Serializable {
      */
     private String uploadArchiveJson;
 
+    private String gameVersion;
+
     /**
      * 创建时间
      */

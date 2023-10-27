@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.pwc.sdc</groupId>
-  <artifactId>archive-editor</artifactId>
+  <artifactId>archive-editor-backend</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <parent>
