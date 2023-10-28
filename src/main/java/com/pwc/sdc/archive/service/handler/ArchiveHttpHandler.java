@@ -146,6 +146,10 @@ public class ArchiveHttpHandler {
             if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
                 return null;
             }
+            // upload日志
+            if (status.equals(RequestStatus.UPLOAD)) {
+                log.info( "{}Upload{}, response: {}", handler.getUser().getUserId(), handler.getUrl(), responseEntity);
+            }
             // 将拼接好的响应结果解密并转为json 并得到data 内容
             temp = handler.responseDecode(responseEntity.getBody());
             // 叠加
@@ -154,9 +158,7 @@ public class ArchiveHttpHandler {
             handler.reset();
         }
         // 属于正常返回的值为null
-        JSONObject jsonObject = Optional.ofNullable(JSONObject.parseObject(respSb.toString())).orElse(new JSONObject());
-//        log.info(status.name() + "响应参数：{}", respSb);
-        return jsonObject;
+        return Optional.ofNullable(JSONObject.parseObject(respSb.toString())).orElse(new JSONObject());
     }
 
     /**

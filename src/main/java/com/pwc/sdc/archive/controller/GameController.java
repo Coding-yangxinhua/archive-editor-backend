@@ -24,8 +24,8 @@ import java.util.List;
 public class GameController {
     @Autowired
     private AeGameService gameService;
-    @GetMapping("/list")
-    @ApiOperation(value = "游戏列表查询， ", httpMethod = "GET")
+    @PostMapping("/list")
+    @ApiOperation(value = "游戏列表查询", httpMethod = "POST")
     public ResponseEntity<IPage<GameDto>> list(@RequestBody GamePlatformDto gamePlatformDto, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         if (gamePlatformDto.getUserId() != null) {
             gamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
