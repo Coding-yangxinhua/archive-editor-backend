@@ -42,7 +42,7 @@ public class GameController {
         return ResponseEntity.ok(gameService.listByUserId(gamePlatformDto, page, size));
     }
 
-    @PostMapping("/listPlatform")
+    @GetMapping("/listPlatform")
     @ApiOperation(value = "游戏平台查询", httpMethod = "GET")
     public ResponseEntity<List<PlatformDto>> listPlatform() {
         return ResponseEntity.ok(platformService.listPlatform());
