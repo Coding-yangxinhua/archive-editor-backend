@@ -25,10 +25,10 @@
         <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
         <result property="url" column="URL" jdbcType="VARCHAR" />
         <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
-        <result property="isUserStar" column="is_user_star" />
-        <collection property="platforms">
-            <result property="platformId" column="platform_id" />
-            <result property="platformName" column="platform_name" />
+        <result property="isUserStar" column="is_user_star"  jdbcType="INTEGER"/>
+        <collection property="platforms" javaType="ArrayList" ofType="com.pwc.sdc.archive.domain.dto.PlatformDto" >
+            <result property="platformId" column="platform_id" jdbcType="BIGINT" />
+            <result property="platformName" column="platform_name" jdbcType="VARCHAR" />
         </collection>
     </resultMap>
 
@@ -53,15 +53,18 @@
         FROM AE_GAME g
         LEFT JOIN AE_GAME_PLATFORM gp ON gp.GAME_ID = g.ID AND gp.DELETED = ${STATE_NO}
         LEFT JOIN AE_PLATFORM p ON gp.PLATFORM_ID = p.ID AND p.DELETED = ${STATE_NO}
-        LEFT JOIN AE_USER_GAME ug ON ug.GAME_ID = g.ID AND ug.user_id = #{game.userId}
+        LEFT JOIN AE_USER_GAME ug ON ug.GAME_ID = g.ID AND ug.DELETED = ${STATE_NO} AND ug.USER_ID = #{loginUserId}
         WHERE g.DELETED = ${STATE_NO}
-        <if test="gameId != null">
+        <if test="game.gameId != null">
             AND g.ID = #{game.gameId}
         </if>
-        <if test="platformId != null">
+        <if test="game.gameName != null and game.gameName != ''">
+            AND g.GAME_NAME = #{game.gameName}
+        </if>
+        <if test="game.platformId != null">
             AND p.ID = #{game.platformId}
         </if>
-        <if test="userId != null">
+        <if test="game.userId != null">
             AND ug.USER_ID = #{game.userId}
         </if>
     </select>

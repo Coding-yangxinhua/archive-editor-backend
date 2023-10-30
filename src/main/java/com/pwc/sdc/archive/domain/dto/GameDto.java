@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Game信息表
+ * @author Xinhua X Yang
  * @TableName AE_GAME
  */
 @Data

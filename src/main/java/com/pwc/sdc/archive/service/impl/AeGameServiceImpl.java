@@ -1,5 +1,6 @@
 package com.pwc.sdc.archive.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,7 +48,7 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     @Override
     public IPage<GameDto> listByUserId(GamePlatformDto gamePlatformDto, Integer page, Integer size) {
         Page<GameDto> gamePage = new Page<>(page, size);
-        return baseMapper.listByUserId(gamePage, gamePlatformDto);
+        return baseMapper.listByUserId(gamePage, StpUtil.getLoginIdAsLong(), gamePlatformDto);
     }
 
     @Override
