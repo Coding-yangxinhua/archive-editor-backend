@@ -7,6 +7,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.domain.AeUserGamePlatform;
+import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
 import com.pwc.sdc.archive.service.AeUserGamePlatformService;
 import com.pwc.sdc.archive.mapper.AeUserGamePlatformMapper;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -56,7 +57,7 @@ public class AeUserGamePlatformServiceImpl extends ServiceImpl<AeUserGamePlatfor
     @Override
     @Transactional
     @CacheEvict(cacheNames = USER_GAME_PLATFORM, key = "#p0.userId + ':' + #p0.gameId+ ':' + #p0.platformId")
-    public boolean saveOrUpdateWithCheck(UserGamePlatformDto userGamePlatformDto, Integer buy) {
+    public void saveOrUpdateWithCheck(UserGamePlatformDto userGamePlatformDto, Integer buy) {
         userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
         // 查询数据库是否已存在值
         UserGamePlatformDto userGamePlatformDb = getUserGamePlatform(userGamePlatformDto.getUserId(), userGamePlatformDto.getGameId(), userGamePlatformDto.getPlatformId());
@@ -80,15 +81,16 @@ public class AeUserGamePlatformServiceImpl extends ServiceImpl<AeUserGamePlatfor
         }
         // 存在才更新，否则入库
         if (exist) {
-            return this.updateByInfo(userGamePlatformDto);
+            this.updateByInfo(userGamePlatformDto);
+            return;
         }
-        return this.save(userGamePlatformDto.createEntity());
+        this.save(userGamePlatformDto.createEntity());
     }
 
     @Override
     @CacheEvict(cacheNames = USER_GAME_PLATFORM, key = "#p0.userId + ':' + #p0.gameId+ ':' + #p0.platformId")
-    public boolean updateByInfo(UserGamePlatformDto userGamePlatformDto) {
-        return baseMapper.updateByInfo(userGamePlatformDto);
+    public void updateByInfo(UserGamePlatformDto userGamePlatformDto) {
+        baseMapper.updateByInfo(userGamePlatformDto);
     }
 }
 

@@ -2,7 +2,10 @@ package com.pwc.sdc.archive.service;
 
 import com.pwc.sdc.archive.domain.AeUserGamePlatform;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
+
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -14,8 +17,8 @@ public interface AeUserGamePlatformService extends IService<AeUserGamePlatform> 
 
     UserGamePlatformDto getUserGamePlatform(Long userId, Long gameId, Long platformId);
 
-    boolean saveOrUpdateWithCheck(UserGamePlatformDto userGamePlatformDto, Integer buy);
+    void saveOrUpdateWithCheck(UserGamePlatformDto userGamePlatformDto, Integer buy);
 
-    boolean updateByInfo(UserGamePlatformDto userGamePlatformDto);
+    void updateByInfo(UserGamePlatformDto userGamePlatformDto);
 
 }

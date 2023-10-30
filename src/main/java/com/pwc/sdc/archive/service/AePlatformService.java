@@ -2,6 +2,10 @@ package com.pwc.sdc.archive.service;
 
 import com.pwc.sdc.archive.domain.AePlatform;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
+import com.pwc.sdc.archive.domain.dto.PlatformDto;
+
+import java.util.List;
 
 /**
 * @author Xinhua X Yang
@@ -9,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-07 10:30:30
 */
 public interface AePlatformService extends IService<AePlatform> {
-
+    List<PlatformDto> listPlatform();
 }
