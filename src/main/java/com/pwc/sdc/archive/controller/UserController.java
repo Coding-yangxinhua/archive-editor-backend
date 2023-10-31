@@ -1,6 +1,7 @@
 package com.pwc.sdc.archive.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.constants.MailConstants;
 import com.pwc.sdc.archive.common.constants.ResultConstants;
@@ -33,14 +34,16 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiOperation(value = "用户注册", httpMethod = "POST")
-    public ResponseEntity<String> register(@RequestBody @Validated(ValidConstant.User.Register.class) AeUserDto aeUserDto) {
-        return userService.saveUser(aeUserDto);
+    @ApiOperationSupport(includeParameters = {"user.userName", "user.account", "user.password", "user.invitationCode"})
+    public ResponseEntity<String> register(@RequestBody @Validated(ValidConstant.User.Register.class) AeUserDto user) {
+        return userService.saveUser(user);
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录", httpMethod = "POST")
-    public ResponseEntity<String> login(@RequestBody @Validated(ValidConstant.User.Login.class) AeUserDto aeUserDto) {
-        return userService.login(aeUserDto);
+    @ApiOperationSupport(includeParameters = {"user.account", "user.password"})
+    public ResponseEntity<String> login(@RequestBody @Validated(ValidConstant.User.Login.class) AeUserDto user) {
+        return userService.login(user);
     }
 
     @GetMapping("/user")
@@ -59,8 +62,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/sendResetCode")
-    @ApiOperation(value = "发送重置密码验证码", httpMethod = "POST")
+    @GetMapping("/sendResetCode")
+    @ApiOperation(value = "发送重置密码验证码", httpMethod = "GET")
     public ResponseEntity<String> sendResetCode() {
         boolean success = this.mailService.sendVerifyCode(USER_CODE + StpUtil.getLoginId(), MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
         if (success) {
@@ -87,19 +90,38 @@ public class UserController {
 
     @PostMapping("/updateUser")
     @ApiOperation(value = "更新用户信息", httpMethod = "POST")
-    public ResponseEntity<String> updateUser(AeUserDto userDto) {
+    @ApiOperationSupport(ignoreParameters = {"user.userName"})
+    public ResponseEntity<String> updateUser(AeUserDto user) {
         // 判断是否为管理员
         boolean admin = StpUtil.hasRole(RoleConstants.ADMIN);
         if (!admin) {
             // 设置用户id
-            userDto.setId(StpUtil.getLoginIdAsLong());
+            user.setId(StpUtil.getLoginIdAsLong());
             // 屏蔽用户密码
-            userDto.setPassword(null);
-            userDto.setAccount(null);
-            userDto.setPoint(null);
-            userDto.setBanTime(null);
+            user.setPassword(null);
+            user.setAccount(null);
+            user.setPoint(null);
+            user.setBanTime(null);
         }
-        this.userService.updateUserInfo(userDto);
+        this.userService.updateUserInfo(user);
+        return ResponseEntity.ok();
+    }
+
+    @GetMapping("/bindInviter")
+    @ApiOperation(value = "绑定邀请码", httpMethod = "GET")
+    public ResponseEntity<String> bindInviter(String invitationCode) {
+        long userId = StpUtil.getLoginIdAsLong();
+        // 获得用户信息
+        AeUserDto userDB = this.userService.getUserInfoById(userId);
+        Assert.isNull(userDB.getInviter(), "已绑定邀请人");
+        // 设置邀请码
+        AeUserDto user = new AeUserDto();
+        user.setId(userId);
+        userDB.setInvitationCode(invitationCode);
+        // 获得邀请人信息
+        this.userService.checkAndAddInviter(userDB);
+        // 更新数据
+        this.userService.updateUserInfo(userDB);
         return ResponseEntity.ok();
     }
 }

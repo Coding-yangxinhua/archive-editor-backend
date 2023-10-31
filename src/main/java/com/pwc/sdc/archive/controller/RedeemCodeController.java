@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("兑换码接口")
 @RestController
 @RequestMapping("redeemCode")
@@ -30,7 +33,7 @@ public class RedeemCodeController {
     @Autowired
     private ExRedeemCodeService redeemCodeService;
 
-    @ApiOperation("激活码列表")
+    @ApiOperation("激活码列表 - ADMIN")
     @Auth(roles = {RoleConstants.ADMIN})
     @GetMapping("list")
     public ResponseEntity<IPage<ExRedeemCode>> list(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
@@ -39,7 +42,7 @@ public class RedeemCodeController {
         return ResponseEntity.ok(userPage);
     }
 
-    @ApiOperation("激活码生成")
+    @ApiOperation("激活码生成 - ADMIN")
     @Auth(roles = {RoleConstants.ADMIN})
     @GetMapping("generate")
     public ResponseEntity<List<String>> generate(@RequestParam("money") Integer money, @RequestParam("point") Integer point, @RequestParam("size") Integer size) {

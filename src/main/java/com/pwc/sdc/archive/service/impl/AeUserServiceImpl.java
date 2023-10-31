@@ -38,23 +38,31 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
         aeUserDto.setId(null);
         aeUserDto.setGmtCreate(null);
         aeUserDto.setGmtModified(null);
-        // 判断是否有邀请码
-        AeUser inviter = baseMapper.getUserByInvitationCode(aeUserDto.getInvitationCode());
         // 查看账号是否存在
         AeUser userDB = baseMapper.getUserByAccount(aeUserDto.getAccount());
-        if (inviter == null) {
-            return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.INVITATION_CODE_NOT_EXISTS);
-        }
         if (userDB != null) {
             return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.USER_EXISTS);
         }
-        // 设置用户邀请人
-        aeUserDto.setInviter(inviter.getId());
+        // 判断与
+        checkAndAddInviter(aeUserDto);
         if (enableRegister) {
             aeUserDto.setInvitationCode(RandomUtil.randomString(5).toUpperCase());
         }
         this.save(aeUserDto.createEntity());
         return ResponseEntity.ok();
+    }
+
+    @Override
+    public void checkAndAddInviter(AeUserDto user) {
+        // 判断是否已存在邀请人，存在则不修改
+        if (user.getInviter() != null) {
+            return;
+        }
+        // 判断邀请人是否存在
+        AeUser inviter = baseMapper.getUserByInvitationCode(user.getInvitationCode());
+        Assert.notNull(inviter, ResultConstants.INVITATION_CODE_NOT_EXISTS);
+        // 设置用户邀请人
+        user.setInviter(inviter.getId());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.pwc.sdc.archive.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.domain.dto.UserArchive;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
@@ -30,16 +31,19 @@ public class UserArchiveController {
     @Autowired
     ArchiveHttpHandler httpHandler;
 
-    @ApiOperation("绑定游戏对应平台账号")
+
     @PostMapping("/bind")
-    public ResponseEntity<UserArchive> bindGame (@RequestBody UserGamePlatformDto userGamePlatform, @RequestParam Integer buy) {
-        userGamePlatform.setUserId(StpUtil.getLoginIdAsLong());
-        userGamePlatformService.saveOrUpdateWithCheck(userGamePlatform, buy);
+    @ApiOperation("绑定游戏对应平台账号")
+    @ApiOperationSupport(includeParameters = {"user.gameId", "user.platformId", "user.gameLoginId", "user.session", "buy"})
+    public ResponseEntity<UserArchive> bindGame (@RequestBody UserGamePlatformDto user, @RequestParam Integer buy) {
+        user.setUserId(StpUtil.getLoginIdAsLong());
+        userGamePlatformService.saveOrUpdateWithCheck(user, buy);
         return ResponseEntity.ok();
     }
 
     @ApiOperation("登录")
     @PostMapping("/login")
+    @ApiOperationSupport(includeParameters = {"user.gameId", "user.platformId"})
     public ResponseEntity<UserArchive> loginGame (@RequestBody UserGamePlatformDto user) {
         user.setUserId(StpUtil.getLoginIdAsLong());
         httpHandler.login(user);
@@ -48,20 +52,23 @@ public class UserArchiveController {
 
     @ApiOperation("获得用户网络存档")
     @PostMapping("/getOnline")
+    @ApiOperationSupport(includeParameters = {"user.gameId", "user.platformId"})
     public ResponseEntity<UserArchive> getArchive (@RequestBody UserGamePlatformDto user) {
         user.setUserId(StpUtil.getLoginIdAsLong());
         return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user, true));
     }
 
-    @ApiOperation("获得用户保存存档")
     @PostMapping("/get")
-    public ResponseEntity<UserArchive> getDB (@RequestBody UserGamePlatformDto user) {
+    @ApiOperation("获得用户保存存档")
+    @ApiOperationSupport(includeParameters = {"user.gameId", "user.platformId"})
+    public ResponseEntity<UserArchive> getLocal (@RequestBody UserGamePlatformDto user) {
         user.setUserId(StpUtil.getLoginIdAsLong());
         return ResponseEntity.ok(archiveAnalysisHandler.getUserArchive(user, false));
     }
 
-    @ApiOperation("更新用户存档")
     @PostMapping("/update")
+    @ApiOperation("更新用户存档")
+    @ApiOperationSupport(ignoreParameters = {"userArchive.userId"})
     public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive) {
         userArchive.setUserId(StpUtil.getLoginIdAsLong());
         int i = archiveAnalysisHandler.addUserArchive(userArchive);
@@ -71,11 +78,12 @@ public class UserArchiveController {
         return ResponseEntity.ok();
     }
 
-    @ApiOperation("上传用户存档")
     @PostMapping("/upload")
-    public ResponseEntity<Integer> uploadArchive (@RequestBody UserGamePlatformDto userGamePlatformDto) {
-        userGamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
-        httpHandler.uploadArchive(userGamePlatformDto, null, 0);
+    @ApiOperation("上传用户存档")
+    @ApiOperationSupport(includeParameters = {"user.gameId", "user.platformId"})
+    public ResponseEntity<Integer> uploadArchive (@RequestBody UserGamePlatformDto user) {
+        user.setUserId(StpUtil.getLoginIdAsLong());
+        httpHandler.uploadArchive(user, null, 0);
         return ResponseEntity.ok();
     }
 

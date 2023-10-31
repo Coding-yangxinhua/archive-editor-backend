@@ -22,6 +22,8 @@ public interface AeUserService extends IService<AeUser> {
 
     AeUserDto getUserInfoById(Long userId);
 
+    void checkAndAddInviter(AeUserDto user);
+
     void updateUserInfo(AeUserDto userDto);
 
     int costPoint(Long userId, Integer point);

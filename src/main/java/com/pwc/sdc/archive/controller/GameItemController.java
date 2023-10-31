@@ -25,6 +25,9 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("游戏道具接口")
 @RestController
 @RequestMapping("gameItem")
@@ -40,7 +43,7 @@ public class GameItemController {
 
     @PostMapping("/saveOrUpdate")
     @Auth(roles = {RoleConstants.ADMIN})
-    @ApiOperation(value = "新增或修改游戏道具", httpMethod = "POST")
+    @ApiOperation(value = "新增或修改游戏道具 - ADMIN", httpMethod = "POST")
     public ResponseEntity<String> saveOrUpdate(List<AeGameItem> games) {
         gameItemService.saveOrUpdateBatch(games);
         return ResponseEntity.ok();
@@ -48,7 +51,7 @@ public class GameItemController {
 
     @PostMapping("/import")
     @Auth(roles = {RoleConstants.ADMIN})
-    @ApiOperation(value = "导入游戏道具信息", httpMethod = "POST")
+    @ApiOperation(value = "导入游戏道具信息 - ADMIN", httpMethod = "POST")
     public ResponseEntity<String> saveByImport(@RequestParam("gameId") Long gameId, @RequestPart("file") MultipartFile file) throws IOException {
         GameItemImportListener gameItemImportListener = new GameItemImportListener(gameId, gameItemService);
         EasyExcel.read(file.getInputStream(), GameItemDto.class, gameItemImportListener).sheet().doRead();
@@ -57,7 +60,7 @@ public class GameItemController {
 
     @GetMapping("/export")
     @Auth(roles = {RoleConstants.ADMIN})
-    @ApiOperation(value = "导出游戏所有道具", httpMethod = "GET")
+    @ApiOperation(value = "导出游戏所有道具 - ADMIN", httpMethod = "GET")
     public ResponseEntity<String> export(@RequestParam("gameId") Long gameId, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

@@ -11,6 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("邮件接口")
 @RestController
 @RequestMapping("mail")
