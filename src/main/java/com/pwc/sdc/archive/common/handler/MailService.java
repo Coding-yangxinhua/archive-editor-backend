@@ -74,9 +74,9 @@ public class MailService {
         // 存入缓存
         String code = redisTemplate.opsForValue().get(key);
         // 验证码不存在或已过期
-        if (!StringUtils.hasText(codeInput)) {
+        if (!StringUtils.hasText(code)) {
             return false;
         }
-        return ObjectUtil.equals(code, code);
+        return ObjectUtil.equals(code, codeInput);
     }
 }

@@ -13,11 +13,10 @@ import com.pwc.sdc.archive.service.AeUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api("用户接口")
 @RestController
@@ -42,6 +41,22 @@ public class UserController {
     @ApiOperation(value = "用户登录", httpMethod = "POST")
     public ResponseEntity<String> login(@RequestBody @Validated(ValidConstant.User.Login.class) AeUserDto aeUserDto) {
         return userService.login(aeUserDto);
+    }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "用户信息获取", httpMethod = "GET")
+    public ResponseEntity<AeUserDto> user(@RequestParam (required = false) Long userId) {
+        // 获得用户信息
+        AeUserDto user = userService.getUserInfoById(userId);
+        Assert.notNull(user, "用户信息不存在");
+        // 屏蔽密码
+        user.setPassword(null);
+        // 如果不是本人，屏蔽邀请码邀请人数据
+        if (StpUtil.getLoginIdAsLong() != userId) {
+            user.setInviter(null);
+            user.setInvitationCode(null);
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/sendResetCode")
