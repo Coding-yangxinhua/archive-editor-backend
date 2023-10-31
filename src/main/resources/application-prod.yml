@@ -1,9 +1,9 @@
 spring:
   redis:
     host: 107.175.194.157
-    password: zxcv123321AZ
+    password: ${REDIS_PASSWORD}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: zxcv123321AZ!
+    password: ${MYSQL_PASSWORD}
     url: jdbc:mysql://107.175.194.157:3306/ae_prod?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false&&rewriteBatchedStatements=true
