@@ -18,6 +18,7 @@ import com.pwc.sdc.archive.service.AeUserGamePlatformService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,8 +60,11 @@ public class GameController {
 
     @GetMapping("/detail")
     @ApiOperation(value = "查看游戏详情", httpMethod = "GET")
-    public ResponseEntity<AeGame> detail(@RequestParam(value = "gameId", required = false) Long gameId) {
-        return ResponseEntity.ok(gameService.getGameById(gameId));
+    @ApiOperationSupport(includeParameters = {"gameId", "platformId"})
+    public ResponseEntity<GameDto> detail(Long gameId, Long platformId) {
+        GameDto gameDto = gameService.getGameDto(gameId, platformId);
+        Assert.notNull(gameDto, "游戏不存在");
+        return ResponseEntity.ok(gameDto);
     }
 
     @GetMapping("/saveOrUpdate")

@@ -29,6 +29,7 @@
         <collection property="platforms" javaType="ArrayList" ofType="com.pwc.sdc.archive.domain.dto.PlatformDto" >
             <result property="platformId" column="platform_id" jdbcType="BIGINT" />
             <result property="platformName" column="platform_name" jdbcType="VARCHAR" />
+            <result property="status" column="status" jdbcType="TINYINT" />
         </collection>
     </resultMap>
 
@@ -50,6 +51,7 @@
         SELECT g.ID, g.`NAME`, g.`DESCRIPTION`, g.URL, g.GMT_CREATE
              , p.ID AS 'platform_id', p.PLATFORM AS 'platform_name'
              , CASE WHEN ug.user_id IS NULL THEN 0 ELSE 1 END AS is_user_star
+             , CASE WHEN p.ID = #{platformId} THEN 1 ELSE 0 END AS status
         FROM AE_GAME g
         LEFT JOIN AE_GAME_PLATFORM gp ON gp.GAME_ID = g.ID AND gp.DELETED = ${STATE_NO}
         LEFT JOIN AE_PLATFORM p ON gp.PLATFORM_ID = p.ID AND p.DELETED = ${STATE_NO}

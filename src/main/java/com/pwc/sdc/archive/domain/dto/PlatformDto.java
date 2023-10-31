@@ -18,6 +18,8 @@ public class PlatformDto {
 
     private String platformName;
 
+    private Integer status;
+
     public PlatformDto (AePlatform platform) {
         platformId = platform.getId();
         platformName = platform.getPlatform();

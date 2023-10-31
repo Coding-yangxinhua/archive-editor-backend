@@ -12,6 +12,9 @@ import org.springframework.util.StringUtils;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

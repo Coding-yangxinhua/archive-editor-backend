@@ -28,6 +28,7 @@ import reactor.util.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -101,6 +102,20 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     @Cacheable(cacheNames = AE_GAME, key = "#gameId")
     public AeGame getGameById(Long gameId) {
         return this.getById(gameId);
+    }
+
+    @Override
+    public GameDto getGameDto(Long gameId, Long platformId) {
+        // 设置基础信息
+        GamePlatformDto game = new GamePlatformDto();
+        game.setGameId(gameId);
+        game.setPlatformId(platformId);
+        // 找寻相关数据
+        List<GameDto> records = this.listByUserId(game, 1, 1).getRecords();
+        if (records != null && !records.isEmpty()) {
+            return records.get(0);
+        }
+        return null;
     }
 
 

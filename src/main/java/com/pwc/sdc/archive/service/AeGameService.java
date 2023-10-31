@@ -35,4 +35,6 @@ public interface AeGameService extends IService<AeGame> {
 
     AeGame getGameById(Long gameId);
 
+    GameDto getGameDto(Long gameId, Long platformId);
+
 }
