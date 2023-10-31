@@ -1,7 +1,9 @@
 package com.pwc.sdc.archive.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +15,8 @@ import java.util.List;
  * @TableName AE_GAME
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameDto implements Serializable {
     /**
      * 主键ID

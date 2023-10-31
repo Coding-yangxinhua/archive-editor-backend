@@ -59,7 +59,7 @@
             AND g.ID = #{game.gameId}
         </if>
         <if test="game.gameName != null and game.gameName != ''">
-            AND g.GAME_NAME = #{game.gameName}
+            AND g.NAME LIKE CONCAT(#{game.gameName}, '%')
         </if>
         <if test="game.platformId != null">
             AND p.ID = #{game.platformId}

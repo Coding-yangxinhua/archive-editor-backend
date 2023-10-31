@@ -29,6 +29,7 @@ import reactor.util.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +49,7 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     @Override
     public IPage<GameDto> listByUserId(GamePlatformDto gamePlatformDto, Integer page, Integer size) {
         Page<GameDto> gamePage = new Page<>(page, size);
-        return baseMapper.listByUserId(gamePage, StpUtil.getLoginIdAsLong(), gamePlatformDto);
+        return baseMapper.listByUserId(gamePage, (Long) StpUtil.getLoginIdDefaultNull() , gamePlatformDto);
     }
 
     @Override

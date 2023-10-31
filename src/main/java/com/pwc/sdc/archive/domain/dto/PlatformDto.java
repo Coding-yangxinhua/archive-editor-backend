@@ -2,12 +2,16 @@ package com.pwc.sdc.archive.domain.dto;
 
 
 import com.pwc.sdc.archive.domain.AePlatform;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Xinhua X Yang
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlatformDto {
 
     private Long platformId;
