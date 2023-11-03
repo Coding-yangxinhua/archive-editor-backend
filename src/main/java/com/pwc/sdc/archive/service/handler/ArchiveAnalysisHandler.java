@@ -3,6 +3,7 @@ package com.pwc.sdc.archive.service.handler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.constants.ResultConstants;
+import com.pwc.sdc.archive.common.enums.EditorMode;
 import com.pwc.sdc.archive.common.enums.EnableStatus;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGameArchivePart;
@@ -69,7 +70,7 @@ public class ArchiveAnalysisHandler {
         // 获得此游戏可修改的存档部分
         List<AeGameArchivePart> partByGameId = aeGameArchivePartService.getPartByGameId(user.getGameId());
         String key;
-        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, new UserArchive(user.getGameId(), user.getUserId(), user.getPlatformId()));
+        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, new UserArchive(user.getGameId(), user.getUserId(), user.getPlatformId()), EditorMode.ACCUMULATE);
         for (AeGameArchivePart part:
              partByGameId) {
             key = part.getKey();
@@ -93,7 +94,7 @@ public class ArchiveAnalysisHandler {
      * @return
      */
     @Transactional
-    public int addUserArchive(UserArchive userArchive) {
+    public int addUserArchive(UserArchive userArchive, boolean free, EditorMode editorMode) {
         // 获得该用户此游戏最新的一份存档
         AeUserArchive latestUserArchive = userArchiveService.getLatestUserArchive(userArchive);
         if (latestUserArchive == null) {
@@ -105,15 +106,18 @@ public class ArchiveAnalysisHandler {
         // 登录请求网络最新存档数据
         String archive = httpHandler.downloadArchive(user, true);
         Assert.notNull(archive, "下载存档失败");
-        // 计算所需Point，并判断积分是否足够
-        int restPoint = calculatePriceTotal(userArchive);
-        if (restPoint < 0) {
-            return restPoint;
+        int restPoint = 0;
+        if (!free) {
+            // 计算所需Point，并判断积分是否足够
+            restPoint = calculatePriceTotal(userArchive);
+            if (restPoint < 0) {
+                return restPoint;
+            }
         }
         // 转换存档为JSON格式
         JSONObject archiveJson = JSON.parseObject(archive);
         // 根据对象生成Json
-        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, userArchive);
+        EditorBaseHandler editorHandler = getEditorHandler(archiveJson, userArchive, editorMode);
         JSONObject jsonObject = editorHandler.loadArchiveJsonByEntity();
         // 存入存档
         AeUserArchive newArchive = new AeUserArchive();
@@ -187,8 +191,8 @@ public class ArchiveAnalysisHandler {
         return restPoint;
     }
 
-    private EditorBaseHandler getEditorHandler(JSONObject archiveJson, UserArchive userArchive) {
-        return gameService.getEditorHandler(jsEngineHandler, archiveJson, userArchive);
+    private EditorBaseHandler getEditorHandler(JSONObject archiveJson, UserArchive userArchive, EditorMode editorMode) {
+        return gameService.getEditorHandler(jsEngineHandler, archiveJson, userArchive, editorMode);
     }
 
 

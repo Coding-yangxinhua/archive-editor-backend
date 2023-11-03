@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author Xinhua X Yang
+ */
 @Api("系统接口")
 @RestController
 @RequestMapping("system")

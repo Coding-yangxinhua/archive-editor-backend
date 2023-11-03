@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.service.handler.editor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.pwc.sdc.archive.common.enums.EditorMode;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.common.utils.ArchiveUtil;
 import com.pwc.sdc.archive.domain.AeGameArchivePart;
@@ -24,10 +25,12 @@ public class EditorBaseHandler {
 
     protected JsEngineHandler jsEngineHandler;
 
-    public EditorBaseHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive archiveEntity) {
+    protected EditorMode editorMode;
+    public EditorBaseHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive archiveEntity, EditorMode editorMode) {
         this.jsEngineHandler = jsEngineHandler;
         this.archiveJson = archiveJson;
         this.archiveEntity = archiveEntity;
+        this.editorMode = editorMode;
     }
 
     /**
@@ -90,7 +93,14 @@ public class EditorBaseHandler {
     public void loadArchiveJsonByEntity(UserArchive userArchive) {
         // 设置普通项
         List<ArchivePartDto> parts = userArchive.getParts();
-        ArchiveUtil.addKeyValue(this.archiveJson, parts);
+        if (parts != null && !parts.isEmpty()) {
+            if (EditorMode.ACCUMULATE.equals(editorMode)) {
+                ArchiveUtil.addKeyValue(this.archiveJson, parts);
+            } else {
+                ArchiveUtil.setKeyValue(this.archiveJson, parts);
+            }
+        }
+        parts = new ArrayList<>();
         // 设置背包项
         UserPackage userPackage = userArchive.getUserPackage();
         // 没有背包
@@ -103,7 +113,11 @@ public class EditorBaseHandler {
         partItemList.addAll(userPackage.getItems());
         // 获得背包对应json
         JSONObject packageJson = ArchiveUtil.getKeyJson(this.archiveJson, userPackage.getKey());
-        ArchiveUtil.addKeyValueForPackage(packageJson, partItemList);
+        if (EditorMode.ACCUMULATE.equals(editorMode)) {
+            ArchiveUtil.addKeyValueForPackage(packageJson, partItemList);
+        } else {
+            ArchiveUtil.setKeyValueForPackage(packageJson, partItemList, false);
+        }
     }
 
     public JSONObject loadArchiveJsonByEntity() {

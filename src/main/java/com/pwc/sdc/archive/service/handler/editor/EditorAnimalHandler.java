@@ -3,6 +3,7 @@ package com.pwc.sdc.archive.service.handler.editor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pwc.sdc.archive.common.enums.EditorMode;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.common.utils.ArchiveUtil;
 import com.pwc.sdc.archive.common.utils.FillUtil;
@@ -19,6 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Xinhua X Yang
+ */
 public class EditorAnimalHandler extends EditorBaseHandler{
 
     private static final List<String> STATICS_KEY_LIST = Arrays.asList("Knapsack.acc.0", "Knapsack.accCost.0", "Knapsack.acc.1", "Knapsack.accCost.1", "Knapsack.acc.2", "Knapsack.accCost.2");
@@ -26,8 +30,8 @@ public class EditorAnimalHandler extends EditorBaseHandler{
     private static final String STATICS_KEY = "statistics.statics";
 
 
-    public EditorAnimalHandler(JsEngineHandler engineHandler, JSONObject archiveJson, UserArchive userArchive) {
-        super(engineHandler, archiveJson, userArchive);
+    public EditorAnimalHandler(JsEngineHandler engineHandler, JSONObject archiveJson, UserArchive userArchive, EditorMode editorMode) {
+        super(engineHandler, archiveJson, userArchive, editorMode);
     }
 
     public void selfArchiveModify() {

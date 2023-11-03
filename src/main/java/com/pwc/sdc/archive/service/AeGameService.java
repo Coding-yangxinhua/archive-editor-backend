@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.pwc.sdc.archive.common.enums.EditorMode;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -29,7 +30,7 @@ public interface AeGameService extends IService<AeGame> {
 
 
     String getScriptById(Long gameId);
-    EditorBaseHandler getEditorHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive);
+    EditorBaseHandler getEditorHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive, EditorMode editorMode);
 
     FillBaseHandler getFillHandler(JsEngineHandler jsEngineHandler, GamePlatformDto gamePlatform, UserGamePlatformDto userGamePlatform);
 

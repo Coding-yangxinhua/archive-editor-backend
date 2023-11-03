@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.GameConstants;
+import com.pwc.sdc.archive.common.enums.EditorMode;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.pwc.sdc.archive.domain.AeUserGame;
@@ -67,15 +68,15 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     }
 
     @Override
-    public EditorBaseHandler getEditorHandler( JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive) {
+    public EditorBaseHandler getEditorHandler(JsEngineHandler jsEngineHandler, JSONObject archiveJson, UserArchive userArchive, EditorMode editorMode) {
         String editorHandler = "com.pwc.sdc.archive.service.handler.editor." + gameService.getGameById(userArchive.getGameId()).getEditorHandler();
         // 获取类的 Class 对象
         try {
             Class<?> editorClass = Class.forName(editorHandler);
             // 获取构造方法对象
-            Constructor<?> constructor = editorClass.getConstructor(JsEngineHandler.class, JSONObject.class, UserArchive.class);
+            Constructor<?> constructor = editorClass.getConstructor(JsEngineHandler.class, JSONObject.class, UserArchive.class, EditorMode.class);
             // 创建实例
-            return  (EditorBaseHandler) constructor.newInstance(jsEngineHandler, archiveJson, userArchive);
+            return  (EditorBaseHandler) constructor.newInstance(jsEngineHandler, archiveJson, userArchive, editorMode);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  ClassNotFoundException e) {
             throw new RuntimeException(e);
