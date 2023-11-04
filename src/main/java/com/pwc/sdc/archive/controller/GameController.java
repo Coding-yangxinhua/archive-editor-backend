@@ -53,7 +53,7 @@ public class GameController {
 
     @GetMapping("/starGame")
     @ApiOperation(value = "收藏游戏", httpMethod = "GET")
-    public ResponseEntity<String> listStar(Long gameId) {
+    public ResponseEntity<String> starGame(Long gameId) {
         gameService.starGame(StpUtil.getLoginIdAsLong(), gameId);
         return ResponseEntity.ok();
     }
@@ -74,6 +74,5 @@ public class GameController {
         gameService.saveOrUpdate(game);
         return ResponseEntity.ok();
     }
-
 
 }

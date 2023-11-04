@@ -121,7 +121,7 @@ public class UserArchiveController {
         UserItem userItem;
         userPackage.setItems(userItemList);
         // 生成测试item和数量
-        for (int i = 0; i < size; ) {
+        for (int i = 0; i < size * gap; ) {
             userItem = new UserItem();
             userItem.setItemId(String.valueOf(startItemId + i));
             userItem.setCount(startItemId + i);
@@ -149,8 +149,8 @@ public class UserArchiveController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        String fileName = URLEncoder.encode( "TestItemList", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename*=" + fileName + ".xlsx");
+        String fileName = URLEncoder.encode("测试", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), UserItem.class).sheet("模板").doWrite(userItems);
     }
 }
