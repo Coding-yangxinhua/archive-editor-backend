@@ -107,17 +107,17 @@ public class ArchiveAnalysisHandler {
         String archive = httpHandler.downloadArchive(user, true);
         Assert.notNull(archive, "下载存档失败");
         int restPoint = 0;
-        if (!free) {
-            // 计算所需Point，并判断积分是否足够
-            restPoint = calculatePriceTotal(userArchive);
-            if (restPoint < 0) {
-                return restPoint;
-            }
-        }
         // 转换存档为JSON格式
         JSONObject archiveJson = JSON.parseObject(archive);
         // 根据对象生成Json
         EditorBaseHandler editorHandler = getEditorHandler(archiveJson, userArchive, editorMode);
+        if (!free) {
+            // 计算所需Point，并判断积分是否足够
+            restPoint = this.calculatePriceTotal(editorHandler);
+            if (restPoint < 0) {
+                return restPoint;
+            }
+        }
         JSONObject jsonObject = editorHandler.loadArchiveJsonByEntity();
         // 存入存档
         AeUserArchive newArchive = new AeUserArchive();
@@ -135,53 +135,15 @@ public class ArchiveAnalysisHandler {
     /**
      * 计算道具总价
      */
-    private int calculatePriceTotal(UserArchive userArchive) {
+    private int calculatePriceTotal(EditorBaseHandler editorBaseHandler) {
+        UserArchive userArchive = editorBaseHandler.getArchiveEntity();
         Long gameId = userArchive.getGameId();
         List<ArchivePartDto> parts = Optional.ofNullable(userArchive.getParts()).orElse(Collections.emptyList());
         List<UserItem> items = userArchive.getUserPackage() == null || userArchive.getUserPackage().getItems() == null? Collections.emptyList() : userArchive.getUserPackage().getItems();
         // 获得part单价与item单价
         Map<String, AeGameItem> itemMap = gameItemService.mapItemsByGameId(gameId);
         Map<Long, AeGameArchivePart> partMap = aeGameArchivePartService.getPartMapByGameId(gameId);
-        AeGameArchivePart partDB;
-        AeGameItem itemDB;
-        int priceSum = 0;
-        long count;
-        // 计算part所需point
-        for (ArchivePartDto part:
-                parts) {
-            // 防止用户篡改前端传来的值
-            partDB = partMap.get(part.getId());
-            // 数量为零，跳过
-            if ( part.getCountRight() == 0 || partDB.getAmount() == null) {
-                part.setCount(0L);
-                continue;
-            }
-            // 防止用户获取配置以外的值
-            Assert.notNull(part, ResultConstants.ERROR_CONFIGURATION);
-            // 防止用户购买非正常数量的道具
-            count = part.getCountRight() /  partDB.getAmount();
-            count = count > 0 ? count : 1;
-            // 叠加总价
-            priceSum += (int) (count * partDB.getPrice());
-        }
-        // 计算item所需point
-        for (UserItem item:
-                items) {
-            // 防止用户篡改前端传来的值
-            itemDB = itemMap.get(item.getItemId());
-            // 数量为零，跳过
-            if ( item.getCountRight() == 0 || itemDB == null) {
-                item.setCount(0L);
-                continue;
-            }
-            // 防止用户获取配置以外的值
-            Assert.notNull(itemDB, ResultConstants.ERROR_CONFIGURATION);
-            // 防止用户购买非正常数量的道具
-            count = item.getCountRight() /  itemDB.getAmount();
-            count = count > 0 ? count : 1;
-            // 叠加总价
-            priceSum += (int) (count * item.getPrice());
-        }
+        int priceSum = editorBaseHandler.calculatePriceTotal(itemMap, partMap);
         int restPoint = userService.costPoint(userArchive.getUserId(), priceSum);
         if (restPoint >= 0) {
             // 记录流水
