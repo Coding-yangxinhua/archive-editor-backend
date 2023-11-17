@@ -5,23 +5,26 @@ import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.enums.FillEnums;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
-import com.pwc.sdc.archive.common.utils.CryptoJSUtil;
 import com.pwc.sdc.archive.common.utils.FillUtil;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
 import com.pwc.sdc.archive.domain.dto.UserGamePlatformDto;
+import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
 
+/**
+ * @author Xinhua X Yang
+ */
+@Getter
 public class FillBaseHandler {
 
     // md5加密工具
@@ -33,7 +36,6 @@ public class FillBaseHandler {
     protected UserGamePlatformDto user;
 
     // 存档数据
-
     protected String archive;
 
     // js引擎，调用加密解密方法
@@ -45,7 +47,7 @@ public class FillBaseHandler {
     // 请求次数：根据自定义规则修改
     protected Integer requestTimes;
 
-    // 当前请求次数：每次load，自动 +1
+    // 当前请求次数：每次reset，自动 +1
     protected Integer currentTimes;
 
     // 重试次数
@@ -75,8 +77,21 @@ public class FillBaseHandler {
         this.archive = null;
     }
 
-    public void load(RequestStatus status) {
-        this.status = status;
+    // ======================================= 第一步：填充url信息与request参数信息 =======================================>
+
+    public void changeStatus(RequestStatus status) {
+        // 更新请求状态并重置current次数
+        if (this.status != status) {
+            this.status = status;
+            this.currentTimes = 0;
+            this.requestTimes = 1;
+        }
+    }
+    /**
+     * 根据信息填充请求参数
+     */
+    public void load() {
+        this.retryTimes = 1;
         switch (status) {
             case DOWNLOAD:
                 loadDownload();
@@ -88,135 +103,31 @@ public class FillBaseHandler {
             default:
                 loadLogin();
         }
-        this.currentTimes ++;
+        // 填充基本信息
+        loadBase();
     }
 
     /**
-     * 重置填充好的数据，以便第二次登录时使用
+     * 分别填充url和body部分
      */
-    public void reset() {
-        this.platform = new GamePlatformDto();
-        BeanUtils.copyProperties(platformOld, platform);;
-    }
-
-
-    /**
-     * 根据响应结果自定义处理数据
-     * @param responseJson
-     */
-    public void setLoginByResponse(JSONObject responseJson) {}
-
-    public void setArchiveByResponse(JSONObject responseJson) {}
-
-
-    /**
-     * 自定义响应结果解密
-     * @param responseBody
-     * @return
-     */
-    public JSONObject responseDecode(String responseBody) {
-        return JSON.parseObject(responseBody);
+    public void loadBase() {
+        // 设置通用url参数
+        setUrl(fillBase(getUrl()));
+        // 设置通用json参数
+        setBody(fillBase(getBody()));
     }
 
     /**
-     * 填充数据
+     * 交给子类实现额外的特殊处理
      */
-    protected void loadLogin() {
-        // 一次请求
-        this.requestTimes = 1;
-        // 填充登录url
-        platform.setLoginUrl(fillLogin(platform.getLoginUrl()));
-        // 填充登录json
-        platform.setLoginJson(fillLogin(platform.getLoginJson()));
-    }
+    protected void loadLogin() {}
 
-    protected void loadDownload() {
-        // 填充下载存档url
-        platform.setDownloadArchiveUrl(fillDownload(platform.getDownloadArchiveUrl()));
-        // 填充登录json
-        platform.setDownloadArchiveJson(fillDownload(platform.getDownloadArchiveJson()));
-    }
+    protected void loadDownload() {}
 
-    protected void loadUpload() {
-        // 填充上传存档rl
-        platform.setUploadArchiveUrl(fillDownload(platform.getUploadArchiveUrl()));
-        if (StringUtils.hasText(platform.getUploadArchiveJson())) {
-            // 填充登录json
-            platform.setUploadArchiveJson(fillUpload(platform.getUploadArchiveJson(), archive));
-        }
-    }
+    protected void loadUpload() {}
 
 
-
-    /**
-     * 填充timeStamp
-     * @param data
-     * @return
-     */
-    public String fillTimeStamp(String data) {
-        // 得到当前时间戳
-        String timeStamp = String.valueOf(new Date().getTime());
-        // 替换掉普通内容
-        data = data.replaceFirst(FillEnums.TIME_STAMP.reg(), timeStamp);
-        return fillGameVersion(data);
-    }
-
-    /**
-     * 填充游戏版本
-     * @param data
-     * @return
-     */
-    public String fillGameVersion(String data) {
-        JSONObject versionJson = JSON.parseObject(this.platform.getGameVersion());
-        // 遍历存在的版本
-        for (Map.Entry<String, Object> entry
-                : versionJson.entrySet()) {
-            data = data.replaceAll(FillEnums.reg(entry.getKey()), String.valueOf(entry.getValue()));
-        }
-        return data;
-    }
-
-    /**
-     * 填充登录信息
-     * @param data
-     * @return
-     */
-    public String fillLogin(String data) {
-        // 填充登录信息
-        return fillTimeStamp(data).replaceFirst(FillEnums.GAME_LOGIN_ID.reg(), user.getGameLoginId())
-                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
-    }
-
-    public String fillDownload(String data) {
-        // 填充登录信息
-        return fillTimeStamp(data).replaceFirst(FillEnums.SESSION.reg(), user.getSession())
-                .replaceFirst(FillEnums.GAME_LOGIN_ID.reg(), user.getGameLoginId())
-                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
-    }
-
-    /**
-     * 填充存档信息
-     * @param data
-     * @return
-     */
-    public String fillUpload(String data, String archive) {
-        // 默认填充extras所有信息
-        data = FillUtil.fillExtras(user.getExtraJson(), data);
-        // 填充登录信息
-        return fillLogin(data).replaceFirst(FillEnums.ARCHIVE.reg(), archive)
-                .replaceFirst(FillEnums.ARCHIVE_LENGTH.reg(), String.valueOf(archive.length()))
-                .replaceFirst(FillEnums.MD5.reg(), CryptoJSUtil.md5(archive).toUpperCase())
-                .replaceAll(FillEnums.GAME_USER_ID.reg(), String.valueOf(Optional.ofNullable(user.getGameUserId()).orElse(0L)))
-                .replaceFirst(FillEnums.SESSION.reg(), user.getSession())
-                .replaceFirst(FillEnums.OPEN_ID.reg(), user.getOpenId());
-    }
-
-
-
-    public String getExtraByKey(String key) {
-        return this.user.getExtraJson().getString(key);
-    }
-
+    // ======================================= 第二步：提供Url与Body接口供自身和http调用 =======================================>
 
     public String getUrl() {
         switch (status) {
@@ -229,7 +140,8 @@ public class FillBaseHandler {
                 return this.platform.getDownloadArchiveUrl();
         }
     }
-    protected String getBody() {
+
+    public final String getBody() {
         switch (status) {
             case LOGIN:
                 return this.platform.getLoginJson();
@@ -241,10 +153,18 @@ public class FillBaseHandler {
         }
     }
 
+    /**
+     * 获得request param
+     * 不同游戏请求方法请求，参数格式不同
+     * @return
+     */
     public HttpEntity<Object> getHttpEntity() {
-        String body = this.getBody();
+        return this.getHttpEntity(this.getBody());
+    }
+
+    public HttpEntity<Object> getHttpEntity(String body) {
         try {
-            JSON.parseObject(this.getBody());
+            JSON.parseObject(body);
             return new HttpEntity<>(body, headers);
         } catch (Exception e) {
             // 非Json格式数据，根据&拆解组装
@@ -260,26 +180,58 @@ public class FillBaseHandler {
         }
     }
 
+    // ======================================= 第三步：将响应体内容解密、并根据数据设置账号信息 =======================================>
 
-    public UserGamePlatformDto getUser() {
-        return user;
+    /**
+     * 自定义响应结果解密
+     * @param responseBody
+     * @return
+     */
+    public JSONObject responseDecode(String responseBody) {
+        return JSON.parseObject(responseBody);
     }
 
-    public Integer getRequestTimes() {
-        return requestTimes;
+    public void setByResponse(JSONObject responseJson) {
+        RequestStatus requestStatus = this.status;
+        this.status = RequestStatus.SUCCESS;
+        switch (requestStatus) {
+            case DOWNLOAD:
+                setDownloadByResponse(responseJson);
+                break;
+            case UPLOAD:
+
+                setUploadByResponse(responseJson);
+                break;
+            case LOGIN:
+            default:
+                setLoginByResponse(responseJson);
+        }
+        this.currentTimes ++;
     }
 
-    public Integer getRetryTimes() {
-        return retryTimes;
-    }
+    /**
+     * 根据Login响应结果自定义处理数据
+     * @param responseJson
+     */
+    protected void setLoginByResponse(JSONObject responseJson) {}
+
+
+    /**
+     * 根据Download响应结果自定义处理数据
+     * @param responseJson
+     */
+    protected void setDownloadByResponse(JSONObject responseJson) {}
+
+    /**
+     * 根据Upload响应结果自定义处理数据
+     * @param responseJson
+     */
+    protected void setUploadByResponse(JSONObject responseJson) {}
 
     public boolean stillRequest() {
         return this.currentTimes < this.requestTimes;
     }
 
-    public String getArchive() {
-        return archive;
-    }
 
     public void setArchive(String archive) {
         this.archive = archive;
@@ -289,7 +241,93 @@ public class FillBaseHandler {
         this.currentTimes = currentTimes;
     }
 
-    public HttpHeaders getHeaders() {
-        return headers;
+    // ======================================= 第一步的填充通用方法 =======================================>
+
+
+    /**
+     * 填充基础信息包括session、gameLoginId、gameUserId、TimeStamp
+     * @param data
+     * @return
+     */
+    public String fillBase(String data) {
+        // 填充extra时间戳
+        data = fillTimeStamp(data);
+        // 填充extra里内容
+        data = FillUtil.fillExtras(user.getExtraJson(), data);
+        // 填充游戏版本号
+        data = fillGameVersion(data);
+        // 填充一般登录信息
+        return  data.replaceAll(FillEnums.SESSION.reg(), user.getSession())
+                .replaceAll(FillEnums.GAME_LOGIN_ID.reg(), user.getGameLoginId())
+                .replaceAll(FillEnums.OPEN_ID.reg(), user.getOpenId())
+                .replaceAll(FillEnums.GAME_USER_ID.reg(), user.getGameUserId());
+    }
+
+
+
+    /**
+     * 填充timeStamp
+     * @param data
+     * @return
+     */
+    private String fillTimeStamp(String data) {
+        // 得到当前时间戳
+        String timeStamp = String.valueOf(new Date().getTime());
+        // 替换掉普通内容
+        data = data.replaceFirst(FillEnums.TIME_STAMP.reg(), timeStamp);
+        return fillGameVersion(data);
+    }
+
+    /**
+     * 填充游戏版本
+     * @param data
+     * @return
+     */
+    private String fillGameVersion(String data) {
+        JSONObject versionJson = JSON.parseObject(this.platform.getGameVersion());
+        // 遍历存在的版本
+        for (Map.Entry<String, Object> entry
+                : versionJson.entrySet()) {
+            data = data.replaceAll(FillEnums.reg(entry.getKey()), String.valueOf(entry.getValue()));
+        }
+        return data;
+    }
+
+    // ======================================= 第二步的填充通用方法 =======================================>
+
+
+    public void setUrl(String url) {
+        switch (status) {
+            case LOGIN:
+                this.platform.setLoginUrl(url);
+            case UPLOAD:
+                this.platform.setUploadArchiveUrl(url);
+            case DOWNLOAD:
+            default:
+                this.platform.setDownloadArchiveUrl(url);
+        }
+    }
+
+
+
+    protected void setBody(String body) {
+        switch (status) {
+            case LOGIN:
+                this.platform.setLoginJson(body);
+            case UPLOAD:
+                this.platform.setUploadArchiveJson(body);
+            case DOWNLOAD:
+            default:
+                this.platform.setDownloadArchiveJson(body);
+        }
+    }
+
+    /**
+     * 重置填充好的数据，以便第二次登录时使用
+     */
+    public void reset() {
+        this.currentTimes ++;
+        this.platform = new GamePlatformDto();
+        BeanUtils.copyProperties(platformOld, platform);;
     }
 }

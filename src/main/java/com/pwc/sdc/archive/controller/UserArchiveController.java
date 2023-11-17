@@ -90,9 +90,9 @@ public class UserArchiveController {
     @PostMapping("/update")
     @ApiOperation("更新用户存档")
     @ApiOperationSupport(ignoreParameters = {"userArchive.userId"})
-    public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive, Integer coverType) {
+    public ResponseEntity<String> updateArchive (@RequestBody UserArchive userArchive, Integer editorMode) {
         userArchive.setUserId(StpUtil.getLoginIdAsLong());
-        int i = archiveAnalysisHandler.addUserArchive(userArchive, false, EditorMode.getByType(coverType));
+        int i = archiveAnalysisHandler.addUserArchive(userArchive, false, EditorMode.getByType(editorMode));
         if (i < 0) {
             return ResponseEntity.error("积分不够, 还差 " + -i + "积分" );
         }

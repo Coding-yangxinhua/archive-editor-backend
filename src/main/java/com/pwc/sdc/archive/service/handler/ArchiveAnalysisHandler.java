@@ -138,12 +138,11 @@ public class ArchiveAnalysisHandler {
     private int calculatePriceTotal(EditorBaseHandler editorBaseHandler) {
         UserArchive userArchive = editorBaseHandler.getArchiveEntity();
         Long gameId = userArchive.getGameId();
-        List<ArchivePartDto> parts = Optional.ofNullable(userArchive.getParts()).orElse(Collections.emptyList());
-        List<UserItem> items = userArchive.getUserPackage() == null || userArchive.getUserPackage().getItems() == null? Collections.emptyList() : userArchive.getUserPackage().getItems();
         // 获得part单价与item单价
         Map<String, AeGameItem> itemMap = gameItemService.mapItemsByGameId(gameId);
         Map<Long, AeGameArchivePart> partMap = aeGameArchivePartService.getPartMapByGameId(gameId);
         int priceSum = editorBaseHandler.calculatePriceTotal(itemMap, partMap);
+        // 计算花费
         int restPoint = userService.costPoint(userArchive.getUserId(), priceSum);
         if (restPoint >= 0) {
             // 记录流水

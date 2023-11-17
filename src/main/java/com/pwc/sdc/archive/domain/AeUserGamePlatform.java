@@ -8,6 +8,7 @@ import lombok.Data;
 
 /**
  * 用户Game平台信息表
+ * @author Xinhua X Yang
  * @TableName AE_USER_GAME_PLATFORM
  */
 @TableName(value ="AE_USER_GAME_PLATFORM")
@@ -42,7 +43,7 @@ public class AeUserGamePlatform implements Serializable {
     /**
      * Game中用户
      */
-    private Long gameUserId;
+    private String gameUserId;
 
     /**
      * Game中user name

@@ -1,6 +1,5 @@
 package com.pwc.sdc.archive.service.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -64,9 +64,13 @@ public class ArchiveHttpHandler {
      * session过期时，重新登录
      */
     public void reLogin(FillBaseHandler handler) {
-        JSONObject responseJson = post(handler, RequestStatus.LOGIN);
-        // 根据值设置用户相关信息
-        handler.setLoginByResponse(responseJson);
+        // 获取用户信息
+        UserGamePlatformDto user = handler.getUser();
+        // 使用token的游戏，不进行登录操作
+        if (!StringUtils.hasText(user.getGameLoginId())) {
+            return;
+        }
+        post(handler, RequestStatus.LOGIN);
         // 入库
         userGamePlatformService.updateByInfo(handler.getUser());
         log.info("登录成功");
@@ -81,21 +85,15 @@ public class ArchiveHttpHandler {
     }
     public String downloadArchive(UserGamePlatformDto userGamePlatformDto, Integer retryCount) {
         FillBaseHandler handler = initFillHandler(userGamePlatformDto);
-        // 防止当前登录token有缓存，影响结果
-        reLogin(handler);
-        handler.setCurrentTimes(0);
-        JSONObject responseJson = post(handler, RequestStatus.DOWNLOAD);
+        RequestStatus status = post(handler, RequestStatus.DOWNLOAD);
         // 登录信息过期，重登录: 超过三次，不再尝试
-        if (responseJson == null) {
+        if (status == RequestStatus.RE_LOGIN) {
             if (retryCount < handler.getRetryTimes()) {
-                handler.setCurrentTimes(0);
                 reLogin(handler);
                 return downloadArchive(userGamePlatformDto, ++ retryCount);
             }
         }
-        Assert.isTrue(responseJson != null && retryCount <= 2, "多次尝试登录，仍无法获取存档");
-        // 根据响应体设置存档
-        handler.setArchiveByResponse(responseJson);
+        Assert.isTrue(status == RequestStatus.SUCCESS && retryCount <= 2, "多次尝试登录，仍无法获取存档");
         // 更新用户信息
         userGamePlatformService.updateByInfo(handler.getUser());
         return handler.getArchive();
@@ -111,36 +109,36 @@ public class ArchiveHttpHandler {
         }
         FillBaseHandler handler = initFillHandler(user);
         handler.setArchive(latestUserArchive.getArchiveData());
-        JSONObject responseJson = post(handler, RequestStatus.UPLOAD);
+        RequestStatus status = post(handler, RequestStatus.UPLOAD);
         // 登录信息过期，重登录: 超过三次，不再尝试
-        if (responseJson == null) {
+        if (status == RequestStatus.RE_LOGIN) {
             if (retryCount < handler.getRetryTimes()) {
-                handler.setCurrentTimes(0);
                 reLogin(handler);
                 uploadArchive(handler.getUser(), latestUserArchive, ++ retryCount);
             }
         }
-        Assert.isTrue(responseJson != null && retryCount <= 3, "多次尝试登录，仍无法获取存档");
-        // 根据响应体设置存档
+        Assert.isTrue(status == RequestStatus.SUCCESS && retryCount <= 3, "多次尝试登录，仍无法获取存档");
     }
 
-    public JSONObject post(FillBaseHandler handler, RequestStatus status) {
+    public RequestStatus post(FillBaseHandler handler, RequestStatus status) {
         ResponseEntity<String> responseEntity;
         StringBuilder respSb = new StringBuilder();
         JSONObject temp;
+        // 设置当前请求状态
+        handler.changeStatus(status);
         // 判断是否还请求
         while (handler.stillRequest()) {
             // 填充信息
-            handler.load(status);
+            handler.load();
             // 设置请求链接与参数
             HttpEntity<Object> entity = handler.getHttpEntity();
             try {
                 log.info("请求地址{}", handler.getUrl());
                 responseEntity = restTemplate.postForEntity(handler.getUrl(), entity, String.class);
+                log.info("请求参数为{}", handler.getBody());
             } catch (Exception e) {
-                Assert.isTrue(!status.equals(RequestStatus.LOGIN), "登录信息失效，请重新绑定游戏id");
-                log.warn("用户登录信息过期");
-                return null;
+                log.info("请求失败，重新登录");
+                return RequestStatus.RE_LOGIN;
             }
             // 响应返回失败
             if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
@@ -157,8 +155,9 @@ public class ArchiveHttpHandler {
             // 重置填充后的信息
             handler.reset();
         }
+        handler.setByResponse(JSONObject.parseObject(respSb.toString()));
         // 属于正常返回的值为null
-        return Optional.ofNullable(JSONObject.parseObject(respSb.toString())).orElse(new JSONObject());
+        return handler.getStatus();
     }
 
     /**

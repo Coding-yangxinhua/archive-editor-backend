@@ -23,7 +23,7 @@ public class UserGamePlatformDto extends BaseInfoDto implements Serializable {
 
     private String gameLoginId;
 
-    private Long gameUserId;
+    private String gameUserId;
 
     private String gameUserName;
 

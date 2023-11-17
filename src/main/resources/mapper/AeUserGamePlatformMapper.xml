@@ -10,7 +10,7 @@
             <result property="gameId" column="GAME_ID" jdbcType="BIGINT"/>
             <result property="platformId" column="PLATFORM_ID" jdbcType="BIGINT"/>
             <result property="gameUserId" column="GAME_USER_ID" jdbcType="VARCHAR"/>
-            <result property="gameLoginId" column="GAME_LOGIN_ID" jdbcType="BIGINT"/>
+            <result property="gameLoginId" column="GAME_LOGIN_ID" jdbcType="VARCHAR"/>
             <result property="openId" column="OPEN_ID" jdbcType="VARCHAR"/>
             <result property="session" column="SESSION" jdbcType="VARCHAR"/>
             <result property="bindTime" column="BIND_TIME" jdbcType="TIMESTAMP"/>

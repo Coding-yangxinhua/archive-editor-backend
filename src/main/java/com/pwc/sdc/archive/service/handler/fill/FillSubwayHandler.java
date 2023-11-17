@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -32,13 +33,10 @@ public class FillSubwayHandler extends FillBaseHandler{
     }
 
     @Override
-    public String fillUpload(String data, String archive) {
-        try {
-            return super.fillUpload(data, URLEncoder.encode(archive, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            log.error("URL编码有误");
-            throw new RuntimeException(e);
-        }
+    protected void loadUpload() {
+        String body = this.getBody();
+        body = body.replaceFirst(FillEnums.ARCHIVE.reg(), URLEncoder.encode(archive, StandardCharsets.UTF_8));
+        this.setBody(body);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class FillSubwayHandler extends FillBaseHandler{
         this.user.setSession(session);
     }
 
-    public void setArchiveByResponse(JSONObject responseJson) {
+    public void setDownloadByResponse(JSONObject responseJson) {
         // 获得存档部分
         responseJson = responseJson.getJSONObject("save_data");
         this.archive = responseJson.toJSONString();
