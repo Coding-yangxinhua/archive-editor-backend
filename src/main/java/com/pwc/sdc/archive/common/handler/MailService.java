@@ -47,10 +47,7 @@ public class MailService {
         return true;
     }
 
-    public boolean sendVerifyCode(String key, String subject, String text) {
-        // 获得用户邮箱信息
-        long userId = StpUtil.getLoginIdAsLong();
-        AeUserDto userDto = userService.getUserInfoById(userId);
+    public boolean sendVerifyCode(String account, String key, String subject, String text) {
         // 生成验证码
         String code = RandomUtil.randomNumbers(4);
         // 判断发送验证码冷却时间
@@ -67,7 +64,7 @@ public class MailService {
         // 替换text内容
         text = text.replace("${code}", code);
         // 发送验证码
-        return this.sendMail(userDto.getAccount(),subject, text);
+        return this.sendMail(account,subject, text);
     }
 
     public boolean verifyCode(String key, String codeInput) {

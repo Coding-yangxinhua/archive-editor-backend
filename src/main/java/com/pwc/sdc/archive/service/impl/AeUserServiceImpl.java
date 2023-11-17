@@ -92,7 +92,7 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     @Override
     @CacheEvict(cacheNames = USER_KEY, key = "#userDto.id", condition = "#userDto.id != null")
     public void updateUserInfo(AeUserDto userDto) {
-        if (userDto.getId() == null) {
+        if (userDto.getId() == null && userDto.getAccount() == null) {
             return;
         }
         LambdaUpdateWrapper<AeUser> updateWrapper = new LambdaUpdateWrapper<>();
@@ -100,7 +100,8 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
                 .set(userDto.getPassword() != null, AeUser::getPassword, userDto.getPassword())
                 .set(userDto.getPoint() != null, AeUser::getPoint, userDto.getPoint())
                 .set(userDto.getBanTime() != null, AeUser::getBanTime, userDto.getBanTime())
-                .eq(AeUser::getId, userDto.getId());
+                .eq(userDto.getAccount() != null, AeUser::getAccount, userDto.getAccount())
+                .eq(userDto.getId() != null, AeUser::getId, userDto.getId());
         this.update(updateWrapper);
     }
 

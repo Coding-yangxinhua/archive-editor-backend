@@ -64,8 +64,8 @@ public class UserController {
 
     @GetMapping("/sendResetCode")
     @ApiOperation(value = "发送重置密码验证码", httpMethod = "GET")
-    public ResponseEntity<String> sendResetCode() {
-        boolean success = this.mailService.sendVerifyCode(USER_CODE + StpUtil.getLoginId(), MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
+    public ResponseEntity<String> sendResetCode(String account) {
+        boolean success = this.mailService.sendVerifyCode(account, USER_CODE + account, MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
         if (success) {
             return ResponseEntity.ok();
         }
@@ -74,15 +74,15 @@ public class UserController {
 
     @PostMapping("/resetPassword")
     @ApiOperation(value = "重置密码", httpMethod = "POST")
-    public ResponseEntity<String> resetPassword(String code, String newPassword) {
-        boolean codeRight = mailService.verifyCode(USER_CODE + StpUtil.getLoginId(), code);
+    public ResponseEntity<String> resetPassword(String account, String code, String newPassword) {
+        boolean codeRight = mailService.verifyCode(USER_CODE + account, code);
         if (!codeRight) {
             return ResponseEntity.error(ResultStatus.CHECK_ERROR, ResultConstants.CODE_ERROR);
         }
         // 设置用户id与密码
         AeUserDto userDto = new AeUserDto();
         userDto.setPassword(newPassword);
-        userDto.setId(StpUtil.getLoginIdAsLong());
+        userDto.setAccount(account);
         // 修改密码
         userService.updateUserInfo(userDto);
         return ResponseEntity.ok();
