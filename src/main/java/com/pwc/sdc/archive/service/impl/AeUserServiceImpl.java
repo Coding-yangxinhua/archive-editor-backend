@@ -91,7 +91,6 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     }
 
     @Override
-    @Cacheable(cacheNames = USER_KEY, key = "#account")
     public AeUserDto getUserInfoByAccount(@NotNull String account) {
         LambdaQueryWrapper<AeUser> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AeUser::getAccount, account);
