@@ -2,6 +2,7 @@ package com.pwc.sdc.archive.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
@@ -86,6 +87,15 @@ public class AeUserServiceImpl extends ServiceImpl<AeUserMapper, AeUser>
     @Cacheable(cacheNames = USER_KEY, key = "#userId", condition = "#userId != null")
     public AeUserDto getUserInfoById(@NotNull Long userId) {
         AeUser user = this.getById(userId);
+        return new AeUserDto(user);
+    }
+
+    @Override
+    @Cacheable(cacheNames = USER_KEY, key = "#account")
+    public AeUserDto getUserInfoByAccount(@NotNull String account) {
+        LambdaQueryWrapper<AeUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AeUser::getAccount, account);
+        AeUser user = baseMapper.selectOne(queryWrapper);
         return new AeUserDto(user);
     }
 

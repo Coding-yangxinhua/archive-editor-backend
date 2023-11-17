@@ -5,6 +5,7 @@ import com.pwc.sdc.archive.domain.AeUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pwc.sdc.archive.domain.dto.AeUserDto;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public interface AeUserService extends IService<AeUser> {
     ResponseEntity<String> login(AeUserDto aeUserDto);
 
     AeUserDto getUserInfoById(Long userId);
+
+    AeUserDto getUserInfoByAccount(@NotNull String account);
 
     void checkAndAddInviter(AeUserDto user);
 

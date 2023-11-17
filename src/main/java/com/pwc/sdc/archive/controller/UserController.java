@@ -65,11 +65,16 @@ public class UserController {
     @GetMapping("/sendResetCode")
     @ApiOperation(value = "发送重置密码验证码", httpMethod = "GET")
     public ResponseEntity<String> sendResetCode(String account) {
+        // 查询用户是否存在
+        AeUserDto user = userService.getUserInfoByAccount(account);
+        if (user == null) {
+            return ResponseEntity.error(ResultConstants.USER_NOT_EXISTS);
+        }
         boolean success = this.mailService.sendVerifyCode(account, USER_CODE + account, MailConstants.RESET_PASSWORD_SUBJECT, MailConstants.RESET_PASSWORD + "${code}, 五分钟内有效");
         if (success) {
             return ResponseEntity.ok();
         }
-        return ResponseEntity.error();
+        return ResponseEntity.error("邮件发送失败");
     }
 
     @PostMapping("/resetPassword")
