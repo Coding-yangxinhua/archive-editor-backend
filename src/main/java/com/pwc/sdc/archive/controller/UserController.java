@@ -49,6 +49,9 @@ public class UserController {
     @GetMapping("/user")
     @ApiOperation(value = "用户信息获取", httpMethod = "GET")
     public ResponseEntity<AeUserDto> user(@RequestParam (required = false) Long userId) {
+        if (userId == null) {
+            userId = StpUtil.getLoginIdAsLong();
+        }
         // 获得用户信息
         AeUserDto user = userService.getUserInfoById(userId);
         Assert.notNull(user, "用户信息不存在");
