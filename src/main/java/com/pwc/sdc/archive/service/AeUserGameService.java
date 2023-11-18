@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-26 14:53:32
 */
 public interface AeUserGameService extends IService<AeUserGame> {
-
+    AeUserGame findByUserAndGame(Long userId, Long gameId);
 }

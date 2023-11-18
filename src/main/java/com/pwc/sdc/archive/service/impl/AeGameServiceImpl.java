@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.enums.EditorMode;
+import com.pwc.sdc.archive.common.enums.EnableStatus;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.domain.AeGame;
 import com.pwc.sdc.archive.domain.AeUserGame;
@@ -55,11 +56,24 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     }
 
     @Override
-    public void starGame(Long userId, Long gameId) {
-        AeUserGame aeUserGame = new AeUserGame();
-        aeUserGame.setUserId(userId);
-        aeUserGame.setGameId(gameId);
-        userGameService.save(aeUserGame);
+    public void starGame(Long userId, Long gameId, Integer star) {
+        // 查询用户收藏数据
+        AeUserGame userGame = this.userGameService.findByUserAndGame(userId, gameId);
+        // 用户收藏
+        if (star == EnableStatus.ENABLE.value()) {
+            if (userGame == null) {
+                userGame = new AeUserGame();
+                userGame.setUserId(userId);
+                userGame.setGameId(gameId);
+                userGameService.save(userGame);
+                return;
+            } else {
+                userGame.setStar(EnableStatus.ENABLE.value());
+            }
+        }
+        // 用户取消收藏
+        userGame.setStar(EnableStatus.DISABLE.value());
+        this.userGameService.updateById(userGame);
     }
 
     @Override

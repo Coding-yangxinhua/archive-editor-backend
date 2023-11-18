@@ -29,6 +29,8 @@ public class AeUserGame implements Serializable {
      */
     private Long gameId;
 
+    private Integer star;
+
     /**
      * 创建时间
      */

@@ -18,8 +18,6 @@ import java.util.List;
 */
 public interface AeGameMapper extends BaseMapper<AeGame> {
     IPage<GameDto> listByUserId(Page<GameDto> page, @Param("loginUserId") Long loginUserId, @Param("game") GamePlatformDto gamePlatformDto);
-
-    void gameStar(@Param("userId") Long userId, @Param("gameId") Long gameId);
 }
 
 

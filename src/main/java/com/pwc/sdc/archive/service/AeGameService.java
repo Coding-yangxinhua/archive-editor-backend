@@ -26,7 +26,7 @@ public interface AeGameService extends IService<AeGame> {
     String AE_GAME = "AE_GAME";
     IPage<GameDto> listByUserId(GamePlatformDto gamePlatformDto, Integer page, Integer size);
 
-    void starGame(Long userId, Long gameId);
+    void starGame(Long userId, Long gameId, Integer star);
 
 
     String getScriptById(Long gameId);

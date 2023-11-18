@@ -18,9 +18,7 @@
         GMT_CREATE,GMT_MODIFIED,DELETED
     </sql>
     <select id="listUserRolePermissions" resultType="com.pwc.sdc.archive.domain.AeRole">
-        SELECT ID, PERMISSION FROM AE_PERMISSION WHERE ID IN (
-            SELECT ID FROM
-            )
+
     </select>
     <select id="listUserRoles" resultType="com.pwc.sdc.archive.domain.dto.UserRoleDto">
         SELECT ur.USER_ID, ur.ROLE_ID, r.ROLE

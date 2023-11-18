@@ -8,13 +8,14 @@
             <id property="id" column="ID" jdbcType="BIGINT"/>
             <result property="userId" column="USER_ID" jdbcType="BIGINT"/>
             <result property="gameId" column="GAME_ID" jdbcType="BIGINT"/>
+            <result property="star" column="STAR" jdbcType="TINYINT" />
             <result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP"/>
             <result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="DELETED" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID,USER_ID,GAME_ID,
+        ID,USER_ID,GAME_ID,STAR,
         GMT_CREATE,GMT_MODIFIED,DELETED
     </sql>
 </mapper>
