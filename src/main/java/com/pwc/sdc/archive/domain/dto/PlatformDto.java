@@ -6,13 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author Xinhua X Yang
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlatformDto {
+public class PlatformDto implements Serializable {
 
     private Long platformId;
 
