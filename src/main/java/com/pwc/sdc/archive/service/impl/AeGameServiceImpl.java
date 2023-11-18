@@ -51,7 +51,7 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
     @Override
     public IPage<GameDto> listByUserId(GamePlatformDto gamePlatformDto, Integer page, Integer size) {
         Page<GameDto> gamePage = new Page<>(page, size);
-        return baseMapper.listByUserId(gamePage, (Long) StpUtil.getLoginIdDefaultNull() , gamePlatformDto);
+        return baseMapper.listByUserId(gamePage, StpUtil.getLoginIdDefaultNull() == null? null : StpUtil.getLoginIdAsLong() , gamePlatformDto);
     }
 
     @Override
