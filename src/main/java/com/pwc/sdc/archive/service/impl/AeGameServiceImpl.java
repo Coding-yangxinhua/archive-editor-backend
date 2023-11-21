@@ -70,9 +70,10 @@ public class AeGameServiceImpl extends ServiceImpl<AeGameMapper, AeGame>
             } else {
                 userGame.setStar(EnableStatus.ENABLE.value());
             }
+        } else {
+            // 用户取消收藏
+            userGame.setStar(EnableStatus.DISABLE.value());
         }
-        // 用户取消收藏
-        userGame.setStar(EnableStatus.DISABLE.value());
         this.userGameService.updateById(userGame);
     }
 

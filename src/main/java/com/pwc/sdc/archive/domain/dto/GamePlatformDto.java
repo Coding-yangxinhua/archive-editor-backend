@@ -10,11 +10,17 @@ import java.io.Serializable;
 
 @Data
 public class GamePlatformDto extends AeGamePlatform implements Serializable {
+    /**
+     * 0 为全量 1 为收藏
+     */
+    private Integer type;
+
     private Long userId;
 
     private String gameName;
 
     private Long platformName;
+
 
 
 }

@@ -39,8 +39,10 @@ public class GameController {
     @ApiOperation(value = "游戏列表查询", httpMethod = "POST")
     @ApiOperationSupport(includeParameters = {"gamePlatformDto.gameName", "gamePlatformDto.platformId", "gamePlatformDto.userId", "page", "size"})
     public ResponseEntity<IPage<GameDto>> list(@RequestBody GamePlatformDto gamePlatformDto, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        if (gamePlatformDto.getUserId() != null) {
-            gamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
+        if (gamePlatformDto.getType() == 0) {
+            if (gamePlatformDto.getUserId() != null) {
+                gamePlatformDto.setUserId(StpUtil.getLoginIdAsLong());
+            }
         }
         return ResponseEntity.ok(gameService.listByUserId(gamePlatformDto, page, size));
     }
