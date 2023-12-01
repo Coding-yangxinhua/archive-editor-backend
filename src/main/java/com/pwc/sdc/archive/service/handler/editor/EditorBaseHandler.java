@@ -162,10 +162,10 @@ public class EditorBaseHandler {
                 }
             }
             // 防止用户购买非正常数量的道具
-            count = part.getCountRight() - onlineCount /  partDB.getAmount();
+            count = (part.getCountRight() - onlineCount) /  partDB.getAmount();
             // 防止除不尽
-            part.setCount(part.getCountRight() * count);
             count = count > 0 ? count : 1;
+            part.setCount(count);
             // 叠加总价
             priceSum += (int) (count * partDB.getPrice());
         }
