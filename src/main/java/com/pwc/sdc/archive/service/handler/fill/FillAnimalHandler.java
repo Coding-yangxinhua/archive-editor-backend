@@ -119,7 +119,7 @@ public class FillAnimalHandler extends FillBaseHandler{
         String archiveDecode = this.jsEngineHandler.decode(getUser().getGameId(), archiveEncode);
         // 设置statics
         // 设置存档与用户id
-        this.user.setGameUserId(id);
+        setPlayerId(id);
         this.user.setOpenId(quickUserName);
         this.user.setGameUserName(playerName);
         this.archive = archiveDecode;

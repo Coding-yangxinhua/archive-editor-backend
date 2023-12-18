@@ -6,6 +6,7 @@ import cn.dev33.satoken.exception.NotRoleException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pwc.sdc.archive.common.bean.ResponseEntity;
 import com.pwc.sdc.archive.common.enums.ResultStatus;
+import com.pwc.sdc.archive.common.exception.CheckException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -41,7 +42,14 @@ public class GlobalExceptionHandler {
     /**
      * 参数校验异常步骤
      */
+    @ExceptionHandler(value= {CheckException.class})
+    public ResponseEntity<Map<String, String>> onCheckException(Exception e) throws JsonProcessingException {
+        return ResponseEntity.error(ResultStatus.CHECK_ERROR, e.getMessage());
+    }
 
+    /**
+     * 参数校验异常步骤
+     */
     @ExceptionHandler(value= {MethodArgumentNotValidException.class , BindException.class, ValidationException.class})
     public ResponseEntity<Map<String, String>> onValidException(Exception e) throws JsonProcessingException {
         BindingResult bindingResult = null;

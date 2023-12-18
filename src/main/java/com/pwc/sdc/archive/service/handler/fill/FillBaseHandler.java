@@ -2,8 +2,10 @@ package com.pwc.sdc.archive.service.handler.fill;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.pwc.sdc.archive.common.constants.GameConstants;
 import com.pwc.sdc.archive.common.enums.FillEnums;
 import com.pwc.sdc.archive.common.enums.RequestStatus;
+import com.pwc.sdc.archive.common.exception.CheckException;
 import com.pwc.sdc.archive.common.handler.JsEngineHandler;
 import com.pwc.sdc.archive.common.utils.FillUtil;
 import com.pwc.sdc.archive.domain.dto.GamePlatformDto;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -207,6 +210,14 @@ public class FillBaseHandler {
                 setLoginByResponse(responseJson);
         }
         this.currentTimes ++;
+    }
+
+    protected void setPlayerId(String playerId) {
+        String oldPlayerId = this.user.getGameUserId();
+        if (StringUtils.hasText(oldPlayerId) && !oldPlayerId.equals(playerId)) {
+            throw new CheckException(GameConstants.PLAYER_ID_NOT_SAME);
+        }
+        this.user.setGameUserId(oldPlayerId);
     }
 
     /**
